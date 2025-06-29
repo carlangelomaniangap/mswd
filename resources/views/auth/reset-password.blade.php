@@ -1,3 +1,5 @@
+@section('title', 'Reset Password')
+
 <x-guest-layout>
     <x-auth-card>
         <!-- Validation Errors -->

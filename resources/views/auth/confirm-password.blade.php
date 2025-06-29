@@ -1,3 +1,5 @@
+@section('title', 'Confirm Password')
+
 <x-guest-layout>
     <x-auth-card>
         <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">

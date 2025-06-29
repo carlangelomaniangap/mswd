@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <x-auth-card>
+    <x-auth-card blur>
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -19,15 +19,14 @@
 
                     <x-form.input-with-icon-wrapper>
                         <x-slot name="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-gray-900 dark:text-gray-100">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                             </svg>
-
-
                         </x-slot>
 
                         <x-form.input
                             withicon
+                            blur
                             id="email"
                             class="block w-full"
                             type="email"
@@ -49,7 +48,7 @@
 
                     <x-form.input-with-icon-wrapper>
                         <x-slot name="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-gray-900 dark:text-gray-100">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
                             </svg>
 
@@ -57,6 +56,7 @@
 
                         <x-form.input
                             withicon
+                            blur
                             id="password"
                             class="block w-full"
                             type="password"
@@ -74,15 +74,17 @@
                         <input
                             id="remember_me"
                             type="checkbox"
-                            class="text-purple-500 border-gray-300 rounded focus:border-purple-300 focus:ring focus:ring-purple-500 dark:border-gray-600 dark:bg-dark-eval-1 dark:focus:ring-offset-dark-eval-1"
+                            class="text-blue-500 border-gray-300 rounded focus:border-blue-300 focus:ring focus:ring-blue-500 dark:border-gray-600 dark:bg-dark-eval-1 dark:focus:ring-offset-dark-eval-1"
                             name="remember"
                         >
 
-                        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">
+                        <span class="ml-2 text-sm text-gray-900 dark:text-gray-100">
                             {{ __('Remember me') }}
                         </span>
                     </label>
+                </div>
 
+                <div class="text-center">
                     @if (Route::has('password.request'))
                         <a class="text-sm text-blue-500 hover:underline" href="{{ route('password.request') }}">
                             {{ __('Forgot your password?') }}
