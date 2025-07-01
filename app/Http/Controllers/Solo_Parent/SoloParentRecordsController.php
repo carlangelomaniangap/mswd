@@ -135,4 +135,11 @@ class SoloParentRecordsController extends Controller
 
         return response()->json(['data' => $data]);
     }
+
+    public function getData($id)
+    {
+        $data = SoloParentRecord::findOrFail($id);
+
+        return response()->json(['data' => $data]);
+    }
 }

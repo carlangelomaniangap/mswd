@@ -399,6 +399,209 @@
                 </tr>
             </thead>
         </table>
+
+        <x-modal name="view" maxWidth="2xl">
+            <div x-data="{ tab: 'personal_details' }" x-show="true"  @open-modal.window="if ($event.detail === 'view') tab = 'personal_details'" class="max-h-full flex flex-col">
+                <div class="p-4 flex justify-between items-center bg-blue-600">
+                    <h2 class="text-md font-medium text-white dark:text-gray-100">Senior ID Beneficiary Information</h2>
+                    <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                        </svg>
+                    </button>
+                </div>
+
+                {{-- View Modal Navigation --}}
+                <div class="bg-white dark:bg-dark-eval-1 flex items-center justify-center space-x-8 p-4 text-sm shadow-md">
+                    <button @click="tab = 'personal_details'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'personal_details' }" class="pb-1">Personal Details</button>
+                    <button @click="tab = 'requirements'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'requirements' }" class="pb-1">Requirements</button>
+                    <button @click="tab = 'assistance_history'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'assistance_history' }" class="pb-1">Assistance History</button>
+                </div>
+
+                {{-- View Modal Navigation Content --}}
+                <div class="overflow-y-auto ">
+                    {{-- Personal Details page --}}
+                    <div x-show="tab === 'personal_details'" x-cloak>
+                        <div id="senior_citizen_info" class="grid grid-cols-2 gap-4 p-6">
+                            <div class="space-y-4">
+                                <div class="flex flex-col items-center justify-center space-y-4">
+                                    <img id="senior_citizen_photo" class="w-24 h-24 object-cover bg-gray-300 dark:bg-gray-400 rounded-full shadow" />
+                                    <p class="text-sm text-white bg-blue-500 px-2 py-1">Senior ID: <strong><span id="senior_citizen_id"></span></strong></p>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">First Name</x-form.label>
+                                        <h3 id="senior_citizen_first_name" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Last Name</x-form.label>
+                                        <h3 id="senior_citizen_last_name" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Complete Address</x-form.label>
+                                    <span id="senior_citizen_address" class="font-semibold"></span>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Type of Disability</x-form.label>
+                                    <span id="senior_citizen_type_of_disability" class="font-semibold"></span>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Date of Birth</x-form.label>
+                                        <h3 id="senior_citizen_birth" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Sex</x-form.label>
+                                        <h3 id="senior_citizen_sex" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Cellphone Number</x-form.label>
+                                    <span id="senior_citizen_cellphone_number" class="font-semibold"></span>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Date Added</x-form.label>
+                                    <span id="senior_citizen_created_at" class="font-semibold"></span>
+                                </div>
+                            </div>
+                            <div>
+                                QR CODE
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Requirements page --}}
+                    <div x-show="tab === 'requirements'" x-cloak>
+                        <div class="pl-6 pr-6 pt-4 pb-4">
+                            <p class="text-sm font-semibold text-gray-600 pb-2">Requirements Status</p>
+
+                            <div class="space-y-2">
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">VALID ID</p>
+                                        <p class="text-xs">Last updated</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="valid_id"
+                                            id="valid_id"
+                                            class=""
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="complete">Complete</option>
+                                            <option value="denied">Denied</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">Medical Certificate</p>
+                                        <p class="text-xs">Last updated</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="medical_certificate"
+                                            id="medical_certificate"
+                                            class=""
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="complete">Complete</option>
+                                            <option value="denied">Denied</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">Barangay Certificate</p>
+                                        <p class="text-xs">Last updated</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="barangay_certificate"
+                                            id="barangay_certificate"
+                                            class=""
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="complete">Complete</option>
+                                            <option value="denied">Denied</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">Birth Certificate</p>
+                                        <p class="text-xs">Last updated</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="birth_certificate"
+                                            id="birth_certificate"
+                                            class=""
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="complete">Complete</option>
+                                            <option value="denied">Denied</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pr-6 text-xs flex items-center justify-end space-x-2">
+                            <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
+                            <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
+                            <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
+                        </div>
+                    </div>
+
+                    {{-- Assistance History page --}}
+                    <div x-show="tab === 'assistance_history'" x-cloak>
+                        <div class="pl-6 pr-6 pt-4 pb-6">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-semibold text-gray-600 pb-2">Payout History</p>
+                                <button x-on:click="$dispatch('open-modal', 'add-payout')" class="text-sm flex items-center px-2 py-1 border-2 text-blue-600 border-blue-600">
+                                    <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                                    </svg>
+                                    Add Payout
+                                </button>
+                            </div>
+                            <div class="space-y-6">
+                                <div class="w-full h-full">
+                                    <table id="payout_history" class="display text-xs border border-gray-400 dark:border-gray-600 w-full">
+                                        <thead class="bg-gray-200 dark:bg-dark-eval-1">
+                                            <tr>
+                                                <th>DATE</th>
+                                                <th>AMOUNT</th>
+                                                <th>TYPE</th>
+                                                <th>CLAIMED BY</th>
+                                                <th>REMARKS</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="text-xs flex items-center justify-end space-x-2">
+                                    <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
+                                    <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
+                                    <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </x-modal>
     </div>
 </x-app-layout>
 
@@ -519,6 +722,86 @@
                     }
                 }
             });
+        });
+    });
+</script>
+
+{{-- View display each Beneficiary --}}
+<script>
+    $(document).on('click', '[data-id]', function () {
+        const id = $(this).data('id');
+        
+        $('#senior_citizen_photo').attr('src', '/images/default_photo.png');
+        $('#senior_citizen_id, #senior_citizen_first_name, #senior_citizen_last_name, #senior_citizen_address, #senior_citizen_type_of_disability, #senior_citizen_birth, #senior_citizen_sex, #senior_citizen_cellphone_number, #senior_citizen_created_at').text('');
+
+
+        $.ajax({
+            url: `/admin/senior_citizen/${id}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                const data = response.data;
+
+                $('#senior_citizen_photo').attr('src', `/beneficiary_photos/${data.photo}`);
+                $('#senior_citizen_id').text(`SC-${String(data.id).padStart(3, '0')}`);
+                $('#senior_citizen_first_name').text(`${data.first_name}`);
+                $('#senior_citizen_last_name').text(`${data.last_name}`);
+                $('#senior_citizen_address').text(`${data.barangay}, ${data.city_municipality}, ${data.province}`);
+                $('#senior_citizen_type_of_disability').text(data.type_of_disability);
+                $('#senior_citizen_birth').text(new Date(data.date_of_birth).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
+                $('#senior_citizen_sex').text(data.sex);
+                $('#senior_citizen_cellphone_number').text(data.cellphone_number);
+                $('#senior_citizen_created_at').text(new Date(data.created_at).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
+            }
+        });
+    });
+</script>
+
+{{-- NOT YET DONE --}}
+{{-- Display Assistance History Script --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#payout_history').DataTable({
+            ajax: {
+                url: ``,
+                dataSrc: 'data'
+            },
+            // FAKE DATA
+            data: [
+                {
+                    date: 'June 10, 2025',
+                    amount: '₱1,500',
+                    type: 'Financial Assistance',
+                    claimed_by: 'Ana Reyes',
+                    remarks: 'Initial Assistance',
+                },
+                {
+                    date: 'May 05, 2025',
+                    amount: '₱2,000',
+                    type: 'Financial Assistance',
+                    claimed_by: 'Carlos Dela Cruz',
+                    remarks: 'Initial Assistance',
+                },
+                {
+                    date: 'April 15, 2025',
+                    amount: '₱1,200',
+                    type: 'Financial Assistance',
+                    claimed_by: 'Jose Santos',
+                    remarks: 'Initial Assistance',
+                },
+            ],
+            columns: [
+                { data: 'date' },
+                { data: 'amount' },
+                { data: 'type' },
+                { data: 'claimed_by' },
+                { data: 'remarks' },
+            ],
+            responsive: true,
+            paging: false,
+            lengthChange: false,
+            searching: false,
+            info: false
         });
     });
 </script>

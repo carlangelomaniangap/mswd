@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Aics;
 
 use App\Http\Controllers\Controller;
-use App\Models\PwdFamilyMember;
+use App\Models\AicsFamilyMember;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminPwdFamilyMemberController extends Controller
+class AicsFamilyMemberController extends Controller
 {
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'pwd_record_id' => 'required|exists:pwd_records,id',
+            'aics_record_id' => 'required|exists:aics_records,id',
             'family_member_name' => 'required|string',
             'relationship' => 'required|string',
             'family_member_age' => 'required|numeric|min:0',
@@ -22,8 +22,8 @@ class AdminPwdFamilyMemberController extends Controller
 
         $user = Auth::user();
 
-        PwdFamilyMember::create([
-            'pwd_record_id' => $validated['pwd_record_id'],
+        AicsFamilyMember::create([
+            'aics_record_id' => $validated['aics_record_id'],
             'family_member_name' => $validated['family_member_name'],
             'relationship' => $validated['relationship'],
             'family_member_age' => $validated['family_member_age'],
@@ -41,7 +41,7 @@ class AdminPwdFamilyMemberController extends Controller
 
     public function getData($id)
     {
-        $data = PwdFamilyMember::where('pwd_record_id',$id)->orderBy('id', 'asc')->get();
+        $data = AicsFamilyMember::where('aics_record_id',$id)->orderBy('id', 'asc')->get();
         return response()->json(['data' => $data]);
     }
 }

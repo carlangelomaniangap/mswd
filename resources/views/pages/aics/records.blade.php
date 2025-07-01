@@ -449,6 +449,354 @@
                 </tr>
             </thead>
         </table>
+
+        <x-modal name="view" maxWidth="2xl">
+            <div x-data="{ tab: 'personal_details' }" x-show="true"  @open-modal.window="if ($event.detail === 'view') tab = 'personal_details'" class="max-h-full flex flex-col">
+                <div class="p-4 flex justify-between items-center bg-blue-600">
+                    <h2 class="text-md font-medium text-white dark:text-gray-100">AICS ID Beneficiary Information</h2>
+                    <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                        </svg>
+                    </button>
+                </div>
+
+                {{-- View Modal Navigation --}}
+                <div class="bg-white dark:bg-dark-eval-1 flex items-center justify-center space-x-8 p-4 text-sm shadow-md">
+                    <button @click="tab = 'personal_details'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'personal_details' }" class="pb-1">Personal Details</button>
+                    <button @click="tab = 'requirements'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'requirements' }" class="pb-1">Requirements</button>
+                    <button @click="tab = 'family_composition'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'family_composition' }" class="pb-1">Family Composition</button>
+                    <button @click="tab = 'assistance_history'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'assistance_history' }" class="pb-1">Assistance History</button>
+                </div>
+
+                {{-- View Modal Navigation Content --}}
+                <div class="overflow-y-auto ">
+                    {{-- Personal Details page --}}
+                    <div x-show="tab === 'personal_details'" x-cloak>
+                        <div id="aics_info" class="grid grid-cols-2 gap-4 p-6">
+                            <div class="space-y-4">
+                                <div class="flex flex-col items-center justify-center space-y-4">
+                                    <img id="aics_photo" class="w-24 h-24 object-cover bg-gray-300 dark:bg-gray-400 rounded-full shadow" />
+                                    <p class="text-sm text-white bg-blue-500 px-2 py-1">AICS ID: <strong><span id="aics_id"></span></strong></p>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">First Name</x-form.label>
+                                        <h3 id="aics_first_name" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Last Name</x-form.label>
+                                        <h3 id="aics_last_name" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Complete Address</x-form.label>
+                                    <span id="aics_address" class="font-semibold"></span>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Date of Birth</x-form.label>
+                                        <h3 id="aics_birth" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Sex</x-form.label>
+                                        <h3 id="aics_sex" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Cellphone Number</x-form.label>
+                                    <span id="aics_cellphone_number" class="font-semibold"></span>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Date Added</x-form.label>
+                                    <span id="aics_created_at" class="font-semibold"></span>
+                                </div>
+                            </div>
+                            <div>
+                                QR CODE
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Requirements page --}}
+                    <div x-show="tab === 'requirements'" x-cloak>
+                        <div class="pl-6 pr-6 pt-4 pb-4">
+                            <p class="text-sm font-semibold text-gray-600 pb-2">Requirements Status</p>
+
+                            <div class="space-y-2">
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">VALID ID</p>
+                                        <p class="text-xs">Last updated</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="valid_id"
+                                            id="valid_id"
+                                            class=""
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="complete">Complete</option>
+                                            <option value="denied">Denied</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">Medical Certificate</p>
+                                        <p class="text-xs">Last updated</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="medical_certificate"
+                                            id="medical_certificate"
+                                            class=""
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="complete">Complete</option>
+                                            <option value="denied">Denied</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">Barangay Certificate</p>
+                                        <p class="text-xs">Last updated</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="barangay_certificate"
+                                            id="barangay_certificate"
+                                            class=""
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="complete">Complete</option>
+                                            <option value="denied">Denied</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">Birth Certificate</p>
+                                        <p class="text-xs">Last updated</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="birth_certificate"
+                                            id="birth_certificate"
+                                            class=""
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="complete">Complete</option>
+                                            <option value="denied">Denied</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pr-6 text-xs flex items-center justify-end space-x-2">
+                            <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
+                            <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
+                            <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
+                        </div>
+                    </div>
+
+                    {{-- Family Composition page --}}
+                    <div x-show="tab === 'family_composition'" x-cloak>
+                        <div class="pl-6 pr-6 pt-4 pb-6">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-semibold text-gray-600">Family Member</p>
+                                <button x-on:click="$dispatch('open-modal', 'add-family-member')" class="text-sm flex items-center px-2 py-1 border-2 text-blue-600 border-blue-600">
+                                    <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                                    </svg>
+                                    Add Member
+                                </button>
+
+                                {{-- Add member modal --}}
+                                <x-modal name="add-family-member" maxHeight="fit" maxWidth="xs">
+                                    <div class="flex flex-col">
+                                        <div class="p-4 flex justify-between items-center bg-blue-600">
+                                            <h2 class="text-md font-medium text-white dark:text-gray-100">Add Member</h2>
+                                            <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
+                                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <div class="p-4">
+                                            <form id="addFamilyMemberForm" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="aics_record_id" id="aics_record_id">
+                                                <div class="space-y-4">
+                                                    <div>
+                                                        <x-form.label
+                                                            for="family_member_name"
+                                                        >
+                                                            Name
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.input
+                                                            id="family_member_name"
+                                                            class="w-full"
+                                                            type="text"
+                                                            name="family_member_name"
+                                                            placeholder="Name"
+                                                            required
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <x-form.label
+                                                            for="relationship"
+                                                        >
+                                                            Relationship
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.select id="relationship" name="relationship">
+                                                            <option value="" disabled selected>Select</option>
+                                                            <option value="Great-grandfather">Great-grandfather</option>
+                                                            <option value="Great-grandmother">Great-grandmother</option>
+                                                            <option value="Great-grandson">Great-grandson</option>
+                                                            <option value="Great-granddaughter">Great-granddaughter</option>
+                                                            <option value="GrandFather">Grand Father</option>
+                                                            <option value="GrandMother">Grand Mother</option>
+                                                            <option value="Grandson">Grandson</option>
+                                                            <option value="Granddaughter">Granddaughter</option>
+                                                            <option value="Father">Father</option>
+                                                            <option value="Mother">Mother</option>
+                                                            <option value="Spouse">Spouse</option>
+                                                            <option value="Uncle">Uncle</option>
+                                                            <option value="Auntie">Auntie</option>
+                                                            <option value="Brother">Brother</option>
+                                                            <option value="Sister">Sister</option>
+                                                            <option value="Son">Son</option>
+                                                            <option value="Daughter">Daughter</option>
+                                                            <option value="Nephew">Nephew</option>
+                                                            <option value="Niece">Niece</option>
+                                                            <option value="Cousin">Cousin</option>
+                                                            <option value="Father-in-law">Father-in-law</option>
+                                                            <option value="Mother-in-law">Mother-in-law</option>
+                                                            <option value="Brother-in-law">Brother-in-law</option>
+                                                            <option value="Sister-in-law">Sister-in-law</option>
+                                                            <option value="Son-in-law">Son-in-law</option>
+                                                            <option value="Daughter-in-law">Daughter-in-law</option>
+                                                            <option value="Stepfather">Stepfather</option>
+                                                            <option value="Stepmother">Stepmother</option>
+                                                            <option value="Stepbrother">Stepbrother</option>
+                                                            <option value="Stepsister">Stepsister</option>
+                                                            <option value="Half-brother">Half-brother</option>
+                                                            <option value="Half-sister">Half-sister</option>
+                                                        </x-form.select>
+                                                    </div>
+                                                    <div>
+                                                        <x-form.label
+                                                            for="family_member_age"
+                                                        >
+                                                            Age
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.input
+                                                            id="family_member_age"
+                                                            class="w-full"
+                                                            type="number"
+                                                            name="family_member_age"
+                                                            placeholder="Age"
+                                                            required
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <x-form.label
+                                                            for="family_member_status"
+                                                        >
+                                                            Status
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.select id="family_member_status" name="family_member_status">
+                                                            <option value="" selected disabled>Select</option>
+                                                            <option value="eligible">Eligible</option>
+                                                        </x-form.select>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-6 flex justify-end">
+                                                    <x-button type="submit" variant="success" class="ml-2">Add</x-button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </x-modal>
+                            </div>
+                            <div class="space-y-6">
+                                <div class="w-full h-full">
+                                    <table id="family_member" class="display text-xs border border-gray-400 dark:border-gray-600 w-full">
+                                        <thead class="bg-gray-200 dark:bg-dark-eval-1">
+                                            <tr>
+                                                <th>NAME</th>
+                                                <th>RELATIONSHIP</th>
+                                                <th>AGE</th>
+                                                <th>STATUS</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="text-xs flex items-center justify-end space-x-2">
+                                    <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
+                                    <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
+                                    <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Assistance History page --}}
+                    <div x-show="tab === 'assistance_history'" x-cloak>
+                        <div class="pl-6 pr-6 pt-4 pb-6">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-semibold text-gray-600 pb-2">Payout History</p>
+                                <button x-on:click="$dispatch('open-modal', 'add-payout')" class="text-sm flex items-center px-2 py-1 border-2 text-blue-600 border-blue-600">
+                                    <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                                    </svg>
+                                    Add Payout
+                                </button>
+                            </div>
+                            <div class="space-y-6">
+                                <div class="w-full h-full">
+                                    <table id="payout_history" class="display text-xs border border-gray-400 dark:border-gray-600 w-full">
+                                        <thead class="bg-gray-200 dark:bg-dark-eval-1">
+                                            <tr>
+                                                <th>DATE</th>
+                                                <th>AMOUNT</th>
+                                                <th>TYPE</th>
+                                                <th>CLAIMED BY</th>
+                                                <th>FAMILY MEMBER</th>
+                                                <th>REMARKS</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="text-xs flex items-center justify-end space-x-2">
+                                    <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
+                                    <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
+                                    <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </x-modal>
     </div>
 </x-app-layout>
 
@@ -570,6 +918,172 @@
                     }
                 }
             });
+        });
+    });
+</script>
+
+{{-- View display each Beneficiary --}}
+<script>
+    $(document).on('click', '[data-id]', function () {
+        const id = $(this).data('id');
+        
+        $('#aics_photo').attr('src', '/images/default_photo.png');
+        $('#aics_id, #aics_first_name, #aics_last_name, #aics_address, #aics_birth, #aics_sex, #aics_cellphone_number, #aics_created_at').text('');
+
+        $.ajax({
+            url: `/aics/records/${id}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                const data = response.data;
+
+                $('#aics_photo').attr('src', `/beneficiary_photos/${data.photo}`);
+                $('#aics_id').text(`AICS-${String(data.id).padStart(3, '0')}`);
+                $('#aics_first_name').text(`${data.first_name}`);
+                $('#aics_last_name').text(`${data.last_name}`);
+                $('#aics_address').text(`${data.barangay}, ${data.city_municipality}, ${data.province}`);
+                $('#aics_birth').text(new Date(data.date_of_birth).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
+                $('#aics_sex').text(data.sex);
+                $('#aics_cellphone_number').text(data.cellphone_number);
+                $('#aics_created_at').text(new Date(data.created_at).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
+            }
+        });
+    });
+</script>
+
+{{-- Display Family Composition Script and Family Member --}}
+<script>
+    $(document).on('click', '[data-id]', function () {
+        const id = $(this).data('id');
+
+        $('#aics_record_id').val('');
+
+        $.ajax({
+            url: `/aics/records/${id}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                const data = response.data;
+
+                $('#aics_record_id').val(data.id);
+
+                $('#family_member').DataTable({
+                    destroy: true, //remove this//
+                    ajax: {
+                        url: `/aics/records/${id}/family-member`,
+                        dataSrc: 'data'
+                    },
+                    ordering: false,
+                    columns: [
+                        { data: 'family_member_name' },
+                        { data: 'relationship' },
+                        { data: 'family_member_age' },  
+                        { data: 'family_member_status' },
+                    ],
+                    responsive: true,
+                    lengthChange: false,
+                    searching: false,
+                    info: false,
+                    language: {
+                        paginate: {
+                            first: '',
+                            last: '',
+                            next: 'Next',
+                            previous: 'Previous'
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+{{-- Add Family Member Script --}}
+<script>
+    $(document).ready(function () {
+        $('#addFamilyMemberForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this); // get the form input data
+
+            $.ajax({
+                url: `/aics/records/store/family-member`,
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            $('#family_member').DataTable().ajax.reload(null, false); // reload the table
+                            window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-family-member' })); // close the modal
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.message,
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+{{-- NOT YET DONE --}}
+{{-- Display Assistance History Script --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#payout_history').DataTable({
+            ajax: {
+                url: ``,
+                dataSrc: 'data'
+            },
+            // FAKE DATA
+            data: [
+                {
+                    date: 'June 10, 2025',
+                    amount: '₱1,500',
+                    type: 'Financial Assistance',
+                    claimed_by: 'Ana Reyes',
+                    family_member: 'John Reyes',
+                    remarks: 'Initial Assistance',
+                },
+                {
+                    date: 'May 05, 2025',
+                    amount: '₱2,000',
+                    type: 'Financial Assistance',
+                    claimed_by: 'Carlos Dela Cruz',
+                    family_member: 'Maria Dela Cruz',
+                    remarks: 'Initial Assistance',
+                },
+                {
+                    date: 'April 15, 2025',
+                    amount: '₱1,200',
+                    type: 'Financial Assistance',
+                    claimed_by: 'Jose Santos',
+                    family_member: 'Leo Santos',
+                    remarks: 'Initial Assistance',
+                },
+            ],
+            columns: [
+                { data: 'date' },
+                { data: 'amount' },
+                { data: 'type' },
+                { data: 'claimed_by' },
+                { data: 'family_member' },
+                { data: 'remarks' },
+            ],
+            responsive: true,
+            paging: false,
+            lengthChange: false,
+            searching: false,
+            info: false
         });
     });
 </script>

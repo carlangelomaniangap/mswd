@@ -107,4 +107,11 @@ class AdminAicsController extends Controller
 
         return response()->json(['data' => $data]);
     }
+
+    public function getData($id)
+    {
+        $data = AicsRecord::findOrFail($id);
+
+        return response()->json(['data' => $data]);
+    }
 }

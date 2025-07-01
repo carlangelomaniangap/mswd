@@ -95,10 +95,17 @@ class AdminSeniorCitizenController extends Controller
                 'address' => $record->barangay . ', ' . $record->city_municipality . ', ' . $record->province,
                 'sex' => $record->sex,
                 'cellphone_number' => $record->cellphone_number,
-                'sc_id' => '<span class="text-sm text-white bg-blue-500 rounded-full px-2 py-1">AICS-' . str_pad($record->id, 3, '0', STR_PAD_LEFT) . '</span>',
+                'sc_id' => '<span class="text-sm text-white bg-blue-500 rounded-full px-2 py-1">SC-' . str_pad($record->id, 3, '0', STR_PAD_LEFT) . '</span>',
                 'status' => '<span class="text-sm bg-yellow-300 text-yellow-700 rounded-full px-2 py-1">Expired</span>',
             ];
         });
+
+        return response()->json(['data' => $data]);
+    }
+
+    public function getData($id)
+    {
+        $data = SeniorCitizenRecord::findOrFail($id);
 
         return response()->json(['data' => $data]);
     }

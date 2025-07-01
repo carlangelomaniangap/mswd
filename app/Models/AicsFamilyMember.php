@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PwdFamilyMember extends Model
+class AicsFamilyMember extends Model
 {
     protected $fillable = [
-        'pwd_record_id',
+        'aics_record_id',
         'family_member_name',
         'family_member_relationship',
         'family_member_age',
@@ -22,8 +22,8 @@ class PwdFamilyMember extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function pwdRecord()
+    public function aicsRecord()
     {
-        return $this->belongsTo(PwdRecord::class, 'pwd_record_id');
+        return $this->belongsTo(AicsRecord::class, 'aics_record_id');
     }
 }

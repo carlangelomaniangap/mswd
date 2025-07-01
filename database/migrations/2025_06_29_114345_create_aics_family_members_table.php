@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pwd_family_members', function (Blueprint $table) {
+        Schema::create('aics_family_members', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pwd_record_id');
-            $table->foreign('pwd_record_id')->references('id')->on('pwd_records')->onDelete('cascade');
+            $table->unsignedBigInteger('aics_record_id');
+            $table->foreign('aics_record_id')->references('id')->on('aics_records')->onDelete('cascade');
             $table->string('family_member_name');
             $table->enum('relationship', [
                 'Great-grandfather', 'Great-grandmother', 'Great-grandson', 'Great-granddaughter',
@@ -41,6 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pwd_family_members');
+        Schema::dropIfExists('aics_family_members');
     }
 };
