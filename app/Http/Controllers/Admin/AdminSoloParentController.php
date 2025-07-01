@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SoloParentRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AdminSoloParentController extends Controller
 {
@@ -70,7 +71,10 @@ class AdminSoloParentController extends Controller
 
         $user = Auth::user();
 
-        SoloParentRecord::create([
+        $nextId = SoloParentRecord::max('id') + 1;
+        $qr_code = "qr_aics_{$nextId}.svg";
+
+        $record = SoloParentRecord::create([
             'photo' => $photoPath,
             'first_name' => $validated['first_name'],
             'middle_name' => $validated['middle_name'] ?? null,
@@ -104,10 +108,20 @@ class AdminSoloParentController extends Controller
             'emerg_address' => $validated['emerg_address'],
             'relationship_to_solo_parent' => $validated['relationship_to_solo_parent'],
             'emerg_contact_number' => $validated['emerg_contact_number'],
+            'qr_code' =>  $qr_code,
             'user_id' => $user->id,
             'user_role' => $user->role,
             'user_name' => $user->name
         ]);
+
+        $qrText = 'SP-' . str_pad($record->id, 3, '0', STR_PAD_LEFT);
+        $qrPath = public_path("qrcodes/{$qr_code}");
+
+        if (!file_exists(public_path('qrcodes'))) {
+            mkdir(public_path('qrcodes'), 0755, true);
+        }
+
+        QrCode::format('svg')->size(200)->generate($qrText, $qrPath);
 
         return response()->json([
             'success' => true,
@@ -122,6 +136,17 @@ class AdminSoloParentController extends Controller
         $data = $records->map(function ($record) {
             return [
                 'id' => $record->id,
+                'photo' => $record->photo,
+                'first_name' => $record->first_name,
+                'last_name' => $record->last_name,
+                'barangay' => $record->barangay,
+                'city_municipality' => $record->city_municipality,
+                'province' => $record->province,
+                'date_of_birth' => date('F j, Y', strtotime($record->date_of_birth)),
+                'qr_code' => $record->qr_code,
+                'created_at' => $record->created_at->format('F j, Y'),
+
+                // For DataTable display
                 'name' => $record->last_name . ', ' . $record->first_name,
                 'address' => $record->barangay . ', ' . $record->city_municipality . ', ' . $record->province,
                 'sex' => $record->sex,
@@ -132,13 +157,6 @@ class AdminSoloParentController extends Controller
                 'status' => '<span class="text-sm bg-yellow-300 text-yellow-700 rounded-full px-2 py-1">Expired</span>',
             ];
         });
-
-        return response()->json(['data' => $data]);
-    }
-
-    public function getData($id)
-    {
-        $data = SoloParentRecord::findOrFail($id);
 
         return response()->json(['data' => $data]);
     }

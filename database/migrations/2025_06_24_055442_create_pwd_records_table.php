@@ -38,11 +38,11 @@ return new class extends Migration
             $table->string('emerg_address');
             $table->string('relationship_to_pwd');
             $table->string('emerg_contact_number');
+            $table->string('qr_code');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('user_role');
             $table->string('user_name');
-
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
             $table->string('updated_by_role')->nullable();

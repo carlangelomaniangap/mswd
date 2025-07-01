@@ -442,14 +442,10 @@
                                     <x-form.label class="block">Complete Address</x-form.label>
                                     <span id="senior_citizen_address" class="font-semibold"></span>
                                 </div>
-                                <div>
-                                    <x-form.label class="block">Type of Disability</x-form.label>
-                                    <span id="senior_citizen_type_of_disability" class="font-semibold"></span>
-                                </div>
                                 <div class="flex items-center justify-start gap-6">
                                     <div>
                                         <x-form.label class="block">Date of Birth</x-form.label>
-                                        <h3 id="senior_citizen_birth" class="font-semibold"></h3>
+                                        <h3 id="senior_citizen_date_of_birth" class="font-semibold"></h3>
                                     </div>
                                     <div>
                                         <x-form.label class="block">Sex</x-form.label>
@@ -466,7 +462,7 @@
                                 </div>
                             </div>
                             <div>
-                                QR CODE
+                                <img id="qr-code-image" src="" alt="QR Code" class="w-40 h-40">
                             </div>
                         </div>
                     </div>
@@ -651,6 +647,17 @@
                                 variant="primary"
                                 size="sm"
                                 data-id="${row.id}"
+                                data-photo="${row.photo}"
+                                data-first_name="${row.first_name}"
+                                data-last_name="${row.last_name}"
+                                data-barangay="${row.barangay}"
+                                data-city_municipality="${row.city_municipality}"
+                                data-province="${row.province}"
+                                data-date_of_birth="${row.date_of_birth}"
+                                data-sex="${row.sex}"
+                                data-cellphone_number="${row.cellphone_number}"
+                                data-created_at="${row.created_at}"
+                                data-qr_code="${row.qr_code}"
                                 x-on:click="$dispatch('open-modal', 'view')"
                             >
                                 <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -729,31 +736,18 @@
 {{-- View display each Beneficiary --}}
 <script>
     $(document).on('click', '[data-id]', function () {
-        const id = $(this).data('id');
-        
-        $('#senior_citizen_photo').attr('src', '/images/default_photo.png');
-        $('#senior_citizen_id, #senior_citizen_first_name, #senior_citizen_last_name, #senior_citizen_address, #senior_citizen_type_of_disability, #senior_citizen_birth, #senior_citizen_sex, #senior_citizen_cellphone_number, #senior_citizen_created_at').text('');
+        const btn = $(this);
 
-
-        $.ajax({
-            url: `/senior_citizen/records/${id}`,
-            method: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                const data = response.data;
-
-                $('#senior_citizen_photo').attr('src', `/beneficiary_photos/${data.photo}`);
-                $('#senior_citizen_id').text(`SC-${String(data.id).padStart(3, '0')}`);
-                $('#senior_citizen_first_name').text(`${data.first_name}`);
-                $('#senior_citizen_last_name').text(`${data.last_name}`);
-                $('#senior_citizen_address').text(`${data.barangay}, ${data.city_municipality}, ${data.province}`);
-                $('#senior_citizen_type_of_disability').text(data.type_of_disability);
-                $('#senior_citizen_birth').text(new Date(data.date_of_birth).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
-                $('#senior_citizen_sex').text(data.sex);
-                $('#senior_citizen_cellphone_number').text(data.cellphone_number);
-                $('#senior_citizen_created_at').text(new Date(data.created_at).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
-            }
-        });
+        $('#senior_citizen_photo').attr('src', `/beneficiary_photos/${btn.data('photo')}`);
+        $('#senior_citizen_id').text(`SC-${String(btn.data('id')).padStart(3, '0')}`);
+        $('#senior_citizen_first_name').text(btn.data('first_name'));
+        $('#senior_citizen_last_name').text(btn.data('last_name'));
+        $('#senior_citizen_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
+        $('#senior_citizen_date_of_birth').text(btn.data('date_of_birth'));
+        $('#senior_citizen_sex').text(btn.data('sex'));
+        $('#senior_citizen_cellphone_number').text(btn.data('cellphone_number'));
+        $('#senior_citizen_created_at').text(btn.data('created_at'));
+        $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
     });
 </script>
 

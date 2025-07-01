@@ -726,7 +726,7 @@
                                 <div class="flex items-center justify-start gap-6">
                                     <div>
                                         <x-form.label class="block">Date of Birth</x-form.label>
-                                        <h3 id="solo_parent_birth" class="font-semibold"></h3>
+                                        <h3 id="solo_parent_date_of_birth" class="font-semibold"></h3>
                                     </div>
                                     <div>
                                         <x-form.label class="block">Sex</x-form.label>
@@ -743,7 +743,7 @@
                                 </div>
                             </div>
                             <div>
-                                QR CODE
+                                <img id="qr-code-image" src="" alt="QR Code" class="w-40 h-40">
                             </div>
                         </div>
                     </div>
@@ -929,6 +929,19 @@
                                 variant="primary"
                                 size="sm"
                                 data-id="${row.id}"
+                                data-photo="${row.photo}"
+                                data-first_name="${row.first_name}"
+                                data-last_name="${row.last_name}"
+                                data-barangay="${row.barangay}"
+                                data-city_municipality="${row.city_municipality}"
+                                data-province="${row.province}"
+                                data-date_of_birth="${row.date_of_birth}"
+                                data-sex="${row.sex}"
+                                data-cellphone_number="${row.cellphone_number}"
+                                data-number_of_children="${row.number_of_children}"
+                                data-employment_status="${row.employment_status}"
+                                data-created_at="${row.created_at}"
+                                data-qr_code="${row.qr_code}"
                                 x-on:click="$dispatch('open-modal', 'view')"
                             >
                                 <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -1037,30 +1050,20 @@
 {{-- View display each Beneficiary --}}
 <script>
     $(document).on('click', '[data-id]', function () {
-        const id = $(this).data('id');
-        
-        $('#solo_parent_photo').attr('src', '/images/default_photo.png');
-        $('#solo_parent_id, #solo_parent_first_name, #solo_parent_last_name, #solo_parent_address, #solo_parent_type_of_disability, #solo_parent_birth, #solo_parent_sex, #solo_parent_cellphone_number, #solo_parent_created_at').text('');
+        const btn = $(this);
 
-
-        $.ajax({
-            url: `/solo_parent/records/${id}`,
-            method: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                const data = response.data;
-
-                $('#solo_parent_photo').attr('src', `/beneficiary_photos/${data.photo}`);
-                $('#solo_parent_id').text(`SP-${String(data.id).padStart(3, '0')}`);
-                $('#solo_parent_first_name').text(`${data.first_name}`);
-                $('#solo_parent_last_name').text(`${data.last_name}`);
-                $('#solo_parent_address').text(`${data.barangay}, ${data.city_municipality}, ${data.province}`);
-                $('#solo_parent_birth').text(new Date(data.date_of_birth).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
-                $('#solo_parent_sex').text(data.sex);
-                $('#solo_parent_cellphone_number').text(data.cellphone_number);
-                $('#solo_parent_created_at').text(new Date(data.created_at).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
-            }
-        });
+        $('#solo_parent_photo').attr('src', `/beneficiary_photos/${btn.data('photo')}`);
+        $('#solo_parent_id').text(`SP-${String(btn.data('id')).padStart(3, '0')}`);
+        $('#solo_parent_first_name').text(btn.data('first_name'));
+        $('#solo_parent_last_name').text(btn.data('last_name'));
+        $('#solo_parent_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
+        $('#solo_parent_date_of_birth').text(btn.data('date_of_birth'));
+        $('#solo_parent_sex').text(btn.data('sex'));
+        $('#solo_parent_cellphone_number').text(btn.data('cellphone_number'));
+        $('#solo_parent_number_of_children').text(btn.data('number_of_children'));
+        $('#solo_parent_employment_status').text(btn.data('employment_status'));
+        $('#solo_parent_created_at').text(btn.data('created_at'));
+        $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
     });
 </script>
 

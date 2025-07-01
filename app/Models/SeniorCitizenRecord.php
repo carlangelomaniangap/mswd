@@ -24,6 +24,7 @@ class SeniorCitizenRecord extends Model
         'educational_attainment',
         'occupation',
         'cellphone_number',
+        'qr_code',
         'user_id',
         'user_role',
         'user_name'

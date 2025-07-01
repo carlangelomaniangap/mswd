@@ -30,6 +30,7 @@ return new class extends Migration
             $table->enum('educational_attainment', ['No Formal Education', 'Elementary Undergraduate', 'Elementary Graduate', 'High School Undergraduate', 'High School Graduate', 'Vocational Graduate', 'College Undergraduate', 'College Graduate', 'Post Graduate']);
             $table->string('occupation');
             $table->string('cellphone_number');
+            $table->string('qr_code');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('user_role');

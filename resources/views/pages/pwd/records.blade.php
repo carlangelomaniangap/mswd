@@ -1122,7 +1122,7 @@
                                 <div class="flex items-center justify-start gap-6">
                                     <div>
                                         <x-form.label class="block">Date of Birth</x-form.label>
-                                        <h3 id="pwd_birth" class="font-semibold"></h3>
+                                        <h3 id="pwd_date_of_birth" class="font-semibold"></h3>
                                     </div>
                                     <div>
                                         <x-form.label class="block">Sex</x-form.label>
@@ -1139,7 +1139,7 @@
                                 </div>
                             </div>
                             <div>
-                                QR CODE
+                                <img id="qr-code-image" src="" alt="QR Code" class="w-40 h-40">
                             </div>
                         </div>
                     </div>
@@ -1361,6 +1361,18 @@
                                 variant="primary"
                                 size="sm"
                                 data-id="${row.id}"
+                                data-photo="${row.photo}"
+                                data-first_name="${row.first_name}"
+                                data-last_name="${row.last_name}"
+                                data-barangay="${row.barangay}"
+                                data-city_municipality="${row.city_municipality}"
+                                data-province="${row.province}"
+                                data-type_of_disability="${row.type_of_disability}"
+                                data-date_of_birth="${row.date_of_birth}"
+                                data-sex="${row.sex}"
+                                data-cellphone_number="${row.cellphone_number}"
+                                data-created_at="${row.created_at}"
+                                data-qr_code="${row.qr_code}"
                                 x-on:click="$dispatch('open-modal', 'view')"
                             >
                                 <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -1519,31 +1531,19 @@
 {{-- View display each Beneficiary --}}
 <script>
     $(document).on('click', '[data-id]', function () {
-        const id = $(this).data('id');
-        
-        $('#pwd_photo').attr('src', '/images/default_photo.png');
-        $('#pwd_id, #pwd_first_name, #pwd_last_name, #pwd_address, #pwd_type_of_disability, #pwd_birth, #pwd_sex, #pwd_cellphone_number, #pwd_created_at').text('');
+        const btn = $(this);
 
-
-        $.ajax({
-            url: `/pwd/records/${id}`,
-            method: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                const data = response.data;
-
-                $('#pwd_photo').attr('src', `/beneficiary_photos/${data.photo}`);
-                $('#pwd_id').text(`PWD-${String(data.id).padStart(3, '0')}`);
-                $('#pwd_first_name').text(`${data.first_name}`);
-                $('#pwd_last_name').text(`${data.last_name}`);
-                $('#pwd_address').text(`${data.barangay}, ${data.city_municipality}, ${data.province}`);
-                $('#pwd_type_of_disability').text(data.type_of_disability);
-                $('#pwd_birth').text(new Date(data.date_of_birth).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
-                $('#pwd_sex').text(data.sex);
-                $('#pwd_cellphone_number').text(data.cellphone_number);
-                $('#pwd_created_at').text(new Date(data.created_at).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
-            }
-        });
+        $('#pwd_photo').attr('src', `/beneficiary_photos/${btn.data('photo')}`);
+        $('#pwd_id').text(`PWD-${String(btn.data('id')).padStart(3, '0')}`);
+        $('#pwd_first_name').text(btn.data('first_name'));
+        $('#pwd_last_name').text(btn.data('last_name'));
+        $('#pwd_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
+        $('#pwd_type_of_disability').text(btn.data('type_of_disability'));
+        $('#pwd_date_of_birth').text(btn.data('date_of_birth'));
+        $('#pwd_sex').text(btn.data('sex'));
+        $('#pwd_cellphone_number').text(btn.data('cellphone_number'));
+        $('#pwd_created_at').text(btn.data('created_at'));
+        $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
     });
 </script>
 

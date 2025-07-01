@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('cellphone_number');
             $table->enum('nature_of_problem' ,['Medical', 'Financial', 'Educational', 'Burial', 'Transportation', 'Food',' Others']);
             $table->string('problem_description');
+            $table->string('qr_code');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('user_role');

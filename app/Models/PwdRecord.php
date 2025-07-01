@@ -32,6 +32,7 @@ class PwdRecord extends Model
         'emerg_address',
         'relationship_to_pwd',
         'emerg_contact_number',
+        'qr_code',
         'user_id',
         'user_role',
         'user_name',

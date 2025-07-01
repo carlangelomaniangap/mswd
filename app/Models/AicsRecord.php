@@ -26,6 +26,7 @@ class AicsRecord extends Model
         'cellphone_number',
         'nature_of_problem',
         'problem_description',
+        'qr_code',
         'user_id',
         'user_role',
         'user_name'
