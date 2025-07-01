@@ -9,7 +9,7 @@ class AicsFamilyMember extends Model
     protected $fillable = [
         'aics_record_id',
         'family_member_name',
-        'family_member_relationship',
+        'relationship',
         'family_member_age',
         'family_member_status',
         'user_id',

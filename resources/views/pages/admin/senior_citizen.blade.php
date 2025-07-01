@@ -20,7 +20,7 @@
         <x-modal name="add-beneficiary" maxWidth="2xl">
             <div class="max-h-full flex flex-col">
                 <div class="p-4 flex justify-between items-center bg-blue-600">
-                    <h2 class="text-md font-medium text-white dark:text-gray-100">senior_citizen ID Application Form</h2>
+                    <h2 class="text-md font-medium text-white dark:text-gray-100">Senior ID Application Form</h2>
                     <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>

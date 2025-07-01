@@ -15,7 +15,14 @@ class AicsFamilyMemberController extends Controller
         $validated = $request->validate([
             'aics_record_id' => 'required|exists:aics_records,id',
             'family_member_name' => 'required|string',
-            'relationship' => 'required|string',
+            'relationship' => 'required|in:Great-grandfather,Great-grandmother,Great-grandson,Great-granddaughter,
+                GrandFather,GrandMother,Grandson,Granddaughter,
+                Father,Mother,Spouse,Uncle,Auntie,Brother,Sister,
+                Son,Daughter,Nephew,Niece,Cousin,
+                Father-in-law,Mother-in-law,Brother-in-law,Sister-in-law,
+                Son-in-law,Daughter-in-law,
+                Stepfather,Stepmother,Stepbrother,Stepsister,
+                Half-brother,Half-sister',
             'family_member_age' => 'required|numeric|min:0',
             'family_member_status' => 'required|string',
         ]);

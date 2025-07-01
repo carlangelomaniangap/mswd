@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PwdRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PwdRecordsController extends Controller
 {
@@ -120,15 +121,30 @@ class PwdRecordsController extends Controller
             return [
                 'id' => $record->id,
                 'first_name' => $record->first_name,
+                'middle_name' => $record->middle_name,
                 'last_name' => $record->last_name,
+                'house_no_unit_floor' => $record->house_no_unit_floor,
+                'street' => $record->street,
                 'barangay' => $record->barangay,
                 'city_municipality' => $record->city_municipality,
                 'province' => $record->province,
                 'photo' => $record->photo,
                 'type_of_disability' => $record->type_of_disability,
-                'date_of_birth' => date('F j, Y', strtotime($record->date_of_birth)),
-                'created_at' => $record->created_at->format('F j, Y'),
+                'date_of_birth' => $record->date_of_birth,
+                'place_of_birth' => $record->place_of_birth,
+                'age' => $record->age,
+                'civil_status' => $record->civil_status,
+                'blood_type' => $record->blood_type,
+                'educational_attainment' => $record->educational_attainment,
+                'occupation' => $record->occupation,
+                'emerg_first_name' => $record->emerg_first_name,
+                'emerg_middle_name' => $record->emerg_middle_name,
+                'emerg_last_name' => $record->emerg_last_name,
+                'emerg_address' => $record->emerg_address,
+                'relationship_to_pwd' => $record->relationship_to_pwd,
+                'emerg_contact_number' => $record->emerg_contact_number,
                 'qr_code' => $record->qr_code,
+                'created_at' => $record->created_at->format('F j, Y'),
 
                 // For DataTable display
                 'name' => $record->last_name . ', ' . $record->first_name,
@@ -136,7 +152,7 @@ class PwdRecordsController extends Controller
                 'sex' => $record->sex,
                 'cellphone_number' => $record->cellphone_number,
                 'pwd_id' => '<span class="text-sm text-white bg-blue-500 rounded-full px-2 py-1">PWD-' . str_pad($record->id, 3, '0', STR_PAD_LEFT) . '</span>',
-                'status' => '<span class="text-sm bg-yellow-300 text-yellow-700 rounded-full px-2 py-1">Expired</span>',
+                'status' => '<span class="text-sm bg-yellow-300 text-yellow-700 rounded-full px-2 py-1">Expired</span>'
             ];
         });
 

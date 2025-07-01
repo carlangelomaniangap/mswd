@@ -664,7 +664,7 @@
                                                             Relationship
                                                             <sup class="text-red-500">*</sup>
                                                         </x-form.label>
-                                                        <x-form.select id="relationship" name="relationship">
+                                                        <x-form.select id="relationship" name="relationship" required>
                                                             <option value="" disabled selected>Select</option>
                                                             <option value="Great-grandfather">Great-grandfather</option>
                                                             <option value="Great-grandmother">Great-grandmother</option>
@@ -948,51 +948,38 @@
         $('#aics_cellphone_number').text(btn.data('cellphone_number'));
         $('#aics_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
+        $('#aics_record_id').val(btn.data('id'));
     });
 </script>
 
-{{-- Display Family Composition Script and Family Member --}}
+{{-- Display Family Composition Script --}}
 <script>
     $(document).on('click', '[data-id]', function () {
         const id = $(this).data('id');
-
-        $('#aics_record_id').val('');
-
-        $.ajax({
-            url: `/aics/records/${id}`,
-            method: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                const data = response.data;
-
-                $('#aics_record_id').val(data.id);
-
-                $('#family_member').DataTable({
-                    destroy: true, //remove this//
-                    ajax: {
-                        url: `/aics/records/${id}/family-member`,
-                        dataSrc: 'data'
-                    },
-                    ordering: false,
-                    columns: [
-                        { data: 'family_member_name' },
-                        { data: 'relationship' },
-                        { data: 'family_member_age' },  
-                        { data: 'family_member_status' },
-                    ],
-                    responsive: true,
-                    lengthChange: false,
-                    searching: false,
-                    info: false,
-                    language: {
-                        paginate: {
-                            first: '',
-                            last: '',
-                            next: 'Next',
-                            previous: 'Previous'
-                        }
-                    }
-                });
+        $('#family_member').DataTable({
+            destroy: true, //remove this//
+            ajax: {
+                url: `/aics/records/${id}/family-member`,
+                dataSrc: 'data'
+            },
+            ordering: false,
+            columns: [
+                { data: 'family_member_name' },
+                { data: 'relationship' },
+                { data: 'family_member_age' },  
+                { data: 'family_member_status' },
+            ],
+            responsive: true,
+            lengthChange: false,
+            searching: false,
+            info: false,
+            language: {
+                paginate: {
+                    first: '',
+                    last: '',
+                    next: 'Next',
+                    previous: 'Previous'
+                }
             }
         });
     });
@@ -1013,6 +1000,7 @@
                 processData: false,
                 contentType: false,
                 success: function (response) {
+                    const recordId = $('#aics_record_id').val(); // preserve id
                     if (response.success) {
                         Swal.fire({
                             icon: 'success',
@@ -1021,6 +1009,8 @@
                             timer: 1500
                         }).then(() => {
                             $('#family_member').DataTable().ajax.reload(null, false); // reload the table
+                            $('#addFamilyMemberForm')[0].reset(); // reset the form
+                            $('#aics_record_id').val(recordId); // restore the hidden id input
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-family-member' })); // close the modal
                         });
                     } else {

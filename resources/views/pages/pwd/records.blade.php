@@ -1284,7 +1284,9 @@
 <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+{{-- Add Beneficiary Form Script --}}
 <script>
+    // Display photo
     document.getElementById('photo').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -1297,10 +1299,8 @@
         };
         reader.readAsDataURL(file);
     });
-</script>
 
-{{-- Add Beneficiary Action --}}
-<script>
+    // Add Beneficiary Action
     $(document).ready(function () {
         $('#addBeneficiary').on('submit', function (e) {
             e.preventDefault();
@@ -1386,6 +1386,31 @@
                                 variant="success"
                                 size="sm"
                                 data-id="${row.id}"
+                                data-photo="${row.photo}"
+                                data-first_name="${row.first_name}"
+                                data-middle_name="${row.middle_name}"
+                                data-last_name="${row.last_name}"
+                                data-house_no_unit_floor="${row.house_no_unit_floor}"
+                                data-street="${row.street}"
+                                data-barangay="${row.barangay}"
+                                data-city_municipality="${row.city_municipality}"
+                                data-province="${row.province}"
+                                data-type_of_disability="${row.type_of_disability}"
+                                data-date_of_birth="${row.date_of_birth}"
+                                data-place_of_birth="${row.place_of_birth}"
+                                data-age="${row.age}"
+                                data-sex="${row.sex}"
+                                data-civil_status="${row.civil_status}"
+                                data-blood_type="${row.blood_type}"
+                                data-educational_attainment="${row.educational_attainment}"
+                                data-occupation="${row.occupation}"
+                                data-cellphone_number="${row.cellphone_number}"
+                                data-emerg_first_name="${row.emerg_first_name}"
+                                data-emerg_middle_name="${row.emerg_middle_name}"
+                                data-emerg_last_name="${row.emerg_last_name}"
+                                data-emerg_address="${row.emerg_address}"
+                                data-relationship_to_pwd="${row.relationship_to_pwd}"
+                                data-emerg_contact_number="${row.emerg_contact_number}"
                                 x-on:click="$dispatch('open-modal', 'update-beneficiary')"
                             >
                                 <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -1423,65 +1448,47 @@
     });
 </script>
 
-{{-- Show Update Beneficiary Data --}}
+{{-- Update Script --}}
 <script>
+    // Show Update Beneficiary Data
     $(document).on('click', '[data-id]', function () {
-        const id = $(this).data('id');
+        const btn = $(this);
 
-        $('#update_id').val('');
-        $('#update_preview').attr('src', '/images/default_photo.png');
-        $('#update_first_name, #update_middle_name, #update_last_name').val('');
-        $('#update_house_no_unit_floor, #update_street, #update_barangay, #update_city_municipality, #update_province').val('');
-        $('#update_type_of_disability, #update_date_of_birth, #update_place_of_birth, #update_age, #update_sex, #update_civil_status, #update_blood_type').val('');
-        $('#update_educational_attainment, #update_occupation, #update_cellphone_number').val('');
-        $('#update_emerg_first_name, #update_emerg_middle_name, #update_emerg_last_name, #update_emerg_address, #update_relationship_to_pwd, #update_emerg_contact_number').val('');
-
-        $.ajax({
-            url: `/pwd/records/${id}`,
-            method: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                const data = response.data;
-
-                $('#update_id').val(data.id);
-                $('#update_preview').attr('src', `/beneficiary_photos/${data.photo}`);
-                $('#update_first_name').val(data.first_name);
-                $('#update_middle_name').val(data.middle_name);
-                $('#update_last_name').val(data.last_name);
-                $('#update_house_no_unit_floor').val(data.house_no_unit_floor);
-                $('#update_street').val(data.street);
-                $('#update_barangay').val(data.barangay);
-                $('#update_city_municipality').val(data.city_municipality);
-                $('#update_province').val(data.province);
-                $('#update_type_of_disability').val(data.type_of_disability);
-                $('#update_date_of_birth').val(data.date_of_birth);
-                $('#update_place_of_birth').val(data.place_of_birth);
-                $('#update_age').val(data.age);
-                $('#update_sex').val(data.sex);
-                $('#update_civil_status').val(data.civil_status);
-                $('#update_blood_type').val(data.blood_type);
-                $('#update_educational_attainment').val(data.educational_attainment);
-                $('#update_occupation').val(data.occupation);
-                $('#update_cellphone_number').val(data.cellphone_number);
-                $('#update_emerg_first_name').val(data.emerg_first_name);
-                $('#update_emerg_middle_name').val(data.emerg_middle_name);
-                $('#update_emerg_last_name').val(data.emerg_last_name);
-                $('#update_emerg_address').val(data.emerg_address);
-                $('#update_relationship_to_pwd').val(data.relationship_to_pwd);
-                $('#update_emerg_contact_number').val(data.emerg_contact_number);
-            }
-        });
+        $('#update_preview').attr('src', `/beneficiary_photos/${btn.data('photo')}`);
+        $('#update_id').val(btn.data('id'));
+        $('#update_first_name').val(btn.data('first_name'));
+        $('#update_middle_name').val(btn.data('middle_name'));
+        $('#update_last_name').val(btn.data('last_name'));
+        $('#update_house_no_unit_floor').val(btn.data('house_no_unit_floor'));
+        $('#update_street').val(btn.data('street'));
+        $('#update_barangay').val(btn.data('barangay'));
+        $('#update_city_municipality').val(btn.data('city_municipality'));
+        $('#update_province').val(btn.data('province'));
+        $('#update_type_of_disability').val(btn.data('type_of_disability'));
+        $('#update_date_of_birth').val(btn.data('date_of_birth'));
+        $('#update_place_of_birth').val(btn.data('place_of_birth'));
+        $('#update_age').val(btn.data('age'));
+        $('#update_sex').val(btn.data('sex'));
+        $('#update_civil_status').val(btn.data('civil_status'));
+        $('#update_blood_type').val(btn.data('blood_type'));
+        $('#update_educational_attainment').val(btn.data('educational_attainment'));
+        $('#update_occupation').val(btn.data('occupation'));
+        $('#update_cellphone_number').val(btn.data('cellphone_number'));
+        $('#update_emerg_first_name').val(btn.data('emerg_first_name'));
+        $('#update_emerg_middle_name').val(btn.data('emerg_middle_name'));
+        $('#update_emerg_last_name').val(btn.data('emerg_last_name'));
+        $('#update_emerg_address').val(btn.data('emerg_address'));
+        $('#update_relationship_to_pwd').val(btn.data('relationship_to_pwd'));
+        $('#update_emerg_contact_number').val(btn.data('emerg_contact_number'));
     });
-</script>
 
-{{-- Update Beneficiary Action --}}
-<script>
+    // Update Beneficiary Action
     $(document).ready(function () {
         $('#updateBeneficiary').on('submit', function (e) {
             e.preventDefault();
 
+            const id = $('#update_id').val(); // get hidden id input
             const formData = new FormData(this); // get the form input data
-            const id = $('#update_id').val(); // id of beneficiary
 
             $.ajax({
                 url: `/pwd/records/${id}/update`,
@@ -1510,10 +1517,8 @@
             });
         });
     });
-</script>
 
-{{-- Change the photo preview in update form --}}
-<script>
+    // Change the photo preview in update form
     document.getElementById('update_photo').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -1539,60 +1544,13 @@
         $('#pwd_last_name').text(btn.data('last_name'));
         $('#pwd_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
         $('#pwd_type_of_disability').text(btn.data('type_of_disability'));
-        $('#pwd_date_of_birth').text(btn.data('date_of_birth'));
+        $('#pwd_date_of_birth').text(new Date(btn.data('date_of_birth')).toLocaleString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
         $('#pwd_sex').text(btn.data('sex'));
         $('#pwd_cellphone_number').text(btn.data('cellphone_number'));
         $('#pwd_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
     });
 </script>
-
-{{-- Display Family Composition Script --}}
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $('#pwd_record_id').val(data.id);
-
-        $('#family_member').DataTable({
-            ajax: {
-                url: `/pwd/records/${id}/family-member`,
-                dataSrc: 'data'
-            },
-            columns: [
-                { data: 'family_member_name' },
-                { data: 'relationship' },
-                { data: 'family_member_age' },  
-                { data: 'family_member_status' },
-            ],
-            paging: false,
-            lengthChange: false,
-            searching: false,
-            info: false
-        });
-    });
-</script> --}}
-
-{{-- Add Family Member Script --}}
-{{-- <script>
-    $(document).on('click', '[data-id]', function () {
-        const id = $(this).data('id');
-
-        $('#pwd_record_id').val('');
-
-        $.ajax({
-            url: `/pwd/records/${id}`,
-            method: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                const data = response.data;
-
-                $('#addFamilyMemberForm').attr('action', `/pwd/records/store/family-member`);
-
-                $('#pwd_record_id').val(data.id);
-            }
-        });
-    });
-</script> --}}
-
 
 {{-- NOT YET DONE --}}
 {{-- Display Assistance History Script --}}
