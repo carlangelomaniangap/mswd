@@ -696,7 +696,7 @@
                 <div class="bg-white dark:bg-dark-eval-1 flex items-center justify-center space-x-8 p-4 text-sm shadow-md">
                     <button @click="tab = 'personal_details'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'personal_details' }" class="pb-1">Personal Details</button>
                     <button @click="tab = 'requirements'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'requirements' }" class="pb-1">Requirements</button>
-                    <button @click="tab = 'assistance_history'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'assistance_history' }" class="pb-1">Assistance History</button>
+                    <button @click="tab = 'family_composition'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'family_composition' }" class="pb-1">Family Composition</button>
                 </div>
 
                 {{-- View Modal Navigation Content --}}
@@ -842,28 +842,245 @@
                         </div>
                     </div>
 
-                    {{-- Assistance History page --}}
-                    <div x-show="tab === 'assistance_history'" x-cloak>
+                    {{-- Family Composition page --}}
+                    <div x-show="tab === 'family_composition'" x-cloak>
                         <div class="pl-6 pr-6 pt-4 pb-6">
                             <div class="flex items-center justify-between">
-                                <p class="text-sm font-semibold text-gray-600 pb-2">Payout History</p>
-                                <button x-on:click="$dispatch('open-modal', 'add-payout')" class="text-sm flex items-center px-2 py-1 border-2 text-blue-600 border-blue-600">
+                                <p class="text-sm font-semibold text-gray-600">Family Member</p>
+                                <button x-on:click="$dispatch('open-modal', 'add-family-member')" class="text-sm flex items-center px-2 py-1 border-2 text-blue-600 border-blue-600">
                                     <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                                     </svg>
-                                    Add Payout
+                                    Add Member
                                 </button>
+
+                                {{-- Add member modal --}}
+                                <x-modal name="add-family-member" maxHeight="full" maxWidth="md">
+                                    <div class="flex flex-col">
+                                        <div class="sticky top-0 z-10 p-4 flex justify-between items-center bg-blue-600">
+                                            <h2 class="text-md font-medium text-white dark:text-gray-100">Add Member</h2>
+                                            <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
+                                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <div class="p-4">
+                                            <form id="addFamilyMemberForm" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="sp_record_id" id="sp_record_id">
+                                                <div class="space-y-4">
+                                                    <div>
+                                                        <x-form.label
+                                                            for="family_member_name"
+                                                        >
+                                                            Name
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.input
+                                                            id="family_member_name"
+                                                            class="w-full"
+                                                            type="text"
+                                                            name="family_member_name"
+                                                            placeholder="Name"
+                                                            required
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <x-form.label
+                                                            for="relationship"
+                                                        >
+                                                            Relationship
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.select id="relationship" name="relationship" required >
+                                                            <option value="" disabled selected>Select</option>
+                                                            <option value="Great-grandfather">Great-grandfather</option>
+                                                            <option value="Great-grandmother">Great-grandmother</option>
+                                                            <option value="Great-grandson">Great-grandson</option>
+                                                            <option value="Great-granddaughter">Great-granddaughter</option>
+                                                            <option value="GrandFather">Grand Father</option>
+                                                            <option value="GrandMother">Grand Mother</option>
+                                                            <option value="Grandson">Grandson</option>
+                                                            <option value="Granddaughter">Granddaughter</option>
+                                                            <option value="Father">Father</option>
+                                                            <option value="Mother">Mother</option>
+                                                            <option value="Spouse">Spouse</option>
+                                                            <option value="Uncle">Uncle</option>
+                                                            <option value="Auntie">Auntie</option>
+                                                            <option value="Brother">Brother</option>
+                                                            <option value="Sister">Sister</option>
+                                                            <option value="Son">Son</option>
+                                                            <option value="Daughter">Daughter</option>
+                                                            <option value="Nephew">Nephew</option>
+                                                            <option value="Niece">Niece</option>
+                                                            <option value="Cousin">Cousin</option>
+                                                            <option value="Father-in-law">Father-in-law</option>
+                                                            <option value="Mother-in-law">Mother-in-law</option>
+                                                            <option value="Brother-in-law">Brother-in-law</option>
+                                                            <option value="Sister-in-law">Sister-in-law</option>
+                                                            <option value="Son-in-law">Son-in-law</option>
+                                                            <option value="Daughter-in-law">Daughter-in-law</option>
+                                                            <option value="Stepfather">Stepfather</option>
+                                                            <option value="Stepmother">Stepmother</option>
+                                                            <option value="Stepbrother">Stepbrother</option>
+                                                            <option value="Stepsister">Stepsister</option>
+                                                            <option value="Half-brother">Half-brother</option>
+                                                            <option value="Half-sister">Half-sister</option>
+                                                        </x-form.select>
+                                                    </div>
+                                                    <div class="grid grid-cols-2 grid-rows-1 gap-4">
+                                                        <div>
+                                                            <x-form.label
+                                                                for="family_member_date_of_birth"
+                                                                class="block"
+                                                            >
+                                                                Date of Birth
+                                                                <sup class="text-red-500">*</sup>
+                                                            </x-form.label>
+                                                            <x-form.input
+                                                                id="family_member_date_of_birth"
+                                                                class="w-full"
+                                                                type="date"
+                                                                name="family_member_date_of_birth"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <x-form.label
+                                                                for="family_member_age"
+                                                            >
+                                                                Age
+                                                                <sup class="text-red-500">*</sup>
+                                                            </x-form.label>
+                                                            <x-form.input
+                                                                id="family_member_age"
+                                                                class="w-full"
+                                                                type="number"
+                                                                name="family_member_age"
+                                                                placeholder="Age"
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div class="grid grid-cols-2 grid-rows-1 gap-4">
+                                                        <div>
+                                                            <x-form.label
+                                                                for="family_member_sex"
+                                                                class="block"
+                                                            >
+                                                                Sex
+                                                                <sup class="text-red-500">*</sup>
+                                                            </x-form.label>
+                                                            <x-form.select 
+                                                                name="family_member_sex" 
+                                                                id="family_member_sex" 
+                                                                class="w-full"
+                                                                required
+                                                            >
+                                                                <option value="" selected disabled>Select</option>
+                                                                <option value="Male">Male</option>
+                                                                <option value="Female">Female</option>
+                                                            </x-form.select>
+                                                        </div>
+                                                        <div>
+                                                            <x-form.label
+                                                                for="family_member_civil_status"
+                                                                class="block"
+                                                            >
+                                                                Civil Status
+                                                                <sup class="text-red-500">*</sup>
+                                                            </x-form.label>
+                                                            <x-form.select 
+                                                                name="family_member_civil_status" 
+                                                                id="family_member_civil_status" 
+                                                                class="w-full"
+                                                                required
+                                                            >
+                                                                <option value="" selected disabled>Select</option>
+                                                                <option value="Single">Single</option>
+                                                                <option value="Married">Married</option>
+                                                                <option value="Divorced">Divorced</option>
+                                                                <option value="Widowed">Widowed</option>
+                                                                <option value="Separated">Separated</option>
+                                                            </x-form.select>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <x-form.label
+                                                            for="family_member_educational_attainment"
+                                                            class="block"
+                                                        >
+                                                            Educational Attainment
+                                                        </x-form.label>
+                                                        <x-form.select 
+                                                            name="family_member_educational_attainment" 
+                                                            id="family_member_educational_attainment" 
+                                                            class="w-full"
+                                                            required
+                                                        >
+                                                            <option value="" selected disabled>Select</option>
+                                                            <option value="No Formal Education">No formal Education</option>
+                                                            <option value="Elementary Undergraduate">Elementary Undergraduate</option>
+                                                            <option value="Elementary Graduate">Elementary Graduate</option>
+                                                            <option value="High School Undergraduate">High School Undergraduate</option>
+                                                            <option value="High School Graduate">High School Graduate</option>
+                                                            <option value="Vocational Graduate">Vocational Graduate</option>
+                                                            <option value="College Undergraduate">College Undergraduate</option>
+                                                            <option value="College Graduate">College Graduate</option>
+                                                            <option value="Post Graduate">Post Graduate</option>
+                                                        </x-form.select>
+                                                    </div>
+                                                    <div>
+                                                        <x-form.label
+                                                            for="family_member_occupation"
+                                                            class="block"
+                                                        >
+                                                            Occupation
+                                                        </x-form.label>
+                                                        <x-form.input
+                                                            id="family_member_occupation"
+                                                            class="w-full"
+                                                            type="text"
+                                                            name="family_member_occupation"
+                                                            placeholder="Occupation"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <x-form.label
+                                                            for="family_member_monthly_income"
+                                                            class="block"
+                                                        >
+                                                            Monthly Income
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.input
+                                                            id="family_member_monthly_income"
+                                                            class="w-full"
+                                                            type="number"
+                                                            name="family_member_monthly_income"
+                                                            placeholder="Monthly Income"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="mt-6 flex justify-end">
+                                                    <x-button type="submit" variant="success" class="ml-2">Add</x-button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </x-modal>
                             </div>
                             <div class="space-y-6">
                                 <div class="w-full h-full">
-                                    <table id="payout_history" class="display text-xs border border-gray-400 dark:border-gray-600 w-full">
+                                    <table id="family_member" class="display text-xs border border-gray-400 dark:border-gray-600 w-full">
                                         <thead class="bg-gray-200 dark:bg-dark-eval-1">
                                             <tr>
-                                                <th>DATE</th>
-                                                <th>AMOUNT</th>
-                                                <th>TYPE</th>
-                                                <th>CLAIMED BY</th>
-                                                <th>REMARKS</th>
+                                                <th>NAME</th>
+                                                <th>RELATIONSHIP</th>
+                                                <th>AGE</th>
+                                                <th>STATUS</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -1064,54 +1281,79 @@
         $('#solo_parent_employment_status').text(btn.data('employment_status'));
         $('#solo_parent_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
+        $('#sp_record_id').val(btn.data('id'));
     });
 </script>
 
-{{-- NOT YET DONE --}}
-{{-- Display Assistance History Script --}}
+{{-- Display Family Composition Script --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $('#payout_history').DataTable({
+    $(document).on('click', '[data-id]', function () {
+        const id = $(this).data('id');
+        $('#family_member').DataTable({
+            destroy: true, //remove this//
             ajax: {
-                url: ``,
+                url: `/admin/solo_parent/${id}/family-member`,
                 dataSrc: 'data'
             },
-            // FAKE DATA
-            data: [
-                {
-                    date: 'June 10, 2025',
-                    amount: '₱1,500',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Ana Reyes',
-                    remarks: 'Initial Assistance',
-                },
-                {
-                    date: 'May 05, 2025',
-                    amount: '₱2,000',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Carlos Dela Cruz',
-                    remarks: 'Initial Assistance',
-                },
-                {
-                    date: 'April 15, 2025',
-                    amount: '₱1,200',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Jose Santos',
-                    remarks: 'Initial Assistance',
-                },
-            ],
+            ordering: false,
             columns: [
-                { data: 'date' },
-                { data: 'amount' },
-                { data: 'type' },
-                { data: 'claimed_by' },
-                { data: 'remarks' },
+                { data: 'family_member_name' },
+                { data: 'relationship' },
+                { data: 'family_member_age' },  
+                { data: 'family_member_status' },
             ],
             responsive: true,
-            paging: false,
             lengthChange: false,
             searching: false,
-            info: false
+            info: false,
+            language: {
+                paginate: {
+                    first: '',
+                    last: '',
+                    next: 'Next',
+                    previous: 'Previous'
+                }
+            }
+        });
+    });
+</script>
+
+{{-- Add Family Member Script --}}
+<script>
+    $(document).ready(function () {
+        $('#addFamilyMemberForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this); // get the form input data
+
+            $.ajax({
+                url: `/admin/solo_parent/store/family-member`,
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    const recordId = $('#sp_record_id').val(); // preserve id
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            $('#family_member').DataTable().ajax.reload(null, false); // reload the table
+                            $('#addFamilyMemberForm')[0].reset(); // reset the form
+                            $('#sp_record_id').val(recordId); // restore the hidden id input
+                            window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-family-member' })); // close the modal
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.message,
+                        });
+                    }
+                }
+            });
         });
     });
 </script>

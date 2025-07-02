@@ -15,16 +15,12 @@ class AicsFamilyMemberController extends Controller
         $validated = $request->validate([
             'aics_record_id' => 'required|exists:aics_records,id',
             'family_member_name' => 'required|string',
-            'relationship' => 'required|in:Great-grandfather,Great-grandmother,Great-grandson,Great-granddaughter,
-                GrandFather,GrandMother,Grandson,Granddaughter,
-                Father,Mother,Spouse,Uncle,Auntie,Brother,Sister,
-                Son,Daughter,Nephew,Niece,Cousin,
-                Father-in-law,Mother-in-law,Brother-in-law,Sister-in-law,
-                Son-in-law,Daughter-in-law,
-                Stepfather,Stepmother,Stepbrother,Stepsister,
-                Half-brother,Half-sister',
+            'relationship' => 'required|string',
             'family_member_age' => 'required|numeric|min:0',
-            'family_member_status' => 'required|string',
+            'family_member_civil_status' => 'required|in:Single,Married,Divorced,Widowed,Separated',
+            'family_member_educational_attainment' => 'required|in:No Formal Education,Elementary Undergraduate,Elementary Graduate,High School Undergraduate,High School Graduate,Vocational Graduate,College Undergraduate,College Graduate,Post Graduate',
+            'family_member_occupation' => 'required|string|max:255',
+            'family_member_monthly_income' => 'required|integer',
         ]);
 
         $user = Auth::user();
@@ -34,7 +30,10 @@ class AicsFamilyMemberController extends Controller
             'family_member_name' => $validated['family_member_name'],
             'relationship' => $validated['relationship'],
             'family_member_age' => $validated['family_member_age'],
-            'family_member_status' => $validated['family_member_status'],
+            'family_member_civil_status'=> $validated['family_member_civil_status'],
+            'family_member_educational_attainment'=> $validated['family_member_educational_attainment'],
+            'family_member_occupation'=> $validated['family_member_occupation'],
+            'family_member_monthly_income'=> $validated['family_member_monthly_income'],
             'user_id' => $user->id,
             'user_role' => $user->role,
             'user_name' => $user->name

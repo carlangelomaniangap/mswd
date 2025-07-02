@@ -9,22 +9,24 @@ use App\Http\Controllers\Admin\AdminPwdController;
 use App\Http\Controllers\Admin\AdminAicsController;
 use App\Http\Controllers\Admin\AdminAicsFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSeniorCitizenController;
+use App\Http\Controllers\Admin\AdminSeniorFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSoloParentController;
+use App\Http\Controllers\Admin\AdminSoloParentFamilyMemberController;
 
 use App\Http\Controllers\Pwd\PwdDashboardController;
 use App\Http\Controllers\Pwd\PwdRecordsController;
-use App\Http\Controllers\Pwd\PwdFamilyMemberController;
 
 use App\Http\Controllers\Aics\AicsDashboardController;
 use App\Http\Controllers\Aics\AicsRecordsController;
 use App\Http\Controllers\Aics\AicsFamilyMemberController;
 
-
 use App\Http\Controllers\Senior_Citizen\SeniorCitizenDashboardController;
 use App\Http\Controllers\Senior_Citizen\SeniorCitizenRecordsController;
+use App\Http\Controllers\Senior_Citizen\SeniorFamilyMemberController;
 
 use App\Http\Controllers\Solo_Parent\SoloParentDashboardController;
 use App\Http\Controllers\Solo_Parent\SoloParentRecordsController;
+use App\Http\Controllers\Solo_Parent\SoloParentFamilyMemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,10 +63,14 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/senior_citizen', [AdminSeniorCitizenController::class, 'index'])->name('senior_citizen');
         Route::post('/senior_citizen/store', [AdminSeniorCitizenController::class,'store'])->name('store');
         Route::get('/senior_citizen/data', [AdminSeniorCitizenController::class, 'fetchData']);
+        Route::post('/senior_citizen/store/family-member', [AdminSeniorFamilyMemberController::class,'store'])->name('family_member_store');
+        Route::get('/senior_citizen/{id}/family-member', [AdminSeniorFamilyMemberController::class, 'getData']);
 
         Route::get('/solo_parent', [AdminSoloParentController::class, 'index'])->name('solo_parent');
         Route::post('/solo_parent/store', [AdminSoloParentController::class,'store'])->name('store');
         Route::get('/solo_parent/data', [AdminSoloParentController::class, 'fetchData']);
+        Route::post('/solo_parent/store/family-member', [AdminSoloParentFamilyMemberController::class,'store'])->name('family_member_store');
+        Route::get('/solo_parent/{id}/family-member', [AdminSoloParentFamilyMemberController::class, 'getData']);
 });
 
 Route::middleware(['auth', 'role:pwd'])
@@ -88,7 +94,6 @@ Route::middleware(['auth', 'role:aics'])
         Route::get('/records/data', [AicsRecordsController::class, 'fetchData']);
         Route::post('/records/store/family-member', [AicsFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/records/{id}/family-member', [AicsFamilyMemberController::class, 'getData']);
-
 });
 
 Route::middleware(['auth', 'role:senior_citizen'])
@@ -99,6 +104,8 @@ Route::middleware(['auth', 'role:senior_citizen'])
         Route::get('/records', [SeniorCitizenRecordsController::class, 'index'])->name('records');
         Route::post('/records/store', [SeniorCitizenRecordsController::class,'store'])->name('store');
         Route::get('/records/data', [SeniorCitizenRecordsController::class, 'fetchData']);
+        Route::post('/records/store/family-member', [SeniorFamilyMemberController::class,'store'])->name('family_member_store');
+        Route::get('/records/{id}/family-member', [SeniorFamilyMemberController::class, 'getData']);
 });
 
 Route::middleware(['auth', 'role:solo_parent'])
@@ -109,6 +116,8 @@ Route::middleware(['auth', 'role:solo_parent'])
         Route::get('/records', [SoloParentRecordsController::class, 'index'])->name('records');
         Route::post('/records/store', [SoloParentRecordsController::class,'store'])->name('store');
         Route::get('/records/data', [SoloParentRecordsController::class, 'fetchData']);
+        Route::post('/records/store/family-member', [SoloParentFamilyMemberController::class,'store'])->name('family_member_store');
+        Route::get('/records/{id}/family-member', [SoloParentFamilyMemberController::class, 'getData']);
 });
 
 Route::middleware('auth')->group(function () {

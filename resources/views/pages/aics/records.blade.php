@@ -625,9 +625,9 @@
                                 </button>
 
                                 {{-- Add member modal --}}
-                                <x-modal name="add-family-member" maxHeight="fit" maxWidth="xs">
+                                <x-modal name="add-family-member" maxHeight="full" maxWidth="md">
                                     <div class="flex flex-col">
-                                        <div class="p-4 flex justify-between items-center bg-blue-600">
+                                        <div class="sticky top-0 z-10 p-4 flex justify-between items-center bg-blue-600">
                                             <h2 class="text-md font-medium text-white dark:text-gray-100">Add Member</h2>
                                             <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
                                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -664,7 +664,7 @@
                                                             Relationship
                                                             <sup class="text-red-500">*</sup>
                                                         </x-form.label>
-                                                        <x-form.select id="relationship" name="relationship" required>
+                                                        <x-form.select id="relationship" name="relationship" required >
                                                             <option value="" disabled selected>Select</option>
                                                             <option value="Great-grandfather">Great-grandfather</option>
                                                             <option value="Great-grandmother">Great-grandmother</option>
@@ -700,33 +700,101 @@
                                                             <option value="Half-sister">Half-sister</option>
                                                         </x-form.select>
                                                     </div>
+                                                    <div class="grid grid-cols-2 grid-rows-1 gap-4">
+                                                        <div>
+                                                            <x-form.label
+                                                                for="family_member_age"
+                                                            >
+                                                                Age
+                                                                <sup class="text-red-500">*</sup>
+                                                            </x-form.label>
+                                                            <x-form.input
+                                                                id="family_member_age"
+                                                                class="w-full"
+                                                                type="number"
+                                                                name="family_member_age"
+                                                                placeholder="Age"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <x-form.label
+                                                                for="family_member_civil_status"
+                                                                class="block"
+                                                            >
+                                                                Civil Status
+                                                                <sup class="text-red-500">*</sup>
+                                                            </x-form.label>
+                                                            <x-form.select 
+                                                                name="family_member_civil_status" 
+                                                                id="family_member_civil_status" 
+                                                                class="w-full"
+                                                                required
+                                                            >
+                                                                <option value="" selected disabled>Select</option>
+                                                                <option value="Single">Single</option>
+                                                                <option value="Married">Married</option>
+                                                                <option value="Divorced">Divorced</option>
+                                                                <option value="Widowed">Widowed</option>
+                                                                <option value="Separated">Separated</option>
+                                                            </x-form.select>
+                                                        </div>
+                                                    </div>
                                                     <div>
                                                         <x-form.label
-                                                            for="family_member_age"
+                                                            for="family_member_educational_attainment"
+                                                            class="block"
                                                         >
-                                                            Age
-                                                            <sup class="text-red-500">*</sup>
+                                                            Educational Attainment
+                                                        </x-form.label>
+                                                        <x-form.select 
+                                                            name="family_member_educational_attainment" 
+                                                            id="family_member_educational_attainment" 
+                                                            class="w-full"
+                                                            required
+                                                        >
+                                                            <option value="" selected disabled>Select</option>
+                                                            <option value="No Formal Education">No formal Education</option>
+                                                            <option value="Elementary Undergraduate">Elementary Undergraduate</option>
+                                                            <option value="Elementary Graduate">Elementary Graduate</option>
+                                                            <option value="High School Undergraduate">High School Undergraduate</option>
+                                                            <option value="High School Graduate">High School Graduate</option>
+                                                            <option value="Vocational Graduate">Vocational Graduate</option>
+                                                            <option value="College Undergraduate">College Undergraduate</option>
+                                                            <option value="College Graduate">College Graduate</option>
+                                                            <option value="Post Graduate">Post Graduate</option>
+                                                        </x-form.select>
+                                                    </div>
+                                                    <div>
+                                                        <x-form.label
+                                                            for="family_member_occupation"
+                                                            class="block"
+                                                        >
+                                                            Occupation
                                                         </x-form.label>
                                                         <x-form.input
-                                                            id="family_member_age"
+                                                            id="family_member_occupation"
                                                             class="w-full"
-                                                            type="number"
-                                                            name="family_member_age"
-                                                            placeholder="Age"
-                                                            required
+                                                            type="text"
+                                                            name="family_member_occupation"
+                                                            placeholder="Occupation"
                                                         />
                                                     </div>
                                                     <div>
                                                         <x-form.label
-                                                            for="family_member_status"
+                                                            for="family_member_monthly_income"
+                                                            class="block"
                                                         >
-                                                            Status
+                                                            Monthly Income
                                                             <sup class="text-red-500">*</sup>
                                                         </x-form.label>
-                                                        <x-form.select id="family_member_status" name="family_member_status">
-                                                            <option value="" selected disabled>Select</option>
-                                                            <option value="eligible">Eligible</option>
-                                                        </x-form.select>
+                                                        <x-form.input
+                                                            id="family_member_monthly_income"
+                                                            class="w-full"
+                                                            type="number"
+                                                            name="family_member_monthly_income"
+                                                            placeholder="Monthly Income"
+                                                        />
                                                     </div>
                                                 </div>
                                                 <div class="mt-6 flex justify-end">

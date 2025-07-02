@@ -1088,7 +1088,6 @@
                 <div class="bg-white dark:bg-dark-eval-1 flex items-center justify-center space-x-8 p-4 text-sm shadow-md">
                     <button @click="tab = 'personal_details'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'personal_details' }" class="pb-1">Personal Details</button>
                     <button @click="tab = 'requirements'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'requirements' }" class="pb-1">Requirements</button>
-                    <button @click="tab = 'assistance_history'" :class="{ 'border-b-2 border-blue-600 dark:border-white text-blue-600 dark:text-white': tab === 'assistance_history' }" class="pb-1">Assistance History</button>
                 </div>
 
                 {{-- View Modal Navigation Content --}}
@@ -1235,42 +1234,6 @@
                             <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
                             <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
                             <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
-                        </div>
-                    </div>
-
-                    {{-- Assistance History page --}}
-                    <div x-show="tab === 'assistance_history'" x-cloak>
-                        <div class="pl-6 pr-6 pt-4 pb-6">
-                            <div class="flex items-center justify-between">
-                                <p class="text-sm font-semibold text-gray-600 pb-2">Payout History</p>
-                                <button x-on:click="$dispatch('open-modal', 'add-payout')" class="text-sm flex items-center px-2 py-1 border-2 text-blue-600 border-blue-600">
-                                    <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
-                                    </svg>
-                                    Add Payout
-                                </button>
-                            </div>
-                            <div class="space-y-6">
-                                <div class="w-full h-full">
-                                    <table id="payout_history" class="display text-xs border border-gray-400 dark:border-gray-600 w-full">
-                                        <thead class="bg-gray-200 dark:bg-dark-eval-1">
-                                            <tr>
-                                                <th>DATE</th>
-                                                <th>AMOUNT</th>
-                                                <th>TYPE</th>
-                                                <th>CLAIMED BY</th>
-                                                <th>FAMILY MEMBER</th>
-                                                <th>REMARKS</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="text-xs flex items-center justify-end space-x-2">
-                                    <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
-                                    <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
-                                    <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1549,58 +1512,5 @@
         $('#pwd_cellphone_number').text(btn.data('cellphone_number'));
         $('#pwd_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
-    });
-</script>
-
-{{-- NOT YET DONE --}}
-{{-- Display Assistance History Script --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $('#payout_history').DataTable({
-            ajax: {
-                url: ``,
-                dataSrc: 'data'
-            },
-            // FAKE DATA
-            data: [
-                {
-                    date: 'June 10, 2025',
-                    amount: '₱1,500',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Ana Reyes',
-                    family_member: 'John Reyes',
-                    remarks: 'Initial Assistance',
-                },
-                {
-                    date: 'May 05, 2025',
-                    amount: '₱2,000',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Carlos Dela Cruz',
-                    family_member: 'Maria Dela Cruz',
-                    remarks: 'Initial Assistance',
-                },
-                {
-                    date: 'April 15, 2025',
-                    amount: '₱1,200',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Jose Santos',
-                    family_member: 'Leo Santos',
-                    remarks: 'Initial Assistance',
-                },
-            ],
-            columns: [
-                { data: 'date' },
-                { data: 'amount' },
-                { data: 'type' },
-                { data: 'claimed_by' },
-                { data: 'family_member' },
-                { data: 'remarks' },
-            ],
-            responsive: true,
-            paging: false,
-            lengthChange: false,
-            searching: false,
-            info: false
-        });
     });
 </script>

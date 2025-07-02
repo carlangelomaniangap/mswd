@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AicsFamilyMember extends Model
+class SoloParentFamilyMember extends Model
 {
     protected $fillable = [
-        'aics_record_id',
+        'sp_record_id',
         'family_member_name',
         'relationship',
+        'family_member_date_of_birth',
         'family_member_age',
+        'family_member_sex',
         'family_member_civil_status',
         'family_member_educational_attainment',
         'family_member_occupation',
@@ -25,8 +27,8 @@ class AicsFamilyMember extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function aicsRecord()
+    public function soloParentRecord()
     {
-        return $this->belongsTo(AicsRecord::class, 'aics_record_id');
+        return $this->belongsTo(SoloParentRecord::class, 'sp_record_id');
     }
 }

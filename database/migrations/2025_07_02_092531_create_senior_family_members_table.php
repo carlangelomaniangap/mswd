@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('aics_family_members', function (Blueprint $table) {
+        Schema::create('senior_family_members', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('aics_record_id');
-            $table->foreign('aics_record_id')->references('id')->on('aics_records')->onDelete('cascade');
+            $table->unsignedBigInteger('sc_record_id');
+            $table->foreign('sc_record_id')->references('id')->on('senior_citizen_records')->onDelete('cascade');
             $table->string('family_member_name');
             $table->enum('relationship', [
                 'Great-grandfather', 'Great-grandmother', 'Great-grandson', 'Great-granddaughter',
@@ -29,7 +29,6 @@ return new class extends Migration
             $table->unsignedTinyInteger('family_member_age');
             $table->string('family_member_status')->default('Eligible');
             $table->enum('family_member_civil_status', ['Single', 'Married', 'Divorced', 'Widowed', 'Separated']);
-            $table->enum('family_member_educational_attainment', ['No Formal Education', 'Elementary Undergraduate', 'Elementary Graduate', 'High School Undergraduate', 'High School Graduate', 'Vocational Graduate', 'College Undergraduate', 'College Graduate', 'Post Graduate']);
             $table->string('family_member_occupation');
             $table->unsignedBigInteger('family_member_monthly_income');
             $table->unsignedBigInteger('user_id');
@@ -45,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('aics_family_members');
+        Schema::dropIfExists('senior_family_members');
     }
 };
