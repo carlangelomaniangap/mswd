@@ -1321,8 +1321,8 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            $('#pwd_records').DataTable().ajax.reload(null, false); // reload the table
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
+                            $('#pwd_records').DataTable().ajax.reload(null, false); // reload the table
                         });
                     } else {
                         Swal.fire({
@@ -1504,8 +1504,8 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            $('#pwd_records').DataTable().ajax.reload(null, false); // reload the table
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'update-beneficiary' })); // close the modal
+                            $('#pwd_records').DataTable().ajax.reload(null, false); // reload the table
                         });
                     } else {
                         Swal.fire({

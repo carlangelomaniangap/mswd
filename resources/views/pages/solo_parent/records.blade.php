@@ -1219,8 +1219,8 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            $('#solo_parent_records').DataTable().ajax.reload(null, false); // reload the table
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
+                            $('#solo_parent_records').DataTable().ajax.reload(null, false); // reload the table
                         });
                     } else {
                         Swal.fire({
@@ -1341,10 +1341,10 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            $('#family_member').DataTable().ajax.reload(null, false); // reload the table
                             $('#addFamilyMemberForm')[0].reset(); // reset the form
                             $('#sp_record_id').val(recordId); // restore the hidden id input
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-family-member' })); // close the modal
+                            $('#family_member').DataTable().ajax.reload(null, false); // reload the table
                         });
                     } else {
                         Swal.fire({
