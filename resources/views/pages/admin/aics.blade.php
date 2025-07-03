@@ -616,7 +616,7 @@
                     <div x-show="tab === 'family_composition'" x-cloak>
                         <div class="pl-6 pr-6 pt-4 pb-6">
                             <div class="flex items-center justify-between">
-                                <p class="text-sm font-semibold text-gray-600">Family Member</p>
+                                <p class="text-sm font-semibold text-gray-600 pb-2">Family Member</p>
                                 <button x-on:click="$dispatch('open-modal', 'add-family-member')" class="text-sm flex items-center px-2 py-1 border-2 text-blue-600 border-blue-600">
                                     <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
@@ -838,6 +838,64 @@
                                     </svg>
                                     Add Payout
                                 </button>
+
+                                {{-- Add payout modal --}}
+                                <x-modal name="add-payout" maxHeight="fit" maxWidth="xs">
+                                    <div class="flex flex-col">
+                                        <div class="sticky top-0 z-10 p-4 flex justify-between items-center bg-blue-600">
+                                            <h2 class="text-md font-medium text-white dark:text-gray-100">Add Payout</h2>
+                                            <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
+                                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <div class="p-4">
+                                            <form id="addPayoutForm" method="POST">
+                                                @csrf
+
+                                                <input type="hidden" name="aics_record_id_payout" id="aics_record_id_payout">
+
+                                                <div class="space-y-4">
+                                                    <div>
+                                                        <x-form.label
+                                                            for="amount"
+                                                        >
+                                                            Amount
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.input type="number" name="amount" id="amount" min="1" class="w-full" required />
+                                                    </div>
+
+                                                    <div>
+                                                        <x-form.label
+                                                            for="type"
+                                                        >
+                                                            Type
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.input type="text" name="type" id="type" class="w-full" required readonly />
+                                                    </div>
+
+                                                    <div>
+                                                        <x-form.label
+                                                            for="claimed_by"
+                                                        >
+                                                            Claimed By
+                                                            <sup class="text-red-500">*</sup>
+                                                        </x-form.label>
+                                                        <x-form.select name="claimed_by" id="claimed_by" required></x-form.select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mt-6 flex justify-end">
+                                                    <x-button type="submit" variant="success" class="ml-2">Add</x-button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </x-modal>
                             </div>
                             <div class="space-y-6">
                                 <div class="w-full h-full">
@@ -848,8 +906,6 @@
                                                 <th>AMOUNT</th>
                                                 <th>TYPE</th>
                                                 <th>CLAIMED BY</th>
-                                                <th>FAMILY MEMBER</th>
-                                                <th>REMARKS</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -925,6 +981,7 @@
                                 data-sex="${row.sex}"
                                 data-cellphone_number="${row.cellphone_number}"
                                 data-created_at="${row.created_at}"
+                                data-type="${row.nature_of_problem}"
                                 data-qr_code="${row.qr_code}"
                                 x-on:click="$dispatch('open-modal', 'view')"
                             >
@@ -986,8 +1043,9 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            $('#aics_records').DataTable().ajax.reload(null, false); // reload the table
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
+                            $('#addBeneficiary')[0].reset();
+                            $('#aics_records').DataTable().ajax.reload(null, false); // reload the table
                         });
                     } else {
                         Swal.fire({
@@ -1014,9 +1072,40 @@
         $('#aics_date_of_birth').text(btn.data('date_of_birth'));
         $('#aics_sex').text(btn.data('sex'));
         $('#aics_cellphone_number').text(btn.data('cellphone_number'));
+        $('#nature_of_problem').text(btn.data('nature_of_problem'));
         $('#aics_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
+
+        // hidden input for add-family-member
         $('#aics_record_id').val(btn.data('id'));
+
+        // payout form data
+        // hidden input for add-payout
+        $('#aics_record_id_payout').val(btn.data('id'));
+
+        $('#type').val(btn.data('type'));
+        // populate claimed_by select
+        const recordId = btn.data('id');
+        const fullName = `${btn.data('first_name')} ${btn.data('last_name')}`;
+        const $claimedBy = $('#claimed_by');
+
+        $claimedBy.empty();
+
+        $claimedBy.append(`<option value="" disabled selected>Select</option>`);
+
+        // add the beneficiary
+        $claimedBy.append(`<option value="${fullName}">${fullName}</option>`);
+
+        // add the family member of beneficiary
+        $.get(`/admin/aics/${recordId}/family-member`, function (response) {
+            response.data.forEach(member => {
+                $claimedBy.append(
+                    `<option value="${member.family_member_name}">
+                        ${member.family_member_name}
+                    </option>`
+                );
+            });
+        });
     });
 </script>
 
@@ -1069,6 +1158,7 @@
                 contentType: false,
                 success: function (response) {
                     const recordId = $('#aics_record_id').val(); // preserve id
+                    const recordType = $('#type').val();  // preserve type
                     if (response.success) {
                         Swal.fire({
                             icon: 'success',
@@ -1076,10 +1166,10 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            $('#family_member').DataTable().ajax.reload(null, false); // reload the table
                             $('#addFamilyMemberForm')[0].reset(); // reset the form
                             $('#aics_record_id').val(recordId); // restore the hidden id input
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-family-member' })); // close the modal
+                            $('#family_member').DataTable().ajax.reload(null, false); // reload the table
                         });
                     } else {
                         Swal.fire({
@@ -1093,55 +1183,76 @@
     });
 </script>
 
-{{-- NOT YET DONE --}}
 {{-- Display Assistance History Script --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    $(document).on('click', '[data-id]', function () {
+        const id = $(this).data('id');
         $('#payout_history').DataTable({
+            destroy: true,
             ajax: {
-                url: ``,
+                url: `/admin/aics/${id}/payout-histories`,
                 dataSrc: 'data'
             },
-            // FAKE DATA
-            data: [
-                {
-                    date: 'June 10, 2025',
-                    amount: '₱1,500',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Ana Reyes',
-                    family_member: 'John Reyes',
-                    remarks: 'Initial Assistance',
-                },
-                {
-                    date: 'May 05, 2025',
-                    amount: '₱2,000',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Carlos Dela Cruz',
-                    family_member: 'Maria Dela Cruz',
-                    remarks: 'Initial Assistance',
-                },
-                {
-                    date: 'April 15, 2025',
-                    amount: '₱1,200',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Jose Santos',
-                    family_member: 'Leo Santos',
-                    remarks: 'Initial Assistance',
-                },
-            ],
+            ordering: false,
             columns: [
                 { data: 'date' },
                 { data: 'amount' },
                 { data: 'type' },
                 { data: 'claimed_by' },
-                { data: 'family_member' },
-                { data: 'remarks' },
             ],
             responsive: true,
-            paging: false,
             lengthChange: false,
             searching: false,
-            info: false
+            info: false,
+            language: {
+                paginate: {
+                    first: '',
+                    last: '',
+                    next: 'Next',
+                    previous: 'Previous'
+                }
+            }
+        });
+    });
+</script>
+
+{{-- Add Payout Script --}}
+<script>
+    $(document).ready(function () {
+        $('#addPayoutForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this); // get the form input data
+
+            $.ajax({
+                url: `/admin/aics/store/payout`,
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    const recordId = $('#aics_record_id_payout').val(); // preserve id
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            $('#addPayoutForm')[0].reset(); // reset the form
+                            $('#aics_record_id_payout').val(recordId); // restore the hidden id input
+                            $('#type').val(recordType); // restore the type input
+                            window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-payout' })); // close the modal
+                            $('#payout_history').DataTable().ajax.reload(null, false); // reload the table
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.message,
+                        });
+                    }
+                }
+            });
         });
     });
 </script>

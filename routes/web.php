@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 
@@ -8,6 +7,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminPwdController;
 use App\Http\Controllers\Admin\AdminAicsController;
 use App\Http\Controllers\Admin\AdminAicsFamilyMemberController;
+use App\Http\Controllers\Admin\AdminAicsPayoutController;
 use App\Http\Controllers\Admin\AdminSeniorCitizenController;
 use App\Http\Controllers\Admin\AdminSeniorFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSoloParentController;
@@ -19,6 +19,7 @@ use App\Http\Controllers\Pwd\PwdRecordsController;
 use App\Http\Controllers\Aics\AicsDashboardController;
 use App\Http\Controllers\Aics\AicsRecordsController;
 use App\Http\Controllers\Aics\AicsFamilyMemberController;
+use App\Http\Controllers\Aics\AicsPayoutController;
 
 use App\Http\Controllers\Senior_Citizen\SeniorCitizenDashboardController;
 use App\Http\Controllers\Senior_Citizen\SeniorCitizenRecordsController;
@@ -59,6 +60,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/aics/data', [AdminAicsController::class, 'fetchData']);
         Route::post('/aics/store/family-member', [AdminAicsFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/aics/{id}/family-member', [AdminAicsFamilyMemberController::class, 'getData']);
+        Route::post('/aics/store/payout', [AdminAicsPayoutController::class,'store']);
+        Route::get('/aics/{id}/payout-histories', [AdminAicsPayoutController::class, 'getData']);
 
         Route::get('/senior_citizen', [AdminSeniorCitizenController::class, 'index'])->name('senior_citizen');
         Route::post('/senior_citizen/store', [AdminSeniorCitizenController::class,'store'])->name('store');
@@ -94,6 +97,8 @@ Route::middleware(['auth', 'role:aics'])
         Route::get('/records/data', [AicsRecordsController::class, 'fetchData']);
         Route::post('/records/store/family-member', [AicsFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/records/{id}/family-member', [AicsFamilyMemberController::class, 'getData']);
+        Route::post('/records/store/payout', [AicsPayoutController::class,'store']);
+        Route::get('/records/{id}/payout-histories', [AicsPayoutController::class, 'getData']);
 });
 
 Route::middleware(['auth', 'role:senior_citizen'])

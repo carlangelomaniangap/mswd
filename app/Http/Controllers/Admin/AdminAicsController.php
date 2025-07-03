@@ -115,6 +115,7 @@ class AdminAicsController extends Controller
                 'city_municipality' => $record->city_municipality,
                 'province' => $record->province,
                 'date_of_birth' => date('F j, Y', strtotime($record->date_of_birth)),
+                'nature_of_problem' => $record->nature_of_problem,
                 'qr_code' => $record->qr_code,
 
                 // For DataTable display
