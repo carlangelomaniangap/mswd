@@ -28,7 +28,7 @@
                     </button>
                 </div>
 
-                <div class="overflow-y-auto px-4 pt-2 pb-4">
+                <div id="addContainer" class="overflow-y-auto px-4 pt-2 pb-4">
                     <form id="addBeneficiary" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
 
@@ -855,8 +855,8 @@
                                 </button>
 
                                 {{-- Add member modal --}}
-                                <x-modal name="add-family-member" maxHeight="full" maxWidth="md">
-                                    <div class="flex flex-col">
+                                <x-modal name="add-family-member" maxWidth="md">
+                                    <div class="max-h-full flex flex-col">
                                         <div class="sticky top-0 z-10 p-4 flex justify-between items-center bg-blue-600">
                                             <h2 class="text-md font-medium text-white dark:text-gray-100">Add Member</h2>
                                             <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
@@ -866,7 +866,7 @@
                                             </button>
                                         </div>
 
-                                        <div class="p-4">
+                                        <div id="addFamilyMemberContainer" class="overflow-y-auto p-4">
                                             <form id="addFamilyMemberForm" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="sp_record_id" id="sp_record_id">
@@ -1219,6 +1219,8 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
+                            $('#addBeneficiary')[0].reset();
+                            $('#addContainer').scrollTop(0);
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
                             $('#solo_parent_records').DataTable().ajax.reload(null, false); // reload the table
                         });
@@ -1342,6 +1344,7 @@
                             timer: 1500
                         }).then(() => {
                             $('#addFamilyMemberForm')[0].reset(); // reset the form
+                            $('#addFamilyMemberContainer').scrollTop(0);
                             $('#sp_record_id').val(recordId); // restore the hidden id input
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-family-member' })); // close the modal
                             $('#family_member').DataTable().ajax.reload(null, false); // reload the table

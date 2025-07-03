@@ -29,7 +29,7 @@
                     </button>
                 </div>
 
-                <div class="overflow-y-auto px-4 pt-2 pb-4">
+                <div id="addContainer" class="overflow-y-auto px-4 pt-2 pb-4">
                     <form id="addBeneficiary" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
 
@@ -567,7 +567,7 @@
                     </button>
                 </div>
 
-                <div class="overflow-y-auto px-4 pt-2 pb-4">
+                <div id="updateContainer" class="overflow-y-auto px-4 pt-2 pb-4">
                     <form id="updateBeneficiary" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         <input type="hidden" id="update_id" name="id">
@@ -1321,6 +1321,8 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
+                            $('#addBeneficiary')[0].reset();
+                            $('#addContainer').scrollTop(0);
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
                             $('#pwd_records').DataTable().ajax.reload(null, false); // reload the table
                         });
@@ -1504,6 +1506,7 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
+                            $('#updateContainer').scrollTop(0);
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'update-beneficiary' })); // close the modal
                             $('#pwd_records').DataTable().ajax.reload(null, false); // reload the table
                         });
@@ -1549,58 +1552,5 @@
         $('#pwd_cellphone_number').text(btn.data('cellphone_number'));
         $('#pwd_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
-    });
-</script>
-
-{{-- NOT YET DONE --}}
-{{-- Display Assistance History Script --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $('#payout_history').DataTable({
-            ajax: {
-                url: ``,
-                dataSrc: 'data'
-            },
-            // FAKE DATA
-            data: [
-                {
-                    date: 'June 10, 2025',
-                    amount: '₱1,500',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Ana Reyes',
-                    family_member: 'John Reyes',
-                    remarks: 'Initial Assistance',
-                },
-                {
-                    date: 'May 05, 2025',
-                    amount: '₱2,000',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Carlos Dela Cruz',
-                    family_member: 'Maria Dela Cruz',
-                    remarks: 'Initial Assistance',
-                },
-                {
-                    date: 'April 15, 2025',
-                    amount: '₱1,200',
-                    type: 'Financial Assistance',
-                    claimed_by: 'Jose Santos',
-                    family_member: 'Leo Santos',
-                    remarks: 'Initial Assistance',
-                },
-            ],
-            columns: [
-                { data: 'date' },
-                { data: 'amount' },
-                { data: 'type' },
-                { data: 'claimed_by' },
-                { data: 'family_member' },
-                { data: 'remarks' },
-            ],
-            responsive: true,
-            paging: false,
-            lengthChange: false,
-            searching: false,
-            info: false
-        });
     });
 </script>

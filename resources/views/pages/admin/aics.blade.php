@@ -28,7 +28,7 @@
                     </button>
                 </div>
 
-                <div class="overflow-y-auto px-4 pt-2 pb-4">
+                <div id="addContainer" class="overflow-y-auto px-4 pt-2 pb-4">
                     <form id="addBeneficiary" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
 
@@ -625,9 +625,9 @@
                                 </button>
 
                                 {{-- Add member modal --}}
-                                <x-modal name="add-family-member" maxHeight="full" maxWidth="md">
-                                    <div class="flex flex-col">
-                                        <div class="sticky top-0 z-10 p-4 flex justify-between items-center bg-blue-600">
+                                <x-modal name="add-family-member" maxWidth="md">
+                                    <div class="max-h-full flex flex-col">
+                                        <div class="p-4 flex justify-between items-center bg-blue-600">
                                             <h2 class="text-md font-medium text-white dark:text-gray-100">Add Member</h2>
                                             <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
                                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -636,7 +636,7 @@
                                             </button>
                                         </div>
 
-                                        <div class="p-4">
+                                        <div id="addFamilyMemberContainer" class="overflow-y-auto p-4">
                                             <form id="addFamilyMemberForm" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="aics_record_id" id="aics_record_id">
@@ -1043,8 +1043,9 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
                             $('#addBeneficiary')[0].reset();
+                            $('#addContainer').scrollTop(0);
+                            window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
                             $('#aics_records').DataTable().ajax.reload(null, false); // reload the table
                         });
                     } else {
@@ -1167,6 +1168,7 @@
                             timer: 1500
                         }).then(() => {
                             $('#addFamilyMemberForm')[0].reset(); // reset the form
+                            $('#addFamilyMemberContainer').scrollTop(0);
                             $('#aics_record_id').val(recordId); // restore the hidden id input
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-family-member' })); // close the modal
                             $('#family_member').DataTable().ajax.reload(null, false); // reload the table

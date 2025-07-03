@@ -29,7 +29,7 @@
                     </button>
                 </div>
 
-                <div class="overflow-y-auto px-4 pt-2 pb-4">
+                <div id="addContainer" class="overflow-y-auto px-4 pt-2 pb-4">
                     <form id="addBeneficiary" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
 
@@ -567,7 +567,7 @@
                     </button>
                 </div>
 
-                <div class="overflow-y-auto px-4 pt-2 pb-4">
+                <div id="updateContainer" class="overflow-y-auto px-4 pt-2 pb-4">
                     <form id="updateBeneficiary" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         <input type="hidden" id="update_id" name="id">
@@ -1284,6 +1284,8 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
+                            $('#addBeneficiary')[0].reset();
+                            $('#addContainer').scrollTop(0);
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
                             $('#pwd_records').DataTable().ajax.reload(null, false); // reload the table
                         });
@@ -1467,6 +1469,7 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
+                            $('#updateContainer').scrollTop(0);
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'update-beneficiary' })); // close the modal
                             $('#pwd_records').DataTable().ajax.reload(null, false); // reload the table
                         });
