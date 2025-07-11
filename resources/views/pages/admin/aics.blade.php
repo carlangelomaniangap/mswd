@@ -713,6 +713,9 @@
                                                                 class="w-full"
                                                                 type="number"
                                                                 name="family_member_age"
+                                                                min="1"
+                                                                step="1"
+                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
                                                                 placeholder="Age"
                                                                 required
                                                             />
@@ -746,6 +749,7 @@
                                                             class="block"
                                                         >
                                                             Educational Attainment
+                                                            <sup class="text-red-500">*</sup>
                                                         </x-form.label>
                                                         <x-form.select 
                                                             name="family_member_educational_attainment" 
@@ -771,6 +775,7 @@
                                                             class="block"
                                                         >
                                                             Occupation
+                                                            <sup class="text-red-500">*</sup>
                                                         </x-form.label>
                                                         <x-form.input
                                                             id="family_member_occupation"
@@ -778,6 +783,7 @@
                                                             type="text"
                                                             name="family_member_occupation"
                                                             placeholder="Occupation"
+                                                            required
                                                         />
                                                     </div>
                                                     <div>
@@ -793,7 +799,11 @@
                                                             class="w-full"
                                                             type="number"
                                                             name="family_member_monthly_income"
+                                                            min="1"
+                                                            step="1"
+                                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
                                                             placeholder="Monthly Income"
+                                                            required
                                                         />
                                                     </div>
                                                 </div>
@@ -865,7 +875,7 @@
                                                             Amount
                                                             <sup class="text-red-500">*</sup>
                                                         </x-form.label>
-                                                        <x-form.input type="number" name="amount" id="amount" min="1" class="w-full" required />
+                                                        <x-form.input type="number" name="amount" id="amount" min="1" step="1" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');" class="w-full" required />
                                                     </div>
 
                                                     <div>
@@ -1150,6 +1160,7 @@
             e.preventDefault();
 
             const formData = new FormData(this); // get the form input data
+            const newMemberName = $('#family_member_name').val().trim();
 
             $.ajax({
                 url: `/admin/aics/store/family-member`,
@@ -1159,7 +1170,6 @@
                 contentType: false,
                 success: function (response) {
                     const recordId = $('#aics_record_id').val(); // preserve id
-                    const recordType = $('#type').val();  // preserve type
                     if (response.success) {
                         Swal.fire({
                             icon: 'success',
@@ -1172,6 +1182,10 @@
                             $('#aics_record_id').val(recordId); // restore the hidden id input
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-family-member' })); // close the modal
                             $('#family_member').DataTable().ajax.reload(null, false); // reload the table
+
+                            $('#claimed_by').append(
+                                `<option value="${newMemberName}">${newMemberName}</option>`
+                            );
                         });
                     } else {
                         Swal.fire({
@@ -1234,6 +1248,7 @@
                 contentType: false,
                 success: function (response) {
                     const recordId = $('#aics_record_id_payout').val(); // preserve id
+                    const recordType = $('#type').val();  // preserve type
                     if (response.success) {
                         Swal.fire({
                             icon: 'success',
