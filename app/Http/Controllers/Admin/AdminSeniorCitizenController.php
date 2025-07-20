@@ -99,7 +99,7 @@ class AdminSeniorCitizenController extends Controller
 
     public function fetchData()
     {
-        $records = SeniorCitizenRecord::orderBy('id', 'asc')->get();
+        $records = SeniorCitizenRecord::orderBy('id', 'desc')->get();
 
         $data = $records->map(function ($record) {
             return [

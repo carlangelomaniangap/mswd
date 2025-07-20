@@ -47,7 +47,7 @@ class AicsFamilyMemberController extends Controller
 
     public function getData($id)
     {
-        $data = AicsFamilyMember::where('aics_record_id',$id)->orderBy('id', 'asc')->get();
+        $data = AicsFamilyMember::where('aics_record_id',$id)->orderBy('id', 'desc')->get();
         return response()->json(['data' => $data]);
     }
 }

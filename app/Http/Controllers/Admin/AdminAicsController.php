@@ -103,7 +103,7 @@ class AdminAicsController extends Controller
 
     public function fetchData()
     {
-        $records = AicsRecord::orderBy('id', 'asc')->get();
+        $records = AicsRecord::orderBy('id', 'desc')->get();
 
         $data = $records->map(function ($record) {
             return [

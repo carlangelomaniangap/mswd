@@ -38,7 +38,7 @@ class AdminAicsPayoutController extends Controller
 
     public function getData($id)
     {
-        $payouts = AicsPayoutHistory::where('aics_record_id_payout',$id)->orderBy('id', 'asc')->get();
+        $payouts = AicsPayoutHistory::where('aics_record_id_payout',$id)->orderBy('id', 'desc')->get();
 
         $data = $payouts->map(function ($payout) {
             return [

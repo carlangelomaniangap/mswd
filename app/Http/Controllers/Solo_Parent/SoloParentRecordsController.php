@@ -131,7 +131,7 @@ class SoloParentRecordsController extends Controller
 
     public function fetchData()
     {
-        $records = SoloParentRecord::orderBy('id', 'asc')->get();
+        $records = SoloParentRecord::orderBy('id', 'desc')->get();
 
         $data = $records->map(function ($record) {
             return [
