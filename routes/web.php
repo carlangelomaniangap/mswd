@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminPwdController;
+use App\Http\Controllers\Admin\AdminPwdRequirementsController;
 use App\Http\Controllers\Admin\AdminAicsController;
 use App\Http\Controllers\Admin\AdminAicsFamilyMemberController;
 use App\Http\Controllers\Admin\AdminAicsPayoutController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Admin\AdminSoloParentFamilyMemberController;
 
 use App\Http\Controllers\Pwd\PwdDashboardController;
 use App\Http\Controllers\Pwd\PwdRecordsController;
+use App\Http\Controllers\Pwd\PwdRequirementsController;
 
 use App\Http\Controllers\Aics\AicsDashboardController;
 use App\Http\Controllers\Aics\AicsRecordsController;
@@ -49,11 +51,13 @@ Route::middleware(['auth', 'role:admin'])
     ->as('admin.')
     ->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard/fetch', [AdminDashboardController::class, 'fetch'])->name('dashboard.fetch');
 
         Route::get('/pwd', [AdminPwdController::class, 'index'])->name('pwd');
         Route::post('/pwd/store', [AdminPwdController::class,'store'])->name('store');
         Route::get('/pwd/data', [AdminPwdController::class, 'fetchData']);
         Route::post('/pwd/{id}/update', [AdminPwdController::class,'update'])->name('update');
+        Route::post('/pwd/{id}/update/requirements', [AdminPwdRequirementsController::class, 'update']);
 
         Route::get('/aics', [AdminAicsController::class, 'index'])->name('aics');
         Route::post('/aics/store', [AdminAicsController::class,'store'])->name('store');
@@ -81,11 +85,13 @@ Route::middleware(['auth', 'role:pwd'])
     ->as('pwd.')
     ->group(function () {
         Route::get('/dashboard', [PwdDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard/fetch', [PwdDashboardController::class, 'fetch'])->name('dashboard.fetch');
         Route::get('/records', [PwdRecordsController::class, 'index'])->name('records');
         Route::post('/records/store', [PwdRecordsController::class,'store'])->name('store');
         Route::get('/records/data', [PwdRecordsController::class, 'fetchData']);
         Route::post('/records/{id}/update', [PwdRecordsController::class,'update'])->name('update');
-});
+        Route::post('/records/{id}/update/requirements', [PwdRequirementsController::class, 'update']);
+    });
 
 Route::middleware(['auth', 'role:aics'])
     ->prefix('aics')
