@@ -46,8 +46,8 @@ class PwdRecord extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function pwdfamilyMembers()
+    public function pwdRequirement()
     {
-        return $this->hasMany(PwdFamilyMember::class, 'pwd_record_id');
+        return $this->hasOne(PwdRequirement::class, 'pwd_record_id');
     }
 }

@@ -1,8 +1,7 @@
 @props([
     'name',
     'show' => false,
-    'maxWidth' => '2xl',
-    'maxHeight' => 'full'
+    'maxWidth' => '2xl'
 ])
 
 @php
@@ -15,13 +14,6 @@ $maxWidth = [
     '2xl' => 'sm:max-w-2xl',
     '3xl' => 'sm:max-w-3xl',
 ][$maxWidth];
-@endphp
-
-@php
-$maxHeight = [
-    'fit' => 'h-fit',
-    'full' => 'h-full'
-][$maxHeight]
 @endphp
 
 <div
@@ -56,7 +48,7 @@ $maxHeight = [
     x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
     x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
     x-show="show"
-    class="fixed inset-0 overflow-hidden px-4 py-6 sm:px-0 z-50"
+    class="fixed inset-0 flex items-center justify-center p-4 z-50"
     style="display: {{ $show ? 'block' : 'none' }};"
 >
     <div
@@ -75,7 +67,7 @@ $maxHeight = [
 
     <div
         x-show="show"
-        class="bg-white dark:bg-gray-800 rounded-lg overflow-y-auto shadow-xl transform transition-all w-full {{ $maxHeight }} sm:w-full {{ $maxWidth }} sm:mx-auto"
+        class="bg-white dark:bg-gray-800 rounded-lg overflow-y-auto shadow-xl transform transition-all h-[560px] sm:w-full {{ $maxWidth }} sm:mx-auto flex flex-col"
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
