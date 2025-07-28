@@ -28,8 +28,8 @@
             <div class="p-6 text-white bg-blue-600 shadow-md dark:bg-blue-500">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h5>Age 8-16</h5>
-                        <p class="font-bold text-xl" id="total_beneficiaries_age_8_to_16">
+                        <h5>Age 18-24</h5>
+                        <p class="font-bold text-xl" id="total_beneficiaries_age_18_to_24">
                             <span class="text-sm font-normal">Loading…</span>
                         </p>
                     </div>
@@ -42,8 +42,8 @@
             <div class="p-6 text-white bg-teal-600 shadow-md dark:bg-teal-500">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h5>Age 17-30</h5>
-                        <p class="font-bold text-xl" id="total_beneficiaries_age_17_to_30">
+                        <h5>Age 25-34</h5>
+                        <p class="font-bold text-xl" id="total_beneficiaries_age_25_to_34">
                             <span class="text-sm font-normal">Loading…</span>
                         </p>
                     </div>
@@ -56,8 +56,8 @@
             <div class="p-6 text-white bg-purple-600 shadow-md dark:bg-purple-500">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h5>Age 31 and above</h5>
-                        <p class="font-bold text-xl" id="age_31_above_total">
+                        <h5>Age 35 and above</h5>
+                        <p class="font-bold text-xl" id="age_35_above_total">
                             <span class="text-sm font-normal">Loading…</span>
                         </p>
                     </div>
@@ -212,9 +212,9 @@
                 method: 'GET',
                 success: function(data) {
                     $('#total_beneficiaries').text(data.total_beneficiaries);
-                    $('#total_beneficiaries_age_8_to_16').text(data.total_beneficiaries_age_8_to_16);
-                    $('#total_beneficiaries_age_17_to_30').text(data.total_beneficiaries_age_17_to_30);
-                    $('#age_31_above_total').text(data.age_31_above_total);
+                    $('#total_beneficiaries_age_18_to_24').text(data.total_beneficiaries_age_18_to_24);
+                    $('#total_beneficiaries_age_25_to_34').text(data.total_beneficiaries_age_25_to_34);
+                    $('#age_35_above_total').text(data.age_35_above_total);
                     $('#bangkal').html(
                         data.bangkal + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
                     );

@@ -16,11 +16,11 @@ class SoloParentDashboardController extends Controller
     {
         $total_beneficiaries = SoloParentRecord::count();
 
-        $total_beneficiaries_age_8_to_16 = SoloParentRecord::whereBetween('age', [8, 16])->count();
+        $total_beneficiaries_age_18_to_24 = SoloParentRecord::whereBetween('age', [18, 24])->count();
 
-        $total_beneficiaries_age_17_to_30 = SoloParentRecord::whereBetween('age', [17, 30])->count();
+        $total_beneficiaries_age_25_to_34 = SoloParentRecord::whereBetween('age', [25, 34])->count();
 
-        $age_31_above_total  = SoloParentRecord::where('age', '>=', 31)->count();
+        $age_35_above_total  = SoloParentRecord::where('age', '>=', 35)->count();
 
         $bangkal  = SoloParentRecord::where('barangay', 'Bangkal')->count();
 
@@ -42,9 +42,9 @@ class SoloParentDashboardController extends Controller
 
         return response()->json( [
             'total_beneficiaries' => $total_beneficiaries,
-            'total_beneficiaries_age_8_to_16' => $total_beneficiaries_age_8_to_16,
-            'total_beneficiaries_age_17_to_30' => $total_beneficiaries_age_17_to_30,
-            'age_31_above_total' => $age_31_above_total,
+            'total_beneficiaries_age_18_to_24' => $total_beneficiaries_age_18_to_24,
+            'total_beneficiaries_age_25_to_34' => $total_beneficiaries_age_25_to_34,
+            'age_35_above_total' => $age_35_above_total,
             'bangkal' => $bangkal,
             'calaylayan' => $calaylayan,
             'capitangan' => $capitangan,
