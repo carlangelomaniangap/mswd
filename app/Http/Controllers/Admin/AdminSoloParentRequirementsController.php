@@ -19,7 +19,7 @@ class AdminSoloParentRequirementsController extends Controller
             'affidavit_of_solo_parent' => 'nullable|in:Complete,Incomplete,Renewal,Denied',
         ]);
 
-        // Fetch all PwdRequirement records linked to the given PWD record ID.
+        // Fetch all SoloParentRequirement records linked to the given Solo Parent record ID.
         $requirements = SoloParentRequirement::where('solo_parent_record_id', $id)->get();
 
         // Get the authenticated user's information.

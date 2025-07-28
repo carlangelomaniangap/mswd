@@ -1439,7 +1439,7 @@
                         $('#solo_parent_id_application_form_expires_at').text(response.requirement.solo_parent_id_application_form_expires_at);
                         $('#affidavit_of_solo_parent_expires_at').text(response.requirement.affidavit_of_solo_parent_expires_at);
                         $('#EditBtn').prop('disabled', true); // Disabled the button update
-                        $('#pwd_records').DataTable().ajax.reload(null, false); // reload the Beneficiary table
+                        $('#solo_parent_records').DataTable().ajax.reload(null, false); // reload the Beneficiary table
                     } else {
                         Swal.fire({
                             icon: 'error',
