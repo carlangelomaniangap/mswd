@@ -118,6 +118,7 @@ Route::middleware(['auth', 'role:senior_citizen'])
     ->as('senior_citizen.')
     ->group(function () {
         Route::get('/dashboard', [SeniorCitizenDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard/fetch', [SeniorCitizenDashboardController::class, 'fetch']);
         Route::get('/records', [SeniorCitizenRecordsController::class, 'index'])->name('records');
         Route::post('/records/store', [SeniorCitizenRecordsController::class,'store'])->name('store');
         Route::get('/records/data', [SeniorCitizenRecordsController::class, 'fetchData']);
