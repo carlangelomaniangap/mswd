@@ -127,6 +127,7 @@ Route::middleware(['auth', 'role:solo_parent'])
     ->as('solo_parent.')
     ->group(function () {
         Route::get('/dashboard', [SoloParentDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard/fetch', [SoloParentDashboardController::class, 'fetch']);
         Route::get('/records', [SoloParentRecordsController::class, 'index'])->name('records');
         Route::post('/records/store', [SoloParentRecordsController::class,'store'])->name('store');
         Route::get('/records/data', [SoloParentRecordsController::class, 'fetchData']);
