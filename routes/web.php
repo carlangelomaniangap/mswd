@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminAicsFamilyMemberController;
 use App\Http\Controllers\Admin\AdminAicsPayoutController;
 use App\Http\Controllers\Admin\AdminSeniorCitizenController;
 use App\Http\Controllers\Admin\AdminSeniorFamilyMemberController;
+use App\Http\Controllers\Admin\AdminSeniorRequirementsController;
 use App\Http\Controllers\Admin\AdminSoloParentController;
 use App\Http\Controllers\Admin\AdminSoloParentFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSoloParentRequirementsController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Aics\AicsPayoutController;
 use App\Http\Controllers\Senior_Citizen\SeniorCitizenDashboardController;
 use App\Http\Controllers\Senior_Citizen\SeniorCitizenRecordsController;
 use App\Http\Controllers\Senior_Citizen\SeniorFamilyMemberController;
+use App\Http\Controllers\Senior_Citizen\SeniorRequirementsController;
 
 use App\Http\Controllers\Solo_Parent\SoloParentDashboardController;
 use App\Http\Controllers\Solo_Parent\SoloParentRecordsController;
@@ -74,6 +76,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/senior_citizen/data', [AdminSeniorCitizenController::class, 'fetchData']);
         Route::post('/senior_citizen/store/family-member', [AdminSeniorFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/senior_citizen/{id}/family-member', [AdminSeniorFamilyMemberController::class, 'getData']);
+        Route::post('/senior_citizen/{id}/update/requirements', [AdminSeniorRequirementsController::class, 'update']);
 
         Route::get('/solo_parent', [AdminSoloParentController::class, 'index'])->name('solo_parent');
         Route::post('/solo_parent/store', [AdminSoloParentController::class,'store'])->name('store');
@@ -120,6 +123,7 @@ Route::middleware(['auth', 'role:senior_citizen'])
         Route::get('/records/data', [SeniorCitizenRecordsController::class, 'fetchData']);
         Route::post('/records/store/family-member', [SeniorFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/records/{id}/family-member', [SeniorFamilyMemberController::class, 'getData']);
+        Route::post('/records/{id}/update/requirements', [SeniorRequirementsController::class, 'update']);
 });
 
 Route::middleware(['auth', 'role:solo_parent'])
