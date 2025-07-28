@@ -208,7 +208,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         function fetchCount() {
             $.ajax({
-                url: "{{ route('admin.dashboard.fetch') }}",
+                url: `/admin/dashboard/fetch`,
                 method: 'GET',
                 success: function(data) {
                     $('#total_beneficiaries').text(data.total_beneficiaries);

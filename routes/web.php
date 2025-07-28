@@ -51,7 +51,7 @@ Route::middleware(['auth', 'role:admin'])
     ->as('admin.')
     ->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/dashboard/fetch', [AdminDashboardController::class, 'fetch'])->name('dashboard.fetch');
+        Route::get('/dashboard/fetch', [AdminDashboardController::class, 'fetch']);
 
         Route::get('/pwd', [AdminPwdController::class, 'index'])->name('pwd');
         Route::post('/pwd/store', [AdminPwdController::class,'store'])->name('store');
@@ -85,13 +85,13 @@ Route::middleware(['auth', 'role:pwd'])
     ->as('pwd.')
     ->group(function () {
         Route::get('/dashboard', [PwdDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/dashboard/fetch', [PwdDashboardController::class, 'fetch'])->name('dashboard.fetch');
+        Route::get('/dashboard/fetch', [PwdDashboardController::class, 'fetch']);
         Route::get('/records', [PwdRecordsController::class, 'index'])->name('records');
         Route::post('/records/store', [PwdRecordsController::class,'store'])->name('store');
         Route::get('/records/data', [PwdRecordsController::class, 'fetchData']);
         Route::post('/records/{id}/update', [PwdRecordsController::class,'update'])->name('update');
         Route::post('/records/{id}/update/requirements', [PwdRequirementsController::class, 'update']);
-    });
+});
 
 Route::middleware(['auth', 'role:aics'])
     ->prefix('aics')
@@ -132,7 +132,6 @@ Route::middleware(['auth', 'role:solo_parent'])
 });
 
 Route::middleware('auth')->group(function () {
-    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
