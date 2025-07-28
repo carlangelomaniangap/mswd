@@ -50,4 +50,9 @@ class SoloParentRecord extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function soloParentRequirement()
+    {
+        return $this->hasOne(SoloParentRequirement::class, 'solo_parent_record_id');
+    }
 }

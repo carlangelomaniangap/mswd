@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminSeniorCitizenController;
 use App\Http\Controllers\Admin\AdminSeniorFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSoloParentController;
 use App\Http\Controllers\Admin\AdminSoloParentFamilyMemberController;
+use App\Http\Controllers\Admin\AdminSoloParentRequirementsController;
 
 use App\Http\Controllers\Pwd\PwdDashboardController;
 use App\Http\Controllers\Pwd\PwdRecordsController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\Senior_Citizen\SeniorFamilyMemberController;
 use App\Http\Controllers\Solo_Parent\SoloParentDashboardController;
 use App\Http\Controllers\Solo_Parent\SoloParentRecordsController;
 use App\Http\Controllers\Solo_Parent\SoloParentFamilyMemberController;
+use App\Http\Controllers\Solo_Parent\SoloParentRequirementsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +80,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/solo_parent/data', [AdminSoloParentController::class, 'fetchData']);
         Route::post('/solo_parent/store/family-member', [AdminSoloParentFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/solo_parent/{id}/family-member', [AdminSoloParentFamilyMemberController::class, 'getData']);
+        Route::post('/solo_parent/{id}/update/requirements', [AdminSoloParentRequirementsController::class, 'update']);
 });
 
 Route::middleware(['auth', 'role:pwd'])
@@ -129,6 +132,7 @@ Route::middleware(['auth', 'role:solo_parent'])
         Route::get('/records/data', [SoloParentRecordsController::class, 'fetchData']);
         Route::post('/records/store/family-member', [SoloParentFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/records/{id}/family-member', [SoloParentFamilyMemberController::class, 'getData']);
+        Route::post('/records/{id}/update/requirements', [SoloParentRequirementsController::class, 'update']);
 });
 
 Route::middleware('auth')->group(function () {

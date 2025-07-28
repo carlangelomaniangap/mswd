@@ -750,66 +750,30 @@
 
                     {{-- Requirements page --}}
                     <div x-show="tab === 'requirements'" x-cloak>
-                        <div class="pl-6 pr-6 pt-4 pb-4">
-                            <p class="text-sm font-semibold text-gray-600 pb-2">Requirements Status</p>
+                        <div class="p-6">
+                            <p class="text-sm font-semibold text-gray-600 dark:text-white">Requirements Status</p>
 
-                            <div class="space-y-2">
+                            <form id="Requirements" class="space-y-2">
+                                @csrf
+                                <input type="hidden" id="solo_parent_requirement_id" name="solo_parent_requirement_id">
+
                                 <div class="w-full p-4 border flex items-center justify-between">
                                     <div>
                                         <p class="text-sm">VALID ID</p>
-                                        <p class="text-xs">Last updated</p>
+                                        <p id="valid_id_expires_at" class="text-xs"></p>
                                     </div>
                                     
                                     <div>
                                         <x-form.select 
                                             name="valid_id"
                                             id="valid_id"
-                                            class=""
                                             size="sm"
                                         >
                                             <option value="" selected disabled>Select</option>
-                                            <option value="complete">Complete</option>
-                                            <option value="denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
-                                </div>
-
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">Medical Certificate</p>
-                                        <p class="text-xs">Last updated</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="medical_certificate"
-                                            id="medical_certificate"
-                                            class=""
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="complete">Complete</option>
-                                            <option value="denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
-                                </div>
-
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">Barangay Certificate</p>
-                                        <p class="text-xs">Last updated</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="barangay_certificate"
-                                            id="barangay_certificate"
-                                            class=""
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="complete">Complete</option>
-                                            <option value="denied">Denied</option>
+                                            <option value="Complete">Complete</option>
+                                            <option value="Denied">Denied</option>
+                                            <option value="Incomplete" disabled>Incomplete</option>
+                                            <option value="Renewal" disabled>Renewal</option>
                                         </x-form.select>
                                     </div>
                                 </div>
@@ -817,28 +781,70 @@
                                 <div class="w-full p-4 border flex items-center justify-between">
                                     <div>
                                         <p class="text-sm">Birth Certificate</p>
-                                        <p class="text-xs">Last updated</p>
+                                        <p id="birth_certificate_expires_at" class="text-xs"></p>
                                     </div>
                                     
                                     <div>
                                         <x-form.select 
                                             name="birth_certificate"
                                             id="birth_certificate"
-                                            class=""
                                             size="sm"
                                         >
                                             <option value="" selected disabled>Select</option>
-                                            <option value="complete">Complete</option>
-                                            <option value="denied">Denied</option>
+                                            <option value="Complete">Complete</option>
+                                            <option value="Denied">Denied</option>
+                                            <option value="Incomplete" disabled>Incomplete</option>
+                                            <option value="Renewal" disabled>Renewal</option>
                                         </x-form.select>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="pr-6 text-xs flex items-center justify-end space-x-2">
-                            <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
-                            <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
-                            <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
+
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">Solo Parent ID Application Form</p>
+                                        <p id="solo_parent_id_application_form_expires_at" class="text-xs"></p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="solo_parent_id_application_form"
+                                            id="solo_parent_id_application_form"
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="Complete">Complete</option>
+                                            <option value="Denied">Denied</option>
+                                            <option value="Incomplete" disabled>Incomplete</option>
+                                            <option value="Renewal" disabled>Renewal</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+
+                                <div class="w-full p-4 border flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm">Affidavit of Solo Parent</p>
+                                        <p id="affidavit_of_solo_parent_expires_at" class="text-xs"></p>
+                                    </div>
+                                    
+                                    <div>
+                                        <x-form.select 
+                                            name="affidavit_of_solo_parent"
+                                            id="affidavit_of_solo_parent"
+                                            size="sm"
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="Complete">Complete</option>
+                                            <option value="Denied">Denied</option>
+                                            <option value="Incomplete" disabled>Incomplete</option>
+                                            <option value="Renewal" disabled>Renewal</option>
+                                        </x-form.select>
+                                    </div>
+                                </div>
+
+                                <div class="pt-2 flex justify-end">
+                                    <x-button id="EditBtn" type="submit" variant="primary">Update</x-button>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
@@ -1159,6 +1165,14 @@
                                 data-employment_status="${row.employment_status}"
                                 data-created_at="${row.created_at}"
                                 data-qr_code="${row.qr_code}"
+                                data-valid_id="${row.valid_id}"
+                                data-valid_id_expires_at="${row.valid_id_expires_at}"
+                                data-birth_certificate="${row.birth_certificate}"
+                                data-birth_certificate_expires_at="${row.birth_certificate_expires_at}"
+                                data-solo_parent_id_application_form="${row.solo_parent_id_application_form}"
+                                data-solo_parent_id_application_form_expires_at="${row.solo_parent_id_application_form_expires_at}"
+                                data-affidavit_of_solo_parent="${row.affidavit_of_solo_parent}"
+                                data-affidavit_of_solo_parent_expires_at="${row.affidavit_of_solo_parent_expires_at}"
                                 x-on:click="$dispatch('open-modal', 'view')"
                             >
                                 <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -1284,6 +1298,16 @@
         $('#solo_parent_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
         $('#sp_record_id').val(btn.data('id'));
+
+        $('#solo_parent_requirement_id').val(btn.data('id'));
+        $('#valid_id').val(btn.data('valid_id'));
+        $('#valid_id_expires_at').text(btn.data('valid_id_expires_at'));
+        $('#birth_certificate').val(btn.data('birth_certificate'));
+        $('#birth_certificate_expires_at').text(btn.data('birth_certificate_expires_at'));
+        $('#solo_parent_id_application_form').val(btn.data('solo_parent_id_application_form'));
+        $('#solo_parent_id_application_form_expires_at').text(btn.data('solo_parent_id_application_form_expires_at'));
+        $('#affidavit_of_solo_parent').val(btn.data('affidavit_of_solo_parent'));
+        $('#affidavit_of_solo_parent_expires_at').text(btn.data('affidavit_of_solo_parent_expires_at'));
     });
 </script>
 
@@ -1349,6 +1373,73 @@
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-family-member' })); // close the modal
                             $('#family_member').DataTable().ajax.reload(null, false); // reload the table
                         });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.message,
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+{{-- Update Requirements Script --}}
+<script>
+    $(document).ready(function () {
+        // Store the original form values before editing
+        let originalValues = getFormValues();
+
+        // Function to get the current form values as an object
+        function getFormValues() {
+            return {
+                valid_id: $('#valid_id').val(),
+                birth_certificate: $('#birth_certificate').val(),
+                solo_parent_id_application_form: $('#solo_parent_id_application_form').val(),
+                affidavit_of_solo_parent: $('#affidavit_of_solo_parent').val(),
+            };
+        }
+
+        // Disable the Update button on page load
+        $('#EditBtn').prop('disabled', true);
+
+        // Check the old value if it has changes
+        $('#valid_id, #birth_certificate, #solo_parent_id_application_form, #affidavit_of_solo_parent').on('input change', function () {
+            const currentValues = getFormValues();
+            if (JSON.stringify(currentValues) !== JSON.stringify(originalValues)) {
+                $('#EditBtn').prop('disabled', false); // Enable the button update
+            } else {
+                $('#EditBtn').prop('disabled', true); // Disabled the button update
+            }
+        });
+
+        $('#Requirements').on('submit', function (e) {
+            e.preventDefault();
+
+            const id = $('#solo_parent_requirement_id').val(); // get hidden id input
+            const formData = new FormData(this); // get the form input data
+
+            $.ajax({
+                url: `/admin/solo_parent/${id}/update/requirements`,
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        $('#valid_id_expires_at').text(response.requirement.valid_id_expires_at);
+                        $('#birth_certificate_expires_at').text(response.requirement.birth_certificate_expires_at);
+                        $('#solo_parent_id_application_form_expires_at').text(response.requirement.solo_parent_id_application_form_expires_at);
+                        $('#affidavit_of_solo_parent_expires_at').text(response.requirement.affidavit_of_solo_parent_expires_at);
+                        $('#EditBtn').prop('disabled', true); // Disabled the button update
+                        $('#pwd_records').DataTable().ajax.reload(null, false); // reload the Beneficiary table
                     } else {
                         Swal.fire({
                             icon: 'error',
