@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\AdminSeniorRequirementsController;
 use App\Http\Controllers\Admin\AdminSoloParentController;
 use App\Http\Controllers\Admin\AdminSoloParentFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSoloParentRequirementsController;
+use App\Http\Controllers\Admin\AdminManageAccountController;
 
 use App\Http\Controllers\Pwd\PwdDashboardController;
 use App\Http\Controllers\Pwd\PwdRecordsController;
@@ -84,6 +85,10 @@ Route::middleware(['auth', 'role:admin'])
         Route::post('/solo_parent/store/family-member', [AdminSoloParentFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/solo_parent/{id}/family-member', [AdminSoloParentFamilyMemberController::class, 'getData']);
         Route::post('/solo_parent/{id}/update/requirements', [AdminSoloParentRequirementsController::class, 'update']);
+
+        Route::get('/manage_account', [AdminManageAccountController::class, 'index'])->name('manage_account');
+        Route::get('/manage_account/data', [AdminManageAccountController::class, 'fetchData']);
+        Route::post('/manage_account/{id}/update', [AdminManageAccountController::class, 'update']);
 });
 
 Route::middleware(['auth', 'role:pwd'])
