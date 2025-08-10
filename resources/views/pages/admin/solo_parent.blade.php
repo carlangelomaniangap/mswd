@@ -344,9 +344,12 @@
                                     <x-form.input
                                         id="philsys_card_number"
                                         class="w-full"
-                                        type="number"
+                                        type="text"
                                         name="philsys_card_number"
-                                        placeholder="Philsys Card Number"
+                                        placeholder="e.g. 123456789012"
+                                        pattern="\d{12}"
+                                        maxlength="12"
+                                        inputmode="numeric"
                                         required
                                     />
                                 </div>
@@ -453,9 +456,9 @@
                                     <x-form.input
                                         id="monthly_income"
                                         class="w-full"
-                                        type="number"
+                                        type="text"
                                         name="monthly_income"
-                                        placeholder="Monthly Income"
+                                        placeholder="e.g. 10000"
                                     />
                                 </div>
 
@@ -470,9 +473,12 @@
                                     <x-form.input
                                         id="cellphone_number"
                                         class="w-full"
-                                        type="tel"
+                                        type="text"
                                         name="cellphone_number"
-                                        placeholder="Cellphone Number"
+                                        placeholder="e.g. 09123456789"
+                                        pattern="^(09\d{9}|\+63\d{10})$"
+                                        maxlength="11"
+                                        inputmode="numeric"
                                     />
                                 </div>
 
@@ -487,9 +493,11 @@
                                     <x-form.input
                                         id="number_of_children"
                                         class="w-full"
-                                        type="number"
+                                        type="text"
                                         name="number_of_children"
-                                        placeholder="Number of Children"
+                                        placeholder="e.g. 1"
+                                        min="1"
+                                        step="1"
                                     />
                                 </div>
                             </div>
@@ -648,9 +656,13 @@
                                 <x-form.input
                                     id="emerg_contact_number" 
                                     class="w-full"
-                                    type="tel"
+                                    type="text"
                                     name="emerg_contact_number"
                                     placeholder="Contact Number"
+                                    placeholder="e.g. 09123456789"
+                                    pattern="^(09\d{9}|\+63\d{10})$"
+                                    maxlength="11"
+                                    inputmode="numeric"
                                     required
                                 />
                             </div>
@@ -1136,6 +1148,16 @@
         img.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
+    });
+
+    document.querySelectorAll('#philsys_card_number, #monthly_income, #cellphone_number, #number_of_children, #emerg_contact_number').forEach(el => {
+        el.addEventListener('keydown', function(e) {
+            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'Home', 'End'];
+
+            if (!((e.key >= '0' && e.key <= '9') || allowedKeys.includes(e.key))) {
+                e.preventDefault();
+            }
+        });
     });
 </script>
 
