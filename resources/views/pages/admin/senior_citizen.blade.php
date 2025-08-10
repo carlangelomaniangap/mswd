@@ -911,6 +911,17 @@
         $('#addBeneficiary').on('submit', function (e) {
             e.preventDefault();
 
+            // Prevent submission if age is below 60
+            const age = Number($('#age').val());
+            if (age < 60) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Not a Senior Citizen',
+                    text: 'Age must be 60 or above.',
+                });
+                return;
+            }
+
             const formData = new FormData(this); // get the form input data
 
             $.ajax({
