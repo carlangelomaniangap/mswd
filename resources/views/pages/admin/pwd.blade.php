@@ -541,6 +541,19 @@
 
     {{-- Display Beneficiary --}}
     <div class="p-6 overflow-y-auto bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+        <div id="statusContainer">
+            <label>
+                Status Filter:
+                <select id="statusFilter" class="dark:bg-dark-eval-1 rounded-sm border border-gray-400 py-1 pl-4 pr-8">
+                    <option value="">All</option>
+                    <option value="Eligible">Eligible</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Expired">Expired</option>
+                    <option value="Not Eligible">Not Eligible</option>
+                </select>
+            </label>
+        </div>
+
         <table id="pwd_records" class="text-sm border border-gray-500 display nowrap" style="width:100%">
             <thead class="bg-blue-600 text-white">
                 <tr>
@@ -1249,8 +1262,8 @@
 </x-app-layout>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
-<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 {{-- Add Beneficiary Form Script --}}
@@ -1403,10 +1416,6 @@
             ],
             responsive: true,
             lengthChange: false,
-            layout: {
-                topStart: 'search',
-                topEnd: null
-            },
             language: {
                 emptyTable: 'No PWD records found.',
                 zeroRecords: 'No PWD records found.',
@@ -1423,6 +1432,27 @@
                     previous: 'Previous'
                 }
             },
+        });
+
+        $('#pwd_records_filter').css({
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            marginBottom: '10px'
+        });
+
+        $('#pwd_records_filter').prepend($('#statusContainer'));
+
+        $('#pwd_records_filter input[type="search"]').css({
+            borderRadius: '0.125rem',
+            border: '1px solid #9CA3AF',
+            padding: '0.25rem 0 0.25rem 1rem',
+        });
+
+        $('#statusFilter').on('change', function () {
+            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            $('#pwd_records').DataTable().column(5).search(val ? '^' + val + '$' : '', true, false).draw();
         });
     });
 </script>
