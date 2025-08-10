@@ -266,6 +266,7 @@
                                         name="age"
                                         placeholder="Age"
                                         required
+                                        readonly
                                     />
                                 </div>
 
@@ -772,6 +773,37 @@
         img.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
+    });
+</script>
+
+{{-- Auto calculate age using date of birth --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const birthdateInput = document.getElementById('date_of_birth');
+        const ageInput = document.getElementById('age');
+
+        // Calculate age based on date of birth
+        function calculateAge(birthDate) {
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            return age;
+        }
+
+        birthdateInput.addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            ageInput.value = calculateAge(birthDate);
+        });
+
+        // Trigger age calculation on page load if birthday is already set
+        if (birthdateInput.value) {
+            birthdateInput.dispatchEvent(new Event('change'));
+        }
     });
 </script>
 

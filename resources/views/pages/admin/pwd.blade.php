@@ -285,6 +285,7 @@
                                         name="age"
                                         placeholder="Age"
                                         required
+                                        readonly
                                     />
                                 </div>
 
@@ -1317,6 +1318,47 @@
                 }
             });
         });
+    });
+</script>
+
+{{-- Auto calculate age using date of birth --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function calculateAge(birthDate) {
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            return age >= 0 ? age : '';
+        }
+
+        // Add form
+        const birthdateInput = document.getElementById('date_of_birth');
+        const ageInput = document.getElementById('age');
+        if (birthdateInput && ageInput) {
+            birthdateInput.addEventListener('change', function() {
+                ageInput.value = calculateAge(new Date(this.value));
+            });
+            if (birthdateInput.value) {
+                ageInput.value = calculateAge(new Date(birthdateInput.value));
+            }
+        }
+
+        // Update form
+        const updateBirthdateInput = document.getElementById('update_date_of_birth');
+        const updateAgeInput = document.getElementById('update_age');
+        if (updateBirthdateInput && updateAgeInput) {
+            updateBirthdateInput.addEventListener('change', function() {
+                updateAgeInput.value = calculateAge(new Date(this.value));
+            });
+            if (updateBirthdateInput.value) {
+                updateAgeInput.value = calculateAge(new Date(updateBirthdateInput.value));
+            }
+        }
     });
 </script>
 
