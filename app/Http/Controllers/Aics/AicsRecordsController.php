@@ -115,7 +115,13 @@ class AicsRecordsController extends Controller
                 'city_municipality' => $record->city_municipality,
                 'province' => $record->province,
                 'date_of_birth' => date('F j, Y', strtotime($record->date_of_birth)),
+                'place_of_birth' => $record->place_of_birth,
+                'age' => $record->age,
+                'civil_status' => $record->civil_status,
+                'educational_attainment' => $record->educational_attainment,
+                'occupation' => $record->occupation,
                 'nature_of_problem' => $record->nature_of_problem,
+                'problem_description' => $record->problem_description,
                 'qr_code' => $record->qr_code,
 
                 // For DataTable display

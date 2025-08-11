@@ -516,13 +516,47 @@
                                         <h3 id="aics_date_of_birth" class="font-semibold"></h3>
                                     </div>
                                     <div>
+                                        <x-form.label class="block">Place of Birth</x-form.label>
+                                        <h3 id="aics_place_of_birth" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Age</x-form.label>
+                                        <h3 id="aics_age" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
                                         <x-form.label class="block">Sex</x-form.label>
                                         <h3 id="aics_sex" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Civil Status</x-form.label>
+                                        <h3 id="aics_civil_status" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Educatinal Attainment</x-form.label>
+                                        <h3 id="aics_educational_attainment" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Occupation</x-form.label>
+                                        <h3 id="aics_occupation" class="font-semibold"></h3>
                                     </div>
                                 </div>
                                 <div>
                                     <x-form.label class="block">Cellphone Number</x-form.label>
                                     <span id="aics_cellphone_number" class="font-semibold"></span>
+                                </div>
+
+                                <h1>PROBLEM ASSESSMENT</h1>
+                                <div>
+                                    <x-form.label class="block">Nature of Problem</x-form.label>
+                                    <span id="aics_nature_of_problem" class="font-semibold"></span>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Problem Description</x-form.label>
+                                    <span id="aics_problem_description" class="font-semibold"></span>
                                 </div>
                                 <div>
                                     <x-form.label class="block">Date Added</x-form.label>
@@ -1044,8 +1078,15 @@
                                 data-city_municipality="${row.city_municipality}"
                                 data-province="${row.province}"
                                 data-date_of_birth="${row.date_of_birth}"
+                                data-place_of_birth="${row.place_of_birth}"
+                                data-age="${row.age}"
                                 data-sex="${row.sex}"
+                                data-civil_status="${row.civil_status}"
+                                data-educational_attainment="${row.educational_attainment}"
+                                data-occupation="${row.occupation}"
                                 data-cellphone_number="${row.cellphone_number}"
+                                data-nature_of_problem="${row.nature_of_problem}"
+                                data-problem_description="${row.problem_description}"
                                 data-created_at="${row.created_at}"
                                 data-type="${row.nature_of_problem}"
                                 data-qr_code="${row.qr_code}"
@@ -1154,9 +1195,15 @@
         $('#aics_last_name').text(btn.data('last_name'));
         $('#aics_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
         $('#aics_date_of_birth').text(btn.data('date_of_birth'));
+        $('#aics_place_of_birth').text(btn.data('place_of_birth'));
+        $('#aics_age').text(btn.data('age'));
         $('#aics_sex').text(btn.data('sex'));
+        $('#aics_civil_status').text(btn.data('civil_status'));
+        $('#aics_educational_attainment').text(btn.data('educational_attainment'));
+        $('#aics_occupation').text(btn.data('occupation'));
         $('#aics_cellphone_number').text(btn.data('cellphone_number'));
-        $('#nature_of_problem').text(btn.data('nature_of_problem'));
+        $('#aics_nature_of_problem').text(btn.data('nature_of_problem'));
+        $('#aics_problem_description').text(btn.data('problem_description'));
         $('#aics_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
 
