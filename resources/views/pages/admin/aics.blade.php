@@ -371,7 +371,10 @@
                                     class="w-full"
                                     type="tel"
                                     name="cellphone_number"
-                                    placeholder="Cellphone Number"
+                                    placeholder="e.g. 09123456789"
+                                    pattern="^09\d{9}$"
+                                    maxlength="11"
+                                    inputmode="numeric"
                                 />
                             </div>
                         </div>
@@ -729,7 +732,6 @@
                                                                 name="family_member_age"
                                                                 min="1"
                                                                 step="1"
-                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
                                                                 placeholder="Age"
                                                                 required
                                                             />
@@ -815,8 +817,7 @@
                                                             name="family_member_monthly_income"
                                                             min="1"
                                                             step="1"
-                                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
-                                                            placeholder="Monthly Income"
+                                                            placeholder="e.g. 10000"
                                                             required
                                                         />
                                                     </div>
@@ -889,7 +890,7 @@
                                                             Amount
                                                             <sup class="text-red-500">*</sup>
                                                         </x-form.label>
-                                                        <x-form.input type="number" name="amount" id="amount" min="1" step="1" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');" class="w-full" required />
+                                                        <x-form.input type="number" name="amount" id="amount" min="1" step="1" class="w-full" placeholder="e.g. 1000" required />
                                                     </div>
 
                                                     <div>
@@ -965,6 +966,16 @@
         img.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
+    });
+
+    document.querySelectorAll('#cellphone_number, #family_member_monthly_income, #family_member_age, #amount').forEach(el => {
+        el.addEventListener('keydown', function(e) {
+            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'Home', 'End'];
+
+            if (!((e.key >= '0' && e.key <= '9') || allowedKeys.includes(e.key))) {
+                e.preventDefault();
+            }
+        });
     });
 </script>
 
