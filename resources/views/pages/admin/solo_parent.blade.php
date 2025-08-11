@@ -473,10 +473,10 @@
                                     <x-form.input
                                         id="cellphone_number"
                                         class="w-full"
-                                        type="text"
+                                        type="tel"
                                         name="cellphone_number"
                                         placeholder="e.g. 09123456789"
-                                        pattern="^(09\d{9}|\+63\d{10})$"
+                                        pattern="^09\d{9}$"
                                         maxlength="11"
                                         inputmode="numeric"
                                     />
@@ -656,11 +656,11 @@
                                 <x-form.input
                                     id="emerg_contact_number" 
                                     class="w-full"
-                                    type="text"
+                                    type="tel"
                                     name="emerg_contact_number"
                                     placeholder="Contact Number"
                                     placeholder="e.g. 09123456789"
-                                    pattern="^(09\d{9}|\+63\d{10})$"
+                                    pattern="^09\d{9}$"
                                     maxlength="11"
                                     inputmode="numeric"
                                     required
