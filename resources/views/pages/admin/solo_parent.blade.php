@@ -495,7 +495,7 @@
                                     <x-form.input
                                         id="number_of_children"
                                         class="w-full"
-                                        type="text"
+                                        type="number"
                                         name="number_of_children"
                                         placeholder="e.g. 1"
                                         min="1"

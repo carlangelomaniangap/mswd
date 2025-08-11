@@ -266,6 +266,7 @@
                                         name="age"
                                         placeholder="Age"
                                         required
+                                        readonly
                                     />
                                 </div>
 
@@ -370,7 +371,10 @@
                                     class="w-full"
                                     type="tel"
                                     name="cellphone_number"
-                                    placeholder="Cellphone Number"
+                                    placeholder="e.g. 09123456789"
+                                    pattern="^09\d{9}$"
+                                    maxlength="11"
+                                    inputmode="numeric"
                                 />
                             </div>
                         </div>
@@ -434,6 +438,19 @@
     </div>
 
     <div class="p-6 overflow-y-auto bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+        <div id="statusContainer">
+            <label>
+                Status Filter:
+                <select id="statusFilter" class="dark:bg-dark-eval-1 rounded-sm border border-gray-400 py-1 pl-4 pr-8">
+                    <option value="">All</option>
+                    <option value="Eligible">Eligible</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Expired">Expired</option>
+                    <option value="Not Eligible">Not Eligible</option>
+                </select>
+            </label>
+        </div>
+
         <table id="aics_records" class="text-sm border border-gray-500 display nowrap" style="width:100%">
             <thead class="bg-blue-600 text-white">
                 <tr>
@@ -470,7 +487,7 @@
                 </div>
 
                 {{-- View Modal Navigation Content --}}
-                <div class="overflow-y-auto ">
+                <div class="overflow-y-auto">
                     {{-- Personal Details page --}}
                     <div x-show="tab === 'personal_details'" x-cloak>
                         <div id="aics_info" class="grid grid-cols-2 gap-4 p-6">
@@ -615,8 +632,8 @@
                     {{-- Family Composition page --}}
                     <div x-show="tab === 'family_composition'" x-cloak>
                         <div class="pl-6 pr-6 pt-4 pb-6">
-                            <div class="flex items-center justify-between">
-                                <p class="text-sm font-semibold text-gray-600">Family Member</p>
+                            <div class="flex items-center justify-between pb-4">
+                                <p class="text-sm font-semibold text-gray-600 pb-2">Family Member</p>
                                 <button x-on:click="$dispatch('open-modal', 'add-family-member')" class="text-sm flex items-center px-2 py-1 border-2 text-blue-600 border-blue-600">
                                     <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
@@ -627,7 +644,7 @@
                                 {{-- Add member modal --}}
                                 <x-modal name="add-family-member" maxWidth="md">
                                     <div class="max-h-full flex flex-col">
-                                        <div class="sticky top-0 z-10 p-4 flex justify-between items-center bg-blue-600">
+                                        <div class="p-4 flex justify-between items-center bg-blue-600">
                                             <h2 class="text-md font-medium text-white dark:text-gray-100">Add Member</h2>
                                             <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
                                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -715,7 +732,6 @@
                                                                 name="family_member_age"
                                                                 min="1"
                                                                 step="1"
-                                                                oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
                                                                 placeholder="Age"
                                                                 required
                                                             />
@@ -801,8 +817,7 @@
                                                             name="family_member_monthly_income"
                                                             min="1"
                                                             step="1"
-                                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
-                                                            placeholder="Monthly Income"
+                                                            placeholder="e.g. 10000"
                                                             required
                                                         />
                                                     </div>
@@ -817,7 +832,7 @@
                             </div>
                             <div class="space-y-6">
                                 <div class="w-full h-full">
-                                    <table id="family_member" class="display text-xs border border-gray-400 dark:border-gray-600 w-full">
+                                    <table id="family_member" class="display text-xs border border-gray-400 dark:border-gray-600" style="width:100%">
                                         <thead class="bg-gray-200 dark:bg-dark-eval-1">
                                             <tr>
                                                 <th>NAME</th>
@@ -840,7 +855,7 @@
                     {{-- Assistance History page --}}
                     <div x-show="tab === 'assistance_history'" x-cloak>
                         <div class="pl-6 pr-6 pt-4 pb-6">
-                            <div class="flex items-center justify-between">
+                            <div class="flex items-center justify-between pb-4">
                                 <p class="text-sm font-semibold text-gray-600 pb-2">Payout History</p>
                                 <button x-on:click="$dispatch('open-modal', 'add-payout')" class="text-sm flex items-center px-2 py-1 border-2 text-blue-600 border-blue-600">
                                     <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -850,7 +865,7 @@
                                 </button>
 
                                 {{-- Add payout modal --}}
-                                <x-modal name="add-payout" maxHeight="fit" maxWidth="xs">
+                                <x-modal name="add-payout" height="fit" maxWidth="xs">
                                     <div class="flex flex-col">
                                         <div class="sticky top-0 z-10 p-4 flex justify-between items-center bg-blue-600">
                                             <h2 class="text-md font-medium text-white dark:text-gray-100">Add Payout</h2>
@@ -875,7 +890,7 @@
                                                             Amount
                                                             <sup class="text-red-500">*</sup>
                                                         </x-form.label>
-                                                        <x-form.input type="number" name="amount" id="amount" min="1" step="1" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');" class="w-full" required />
+                                                        <x-form.input type="number" name="amount" id="amount" min="1" step="1" class="w-full" placeholder="e.g. 1000" required />
                                                     </div>
 
                                                     <div>
@@ -909,7 +924,7 @@
                             </div>
                             <div class="space-y-6">
                                 <div class="w-full h-full">
-                                    <table id="payout_history" class="display text-xs border border-gray-400 dark:border-gray-600 w-full">
+                                    <table id="payout_history" class="display text-xs border border-gray-400 dark:border-gray-600" style="width:100%">
                                         <thead class="bg-gray-200 dark:bg-dark-eval-1">
                                             <tr>
                                                 <th>DATE</th>
@@ -935,8 +950,8 @@
 </x-app-layout>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
-<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -952,12 +967,53 @@
         };
         reader.readAsDataURL(file);
     });
+
+    document.querySelectorAll('#cellphone_number, #family_member_monthly_income, #family_member_age, #amount').forEach(el => {
+        el.addEventListener('keydown', function(e) {
+            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'Home', 'End'];
+
+            if (!((e.key >= '0' && e.key <= '9') || allowedKeys.includes(e.key))) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+{{-- Auto calculate age using date of birth --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const birthdateInput = document.getElementById('date_of_birth');
+        const ageInput = document.getElementById('age');
+
+        // Calculate age based on date of birth
+        function calculateAge(birthDate) {
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            return age;
+        }
+
+        birthdateInput.addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            ageInput.value = calculateAge(birthDate);
+        });
+
+        // Trigger age calculation on page load if birthday is already set
+        if (birthdateInput.value) {
+            birthdateInput.dispatchEvent(new Event('change'));
+        }
+    });
 </script>
 
 {{-- Fetch all beneficiaries --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $('#aics_records').DataTable({
+        let table = new DataTable('#aics_records', {
             ajax: {
                 url: '/aics/records/data',
                 dataSrc: 'data'
@@ -1007,10 +1063,6 @@
             ],
             responsive: true,
             lengthChange: false,
-            layout: {
-                topStart: 'search',
-                topEnd: null
-            },
             language: {
                 emptyTable: 'No AICS records found.',
                 zeroRecords: 'No AICS records found.',
@@ -1027,6 +1079,27 @@
                     previous: 'Previous'
                 }
             },
+        });
+
+        $('#aics_records_filter').css({
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            marginBottom: '10px'
+        });
+
+        $('#aics_records_filter').prepend($('#statusContainer'));
+
+        $('#aics_records_filter input[type="search"]').css({
+            borderRadius: '0.125rem',
+            border: '1px solid #9CA3AF',
+            padding: '0.25rem 0 0.25rem 1rem',
+        });
+
+        $('#statusFilter').on('change', function () {
+            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            table.column(6).search(val ? '^' + val + '$' : '', true, false).draw();
         });
     });
 </script>
