@@ -757,13 +757,111 @@
                                         <h3 id="solo_parent_date_of_birth" class="font-semibold"></h3>
                                     </div>
                                     <div>
+                                        <x-form.label class="block">Place of Birth</x-form.label>
+                                        <h3 id="solo_parent_place_of_birth" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Age</x-form.label>
+                                        <h3 id="solo_parent_age" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
                                         <x-form.label class="block">Sex</x-form.label>
                                         <h3 id="solo_parent_sex" class="font-semibold"></h3>
                                     </div>
+                                    <div>
+                                        <x-form.label class="block">Civil Status</x-form.label>
+                                        <h3 id="solo_parent_civil_status" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Religion</x-form.label>
+                                        <h3 id="solo_parent_religion" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Philsys Card Number</x-form.label>
+                                        <h3 id="solo_parent_philsys_card_number" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Educational Attainment</x-form.label>
+                                        <h3 id="solo_parent_educational_attainment" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Employment Status</x-form.label>
+                                        <h3 id="solo_parent_employment_status" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Occupation</x-form.label>
+                                        <h3 id="solo_parent_occupation" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Company Agency</x-form.label>
+                                        <h3 id="solo_parent_company_agency" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Monthly Income</x-form.label>
+                                        <h3 id="solo_parent_monthly_income" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Cellphone Number</x-form.label>
+                                        <span id="solo_parent_cellphone_number" class="font-semibold"></span>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Number of Children</x-form.label>
+                                        <h3 id="solo_parent_number_of_children" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Pantawid Beneficiary</x-form.label>
+                                        <h3 id="solo_parent_pantawid_beneficiary" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Indigenous Person</x-form.label>
+                                        <h3 id="solo_parent_indigenous_person" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Houldhold ID</x-form.label>
+                                        <h3 id="solo_parent_household_id" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Name of Affliation</x-form.label>
+                                        <h3 id="solo_parent_name_of_affliation" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+
+                                <h1>INCASE OF EMERGENCY</h1>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">First Name</x-form.label>
+                                        <h3 id="solo_parent_emerg_first_name" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Last Name</x-form.label>
+                                        <h3 id="solo_parent_emerg_last_name" class="font-semibold"></h3>
+                                    </div>
                                 </div>
                                 <div>
-                                    <x-form.label class="block">Cellphone Number</x-form.label>
-                                    <span id="solo_parent_cellphone_number" class="font-semibold"></span>
+                                    <x-form.label class="block">Address</x-form.label>
+                                    <span id="solo_parent_emerg_address" class="font-semibold"></span>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Relationship to Solo Parent</x-form.label>
+                                    <span id="solo_parent_relationship_to_solo_parent" class="font-semibold"></span>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Contact Number</x-form.label>
+                                    <span id="solo_parent_emerg_contact_number" class="font-semibold"></span>
                                 </div>
                                 <div>
                                     <x-form.label class="block">Date Added</x-form.label>
@@ -1244,10 +1342,28 @@
                                 data-city_municipality="${row.city_municipality}"
                                 data-province="${row.province}"
                                 data-date_of_birth="${row.date_of_birth}"
+                                data-place_of_birth="${row.place_of_birth}"
+                                data-age="${row.age}"
                                 data-sex="${row.sex}"
+                                data-civil_status="${row.civil_status}"
+                                data-religion="${row.religion}"
+                                data-philsys_card_number="${row.philsys_card_number}"
+                                data-educational_attainment="${row.educational_attainment}"
+                                data-employment_status="${row.employment_status}"
+                                data-occupation="${row.occupation}"
+                                data-company_agency="${row.company_agency}"
+                                data-monthly_income="${row.monthly_income}"
                                 data-cellphone_number="${row.cellphone_number}"
                                 data-number_of_children="${row.number_of_children}"
-                                data-employment_status="${row.employment_status}"
+                                data-pantawid_beneficiary="${row.pantawid_beneficiary}"
+                                data-household_id="${row.household_id}"
+                                data-indigenous_person="${row.indigenous_person}"
+                                data-name_of_affliation="${row.name_of_affliation}"
+                                data-emerg_first_name="${row.emerg_first_name}"
+                                data-emerg_last_name="${row.emerg_last_name}"
+                                data-emerg_address="${row.emerg_address}"
+                                data-relationship_to_solo_parent="${row.relationship_to_solo_parent}"
+                                data-emerg_contact_number="${row.emerg_contact_number}"
                                 data-created_at="${row.created_at}"
                                 data-qr_code="${row.qr_code}"
                                 data-valid_id="${row.valid_id}"
@@ -1393,10 +1509,28 @@
         $('#solo_parent_last_name').text(btn.data('last_name'));
         $('#solo_parent_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
         $('#solo_parent_date_of_birth').text(btn.data('date_of_birth'));
+        $('#solo_parent_place_of_birth').text(btn.data('place_of_birth'));
+        $('#solo_parent_age').text(btn.data('age'));
         $('#solo_parent_sex').text(btn.data('sex'));
+        $('#solo_parent_civil_status').text(btn.data('civil_status'));
+        $('#solo_parent_religion').text(btn.data('religion'));
+        $('#solo_parent_philsys_card_number').text(btn.data('philsys_card_number'));
+        $('#solo_parent_educational_attainment').text(btn.data('educational_attainment'));
+        $('#solo_parent_employment_status').text(btn.data('employment_status'));
+        $('#solo_parent_occupation').text(btn.data('occupation'));
+        $('#solo_parent_company_agency').text(btn.data('company_agency'));
+        $('#solo_parent_monthly_income').text(btn.data('monthly_income'));
         $('#solo_parent_cellphone_number').text(btn.data('cellphone_number'));
         $('#solo_parent_number_of_children').text(btn.data('number_of_children'));
-        $('#solo_parent_employment_status').text(btn.data('employment_status'));
+        $('#solo_parent_pantawid_beneficiary').text(btn.data('pantawid_beneficiary'));
+        $('#solo_parent_household_id').text(btn.data('household_id'));
+        $('#solo_parent_indigenous_person').text(btn.data('indigenous_person'));
+        $('#solo_parent_name_of_affliation').text(btn.data('name_of_affliation'));
+        $('#solo_parent_emerg_first_name').text(btn.data('emerg_first_name'));
+        $('#solo_parent_emerg_last_name').text(btn.data('emerg_last_name'));
+        $('#solo_parent_emerg_address').text(btn.data('emerg_address'));
+        $('#solo_parent_relationship_to_solo_parent').text(btn.data('relationship_to_solo_parent'));
+        $('#solo_parent_emerg_contact_number').text(btn.data('emerg_contact_number'));
         $('#solo_parent_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
         $('#sp_record_id').val(btn.data('id'));
