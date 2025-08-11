@@ -371,7 +371,10 @@
                                     class="w-full"
                                     type="tel"
                                     name="cellphone_number"
-                                    placeholder="Cellphone Number"
+                                    placeholder="e.g. 09123456789"
+                                    pattern="^09\d{9}$"
+                                    maxlength="11"
+                                    inputmode="numeric"
                                 />
                             </div>
                         </div>
@@ -663,6 +666,8 @@
                                                                 type="number"
                                                                 name="family_member_age"
                                                                 placeholder="Age"
+                                                                min="1"
+                                                                step="1"
                                                                 required
                                                             />
                                                         </div>
@@ -717,7 +722,9 @@
                                                             class="w-full"
                                                             type="number"
                                                             name="family_member_monthly_income"
-                                                            placeholder="Monthly Income"
+                                                            min="1"
+                                                            step="1"
+                                                            placeholder="e.g. 10000"
                                                         />
                                                     </div>
                                                 </div>
@@ -773,6 +780,16 @@
         img.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
+    });
+
+    document.querySelectorAll('#cellphone_number, #family_member_age, #family_member_monthly_income').forEach(el => {
+        el.addEventListener('keydown', function(e) {
+            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'Home', 'End'];
+
+            if (!((e.key >= '0' && e.key <= '9') || allowedKeys.includes(e.key))) {
+                e.preventDefault();
+            }
+        });
     });
 </script>
 
