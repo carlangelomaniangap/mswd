@@ -224,6 +224,10 @@ class AdminSeniorCitizenController extends Controller
                 'city_municipality' => $record->city_municipality,
                 'province' => $record->province,
                 'date_of_birth' => date('F j, Y', strtotime($record->date_of_birth)),
+                'place_of_birth' => $record->place_of_birth,
+                'civil_status' => $record->civil_status,
+                'educational_attainment' => $record->educational_attainment,
+                'occupation' => $record->occupation,
                 'qr_code' => $record->qr_code,
                 'created_at' => $record->created_at->format('F j, Y'),
 

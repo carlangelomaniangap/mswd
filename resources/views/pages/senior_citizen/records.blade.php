@@ -465,8 +465,32 @@
                                         <h3 id="senior_citizen_date_of_birth" class="font-semibold"></h3>
                                     </div>
                                     <div>
+                                        <x-form.label class="block">Place of Birth</x-form.label>
+                                        <h3 id="senior_citizen_place_of_birth" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Age</x-form.label>
+                                        <h3 id="senior_citizen_age" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
                                         <x-form.label class="block">Sex</x-form.label>
                                         <h3 id="senior_citizen_sex" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Civil Status</x-form.label>
+                                        <h3 id="senior_citizen_civil_status" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Educational Attainment</x-form.label>
+                                        <h3 id="senior_citizen_educational_attainment" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Occupation</x-form.label>
+                                        <h3 id="senior_citizen_occupation" class="font-semibold"></h3>
                                     </div>
                                 </div>
                                 <div>
@@ -857,7 +881,12 @@
                                 data-city_municipality="${row.city_municipality}"
                                 data-province="${row.province}"
                                 data-date_of_birth="${row.date_of_birth}"
+                                data-place_of_birth="${row.place_of_birth}"
+                                data-age="${row.age}"
                                 data-sex="${row.sex}"
+                                data-civil_status="${row.civil_status}"
+                                data-educational_attainment="${row.educational_attainment}"
+                                data-occupation="${row.occupation}"
                                 data-cellphone_number="${row.cellphone_number}"
                                 data-created_at="${row.created_at}"
                                 data-qr_code="${row.qr_code}"
@@ -983,7 +1012,12 @@
         $('#senior_citizen_last_name').text(btn.data('last_name'));
         $('#senior_citizen_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
         $('#senior_citizen_date_of_birth').text(btn.data('date_of_birth'));
+        $('#senior_citizen_place_of_birth').text(btn.data('place_of_birth'));
+        $('#senior_citizen_age').text(btn.data('age'));
         $('#senior_citizen_sex').text(btn.data('sex'));
+        $('#senior_citizen_civil_status').text(btn.data('civil_status'));
+        $('#senior_citizen_educational_attainment').text(btn.data('educational_attainment'));
+        $('#senior_citizen_occupation').text(btn.data('occupation'));
         $('#senior_citizen_cellphone_number').text(btn.data('cellphone_number'));
         $('#senior_citizen_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
