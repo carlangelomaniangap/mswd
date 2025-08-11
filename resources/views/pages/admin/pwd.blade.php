@@ -413,7 +413,10 @@
                                     class="w-full"
                                     type="tel"
                                     name="cellphone_number"
-                                    placeholder="Cellphone Number"
+                                    placeholder="e.g. 09123456789"
+                                    pattern="^09\d{9}$"
+                                    maxlength="11"
+                                    inputmode="numeric"
                                 />
                             </div>
                         </div>
@@ -525,7 +528,10 @@
                                     class="w-full"
                                     type="tel"
                                     name="emerg_contact_number"
-                                    placeholder="Contact Number"
+                                    placeholder="e.g. 09123456789"
+                                    pattern="^09\d{9}$"
+                                    maxlength="11"
+                                    inputmode="numeric"
                                     required
                                 />
                             </div>
@@ -961,7 +967,10 @@
                                     class="w-full"
                                     type="tel"
                                     name="cellphone_number"
-                                    placeholder="Cellphone Number"
+                                    placeholder="e.g. 09123456789"
+                                    pattern="^09\d{9}$"
+                                    maxlength="11"
+                                    inputmode="numeric"
                                 />
                             </div>
                         </div>
@@ -1073,7 +1082,10 @@
                                     class="w-full"
                                     type="tel"
                                     name="emerg_contact_number"
-                                    placeholder="Contact Number"
+                                    placeholder="e.g. 09123456789"
+                                    pattern="^09\d{9}$"
+                                    maxlength="11"
+                                    inputmode="numeric"
                                     required
                                 />
                             </div>
@@ -1266,6 +1278,18 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/jquery.dataTables.min.css">
 <script src="https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.querySelectorAll('#cellphone_number, #emerg_contact_number,#update_cellphone_number, #update_emerg_contact_number').forEach(el => {
+        el.addEventListener('keydown', function(e) {
+            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'Home', 'End'];
+
+            if (!((e.key >= '0' && e.key <= '9') || allowedKeys.includes(e.key))) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
 
 {{-- Add Beneficiary Form Script --}}
 <script>
