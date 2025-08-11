@@ -1150,13 +1150,65 @@
                                         <h3 id="pwd_date_of_birth" class="font-semibold"></h3>
                                     </div>
                                     <div>
+                                        <x-form.label class="block">Place of Birth</x-form.label>
+                                        <h3 id="pwd_place_of_birth" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Age</x-form.label>
+                                        <h3 id="pwd_age" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
                                         <x-form.label class="block">Sex</x-form.label>
                                         <h3 id="pwd_sex" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Civil Status</x-form.label>
+                                        <h3 id="pwd_civil_status" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Blood Type</x-form.label>
+                                        <h3 id="pwd_blood_type" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Educational Attainment</x-form.label>
+                                        <h3 id="pwd_educational_attainment" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Occupation</x-form.label>
+                                        <h3 id="pwd_occupation" class="font-semibold"></h3>
                                     </div>
                                 </div>
                                 <div>
                                     <x-form.label class="block">Cellphone Number</x-form.label>
                                     <span id="pwd_cellphone_number" class="font-semibold"></span>
+                                </div>
+                                
+                                <h1>INCASE OF EMERGENCY</h1>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">First Name</x-form.label>
+                                        <h3 id="pwd_emerg_first_name" class="font-semibold"></h3>
+                                    </div>
+                                    <div>
+                                        <x-form.label class="block">Last Name</x-form.label>
+                                        <h3 id="pwd_emerg_last_name" class="font-semibold"></h3>
+                                    </div>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Address</x-form.label>
+                                    <span id="pwd_emerg_address" class="font-semibold"></span>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Relationship to PWD</x-form.label>
+                                    <span id="pwd_relationship_to_pwd" class="font-semibold"></span>
+                                </div>
+                                <div>
+                                    <x-form.label class="block">Contact Number</x-form.label>
+                                    <span id="pwd_emerg_contact_number" class="font-semibold"></span>
                                 </div>
                                 <div>
                                     <x-form.label class="block">Date Added</x-form.label>
@@ -1419,8 +1471,20 @@
                                 data-province="${row.province}"
                                 data-type_of_disability="${row.type_of_disability}"
                                 data-date_of_birth="${row.date_of_birth}"
+                                data-place_of_birth="${row.place_of_birth}" 
+                                data-age="${row.age}"
                                 data-sex="${row.sex}"
+                                data-civil_status="${row.civil_status}"
+                                data-blood_type="${row.blood_type}"
+                                data-educational_attainment="${row.educational_attainment}"
+                                data-occupation="${row.occupation}"
                                 data-cellphone_number="${row.cellphone_number}"
+                                data-emerg_first_name="${row.emerg_first_name}"
+                                data-emerg_middle_name="${row.emerg_middle_name}"
+                                data-emerg_last_name="${row.emerg_last_name}"
+                                data-emerg_address="${row.emerg_address}"
+                                data-relationship_to_pwd="${row.relationship_to_pwd}"
+                                data-emerg_contact_number="${row.emerg_contact_number}"
                                 data-created_at="${row.created_at}"
                                 data-qr_code="${row.qr_code}"
                                 data-valid_id="${row.valid_id}"
@@ -1621,8 +1685,20 @@
         $('#pwd_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
         $('#pwd_type_of_disability').text(btn.data('type_of_disability'));
         $('#pwd_date_of_birth').text(new Date(btn.data('date_of_birth')).toLocaleString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
+        $('#pwd_place_of_birth').text(btn.data('place_of_birth'));
+        $('#pwd_age').text(btn.data('age'));
         $('#pwd_sex').text(btn.data('sex'));
+        $('#pwd_civil_status').text(btn.data('civil_status'));
+        $('#pwd_blood_type').text(btn.data('blood_type'));
+        $('#pwd_educational_attainment').text(btn.data('educational_attainment'));
+        $('#pwd_occupation').text(btn.data('occupation'));
         $('#pwd_cellphone_number').text(btn.data('cellphone_number'));
+        $('#pwd_emerg_first_name').text(btn.data('emerg_first_name'));
+        $('#pwd_emerg_middle_name').text(btn.data('emerg_middle_name'));
+        $('#pwd_emerg_last_name').text(btn.data('emerg_last_name'));
+        $('#pwd_emerg_address').text(btn.data('emerg_address'));
+        $('#pwd_relationship_to_pwd').text(btn.data('relationship_to_pwd'));
+        $('#pwd_emerg_contact_number').text(btn.data('emerg_contact_number'));
         $('#pwd_created_at').text(btn.data('created_at'));
         $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
 
