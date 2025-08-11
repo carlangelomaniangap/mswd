@@ -456,8 +456,10 @@
                                     <x-form.input
                                         id="monthly_income"
                                         class="w-full"
-                                        type="text"
+                                        type="number"
                                         name="monthly_income"
+                                        min="1"
+                                        step="1"
                                         placeholder="e.g. 10000"
                                     />
                                 </div>
@@ -992,7 +994,10 @@
                                                                 type="number"
                                                                 name="family_member_age"
                                                                 placeholder="Age"
+                                                                min="1"
+                                                                step="1"
                                                                 required
+                                                                readonly
                                                             />
                                                         </div>
                                                     </div>
@@ -1092,7 +1097,10 @@
                                                             class="w-full"
                                                             type="number"
                                                             name="family_member_monthly_income"
-                                                            placeholder="Monthly Income"
+                                                            min="1"
+                                                            step="1"
+                                                            placeholder="e.g. 10000"
+                                                            required
                                                         />
                                                     </div>
                                                 </div>
@@ -1164,30 +1172,40 @@
 {{-- Auto calculate age using date of birth --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const birthdateInput = document.getElementById('date_of_birth');
-        const ageInput = document.getElementById('age');
-
-        // Calculate age based on date of birth
         function calculateAge(birthDate) {
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
             const monthDiff = today.getMonth() - birthDate.getMonth();
-                
+
             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
                 age--;
             }
 
-            return age;
+            return age >= 0 ? age : '';
         }
 
-        birthdateInput.addEventListener('change', function() {
-            const birthDate = new Date(this.value);
-            ageInput.value = calculateAge(birthDate);
-        });
+        // Add form
+        const birthdateInput = document.getElementById('date_of_birth');
+        const ageInput = document.getElementById('age');
+        if (birthdateInput && ageInput) {
+            birthdateInput.addEventListener('change', function() {
+                ageInput.value = calculateAge(new Date(this.value));
+            });
+            if (birthdateInput.value) {
+                ageInput.value = calculateAge(new Date(birthdateInput.value));
+            }
+        }
 
-        // Trigger age calculation on page load if birthday is already set
-        if (birthdateInput.value) {
-            birthdateInput.dispatchEvent(new Event('change'));
+        // Family member form
+        const familyMemberBirthdateInput = document.getElementById('family_member_date_of_birth');
+        const familyMemberAgeInput = document.getElementById('family_member_age');
+        if (familyMemberBirthdateInput && familyMemberAgeInput) {
+            familyMemberBirthdateInput.addEventListener('change', function() {
+                familyMemberAgeInput.value = calculateAge(new Date(this.value));
+            });
+            if (familyMemberBirthdateInput.value) {
+                familyMemberAgeInput.value = calculateAge(new Date(familyMemberBirthdateInput.value));
+            }
         }
     });
 </script>
