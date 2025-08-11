@@ -1480,7 +1480,6 @@
                                 data-occupation="${row.occupation}"
                                 data-cellphone_number="${row.cellphone_number}"
                                 data-emerg_first_name="${row.emerg_first_name}"
-                                data-emerg_middle_name="${row.emerg_middle_name}"
                                 data-emerg_last_name="${row.emerg_last_name}"
                                 data-emerg_address="${row.emerg_address}"
                                 data-relationship_to_pwd="${row.relationship_to_pwd}"
@@ -1694,7 +1693,6 @@
         $('#pwd_occupation').text(btn.data('occupation'));
         $('#pwd_cellphone_number').text(btn.data('cellphone_number'));
         $('#pwd_emerg_first_name').text(btn.data('emerg_first_name'));
-        $('#pwd_emerg_middle_name').text(btn.data('emerg_middle_name'));
         $('#pwd_emerg_last_name').text(btn.data('emerg_last_name'));
         $('#pwd_emerg_address').text(btn.data('emerg_address'));
         $('#pwd_relationship_to_pwd').text(btn.data('relationship_to_pwd'));

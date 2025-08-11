@@ -257,7 +257,6 @@ class AdminPwdController extends Controller
                 'educational_attainment' => $record->educational_attainment,
                 'occupation' => $record->occupation,
                 'emerg_first_name' => $record->emerg_first_name,
-                'emerg_middle_name' => $record->emerg_middle_name,
                 'emerg_last_name' => $record->emerg_last_name,
                 'emerg_address' => $record->emerg_address,
                 'relationship_to_pwd' => $record->relationship_to_pwd,
