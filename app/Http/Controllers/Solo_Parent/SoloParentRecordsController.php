@@ -252,9 +252,57 @@ class SoloParentRecordsController extends Controller
                 }
             };
 
+            // Initialize Photo variable with a value of null
+            $photo = null;
+
+            // Check if the photo filename is not empty
+            if (!empty($record->photo)) {
+                // Path to the beneficiary photo in the public directory
+                $photoPath = public_path('beneficiary_photos/' . $record->photo);
+
+                // Verify that the photo file actually exists at the public path
+                if (file_exists($photoPath)) {
+                    $imageData = file_get_contents($photoPath);
+                    $extension = strtolower(pathinfo($photoPath, PATHINFO_EXTENSION));
+                    if ($extension === 'png') {
+                        $imageType = 'image/png';
+                    } elseif ($extension === 'jpg' || $extension === 'jpeg') {
+                        $imageType = 'image/jpeg';
+                    }
+                    $photo = 'data:' . $imageType . ';base64,' . base64_encode($imageData);
+                } else {
+                    // If the photo filename is not found, show the default photo
+                    $defaultPath = public_path('images/default_photo.png');
+                    $imageData = file_get_contents($defaultPath);
+                    $imageType = 'image/png';
+                    $photo = 'data:' . $imageType . ';base64,' . base64_encode($imageData);
+                }
+            } else {
+                // If the photo filename is empty, show the default photo
+                $defaultPath = public_path('images/default_photo.png');
+                $imageData = file_get_contents($defaultPath);
+                $imageType = 'image/png';
+                $photo = 'data:' . $imageType . ';base64,' . base64_encode($imageData);
+            }
+
+            // Initialize QR code variable with a value of null
+            $qr_code = null;
+
+            // Check if the qr code filename is not empty
+            if (!empty($record->qr_code)) {
+                // Path to the qr code in the public directory
+                $qrcodePath = public_path('qrcodes/' . $record->qr_code);
+
+                // Verify that the qr code file actually exists at the public path
+                if (file_exists($qrcodePath)) {
+                    $svgData = file_get_contents($qrcodePath);
+                    $qr_code = 'data:image/svg+xml;base64,' . base64_encode($svgData);
+                }
+            }
+
             return [
                 'id' => $record->id,
-                'photo' => $record->photo,
+                'photo' => $photo,
                 'first_name' => $record->first_name,
                 'last_name' => $record->last_name,
                 'barangay' => $record->barangay,
@@ -279,7 +327,7 @@ class SoloParentRecordsController extends Controller
                 'emerg_address' => $record->emerg_address,
                 'relationship_to_solo_parent' => $record->relationship_to_solo_parent,
                 'emerg_contact_number' => $record->emerg_contact_number,
-                'qr_code' => $record->qr_code,
+                'qr_code' => $qr_code,
                 'created_at' => $record->created_at->format('F j, Y'),
 
                 // For DataTable display
