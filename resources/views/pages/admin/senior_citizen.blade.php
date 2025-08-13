@@ -21,7 +21,7 @@
             <div class="max-h-full flex flex-col">
                 <div class="p-4 flex justify-between items-center bg-blue-600">
                     <h2 class="text-md font-medium text-white dark:text-gray-100">Senior ID Application Form</h2>
-                    <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
+                    <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close-modal', 'add-beneficiary')">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                         </svg>
@@ -502,8 +502,16 @@
                                     <span id="senior_citizen_created_at" class="font-semibold"></span>
                                 </div>
                             </div>
-                            <div>
-                                <img id="qr-code-image" src="" alt="QR Code" class="w-40 h-40">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-center">
+                                    <img id="senior_qr_code" alt="QR Code" class="w-40 h-40 object-cover">
+                                </div>
+
+                                <div class="flex items-center justify-center">
+                                    <x-button x-on:click="$dispatch('open-modal', 'print-as-id')">
+                                        Print as ID
+                                    </x-button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -599,166 +607,6 @@
                                     </svg>
                                     Add Member
                                 </button>
-
-                                {{-- Add member modal --}}
-                                <x-modal name="add-family-member" height="fit" maxWidth="md">
-                                    <div class="max-h-full flex flex-col">
-                                        <div class="p-4 flex justify-between items-center bg-blue-600">
-                                            <h2 class="text-md font-medium text-white dark:text-gray-100">Add Member</h2>
-                                            <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
-                                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-
-                                        <div id="addFamilyMemberContainer" class="overflow-y-auto p-4">
-                                            <form id="addFamilyMemberForm" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="sc_record_id" id="sc_record_id">
-                                                <div class="space-y-4">
-                                                    <div>
-                                                        <x-form.label
-                                                            for="family_member_name"
-                                                        >
-                                                            Name
-                                                            <sup class="text-red-500">*</sup>
-                                                        </x-form.label>
-                                                        <x-form.input
-                                                            id="family_member_name"
-                                                            class="w-full"
-                                                            type="text"
-                                                            name="family_member_name"
-                                                            placeholder="Name"
-                                                            required
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <x-form.label
-                                                            for="relationship"
-                                                        >
-                                                            Relationship
-                                                            <sup class="text-red-500">*</sup>
-                                                        </x-form.label>
-                                                        <x-form.select id="relationship" name="relationship" required >
-                                                            <option value="" disabled selected>Select</option>
-                                                            <option value="Great-grandfather">Great-grandfather</option>
-                                                            <option value="Great-grandmother">Great-grandmother</option>
-                                                            <option value="Great-grandson">Great-grandson</option>
-                                                            <option value="Great-granddaughter">Great-granddaughter</option>
-                                                            <option value="GrandFather">Grand Father</option>
-                                                            <option value="GrandMother">Grand Mother</option>
-                                                            <option value="Grandson">Grandson</option>
-                                                            <option value="Granddaughter">Granddaughter</option>
-                                                            <option value="Father">Father</option>
-                                                            <option value="Mother">Mother</option>
-                                                            <option value="Spouse">Spouse</option>
-                                                            <option value="Uncle">Uncle</option>
-                                                            <option value="Auntie">Auntie</option>
-                                                            <option value="Brother">Brother</option>
-                                                            <option value="Sister">Sister</option>
-                                                            <option value="Son">Son</option>
-                                                            <option value="Daughter">Daughter</option>
-                                                            <option value="Nephew">Nephew</option>
-                                                            <option value="Niece">Niece</option>
-                                                            <option value="Cousin">Cousin</option>
-                                                            <option value="Father-in-law">Father-in-law</option>
-                                                            <option value="Mother-in-law">Mother-in-law</option>
-                                                            <option value="Brother-in-law">Brother-in-law</option>
-                                                            <option value="Sister-in-law">Sister-in-law</option>
-                                                            <option value="Son-in-law">Son-in-law</option>
-                                                            <option value="Daughter-in-law">Daughter-in-law</option>
-                                                            <option value="Stepfather">Stepfather</option>
-                                                            <option value="Stepmother">Stepmother</option>
-                                                            <option value="Stepbrother">Stepbrother</option>
-                                                            <option value="Stepsister">Stepsister</option>
-                                                            <option value="Half-brother">Half-brother</option>
-                                                            <option value="Half-sister">Half-sister</option>
-                                                        </x-form.select>
-                                                    </div>
-                                                    <div class="grid grid-cols-2 grid-rows-1 gap-4">
-                                                        <div>
-                                                            <x-form.label
-                                                                for="family_member_age"
-                                                            >
-                                                                Age
-                                                                <sup class="text-red-500">*</sup>
-                                                            </x-form.label>
-                                                            <x-form.input
-                                                                id="family_member_age"
-                                                                class="w-full"
-                                                                type="number"
-                                                                name="family_member_age"
-                                                                placeholder="Age"
-                                                                min="1"
-                                                                step="1"
-                                                                required
-                                                            />
-                                                        </div>
-                                                        <div>
-                                                            <x-form.label
-                                                                for="family_member_civil_status"
-                                                                class="block"
-                                                            >
-                                                                Civil Status
-                                                                <sup class="text-red-500">*</sup>
-                                                            </x-form.label>
-                                                            <x-form.select 
-                                                                name="family_member_civil_status" 
-                                                                id="family_member_civil_status" 
-                                                                class="w-full"
-                                                                required
-                                                            >
-                                                                <option value="" selected disabled>Select</option>
-                                                                <option value="Single">Single</option>
-                                                                <option value="Married">Married</option>
-                                                                <option value="Divorced">Divorced</option>
-                                                                <option value="Widowed">Widowed</option>
-                                                                <option value="Separated">Separated</option>
-                                                            </x-form.select>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <x-form.label
-                                                            for="family_member_occupation"
-                                                            class="block"
-                                                        >
-                                                            Occupation
-                                                        </x-form.label>
-                                                        <x-form.input
-                                                            id="family_member_occupation"
-                                                            class="w-full"
-                                                            type="text"
-                                                            name="family_member_occupation"
-                                                            placeholder="Occupation"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <x-form.label
-                                                            for="family_member_monthly_income"
-                                                            class="block"
-                                                        >
-                                                            Monthly Income
-                                                            <sup class="text-red-500">*</sup>
-                                                        </x-form.label>
-                                                        <x-form.input
-                                                            id="family_member_monthly_income"
-                                                            class="w-full"
-                                                            type="number"
-                                                            name="family_member_monthly_income"
-                                                            min="1"
-                                                            step="1"
-                                                            placeholder="e.g. 10000"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div class="mt-6 flex justify-end">
-                                                    <x-button type="submit" variant="success" class="ml-2">Add</x-button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </x-modal>
                             </div>
                             <div class="space-y-6">
                                 <div class="w-full h-full">
@@ -781,6 +629,244 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </x-modal>
+
+        {{-- Print as ID modal --}}
+        <x-modal name="print-as-id" height="fit" maxWidth="3xl">
+            <div class="p-4 flex justify-between items-center bg-blue-600">
+                <h2 class="text-md font-medium text-white dark:text-gray-100">Senior ID Card</h2>
+                <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close-modal', 'print-as-id')">
+                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="p-4">
+                <div class="flex justify-center gap-6">
+                    {{-- Front ID --}}
+                    <div class="space-y-2">
+                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">FRONT</h3>
+                        <div class="w-80 h-52 bg-white text-black rounded-lg shadow-md border p-4">
+                            <div class="flex space-x-2">
+                                <img id="id_card_photo" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
+                                <h3 id="id_card_name" class="text-lg font-bold"></h3>
+                                <img src="{{asset('images/mswd_logo.png')}}" alt="Logo" class="w-12 h-12 object-cover">
+                            </div>
+
+                            <div class="text-xs mt-2">
+                                <strong class="font-semibold">PWD ID:</strong>
+                                <span id="id_card_pwd_id"></span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">ADDRESS:</strong>
+                                <span id="id_card_address"></span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">SEX:</strong>
+                                <span id="id_card_sex"></span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">CONTACT NO:</strong>
+                                <span id="id_card_contact_number"></span></div>
+
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">BIRTHDAY:</strong>
+                                <span id="id_card_birthday"></span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">AGE:</strong>
+                                <span id="id_card_age"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- "w-[358px] h-[228px] --}}
+
+                    {{-- Back ID --}}
+                    <div class="space-y-2">
+                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">BACK</h3>
+                        <div class="w-80 h-52 grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
+                            <div class="flex items-center justify-center">
+                                <img id="id_card_qr_code" alt="QR Code" class="w-36 h-36 object-cover">
+                            </div>
+                            <div class="flex flex-col items-center justify-center">
+                                <p class="text-[10px] text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa fuga eligendi perferendis possimus dolor voluptates modi error minima, nam vel sed commodi sint debitis.</p>
+
+                                <div class="mt-6">
+                                    <div class="border-b border-black w-32"></div>
+                                        <p class="text-center text-xs mt-1">Signature</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-6">
+                        <x-button>Print</x-button>
+                    </div>
+                </div>
+            </div>
+        </x-modal>
+
+        {{-- Add member modal --}}
+        <x-modal name="add-family-member" height="fit" maxWidth="md">
+            <div class="max-h-full flex flex-col">
+                <div class="p-4 flex justify-between items-center bg-blue-600">
+                    <h2 class="text-md font-medium text-white dark:text-gray-100">Add Member</h2>
+                    <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close-modal', 'add-family-member')">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div id="addFamilyMemberContainer" class="overflow-y-auto p-4">
+                    <form id="addFamilyMemberForm" method="POST">
+                        @csrf
+                        <input type="hidden" name="sc_record_id" id="sc_record_id">
+                        <div class="space-y-4">
+                            <div>
+                                <x-form.label
+                                    for="family_member_name"
+                                >
+                                    Name
+                                    <sup class="text-red-500">*</sup>
+                                </x-form.label>
+                                <x-form.input
+                                    id="family_member_name"
+                                    class="w-full"
+                                    type="text"
+                                    name="family_member_name"
+                                    placeholder="Name"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <x-form.label
+                                    for="relationship"
+                                >
+                                    Relationship
+                                    <sup class="text-red-500">*</sup>
+                                </x-form.label>
+                                <x-form.select id="relationship" name="relationship" required >
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="Great-grandfather">Great-grandfather</option>
+                                    <option value="Great-grandmother">Great-grandmother</option>
+                                    <option value="Great-grandson">Great-grandson</option>
+                                    <option value="Great-granddaughter">Great-granddaughter</option>
+                                    <option value="GrandFather">Grand Father</option>
+                                    <option value="GrandMother">Grand Mother</option>
+                                    <option value="Grandson">Grandson</option>
+                                    <option value="Granddaughter">Granddaughter</option>
+                                    <option value="Father">Father</option>
+                                    <option value="Mother">Mother</option>
+                                    <option value="Spouse">Spouse</option>
+                                    <option value="Uncle">Uncle</option>
+                                    <option value="Auntie">Auntie</option>
+                                    <option value="Brother">Brother</option>
+                                    <option value="Sister">Sister</option>
+                                    <option value="Son">Son</option>
+                                    <option value="Daughter">Daughter</option>
+                                    <option value="Nephew">Nephew</option>
+                                    <option value="Niece">Niece</option>
+                                    <option value="Cousin">Cousin</option>
+                                    <option value="Father-in-law">Father-in-law</option>
+                                    <option value="Mother-in-law">Mother-in-law</option>
+                                    <option value="Brother-in-law">Brother-in-law</option>
+                                    <option value="Sister-in-law">Sister-in-law</option>
+                                    <option value="Son-in-law">Son-in-law</option>
+                                    <option value="Daughter-in-law">Daughter-in-law</option>
+                                    <option value="Stepfather">Stepfather</option>
+                                    <option value="Stepmother">Stepmother</option>
+                                    <option value="Stepbrother">Stepbrother</option>
+                                    <option value="Stepsister">Stepsister</option>
+                                    <option value="Half-brother">Half-brother</option>
+                                    <option value="Half-sister">Half-sister</option>
+                                </x-form.select>
+                            </div>
+                            <div class="grid grid-cols-2 grid-rows-1 gap-4">
+                                <div>
+                                    <x-form.label
+                                        for="family_member_age"
+                                    >
+                                        Age
+                                        <sup class="text-red-500">*</sup>
+                                    </x-form.label>
+                                    <x-form.input
+                                        id="family_member_age"
+                                        class="w-full"
+                                        type="number"
+                                        name="family_member_age"
+                                        placeholder="Age"
+                                        min="1"
+                                        step="1"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <x-form.label
+                                        for="family_member_civil_status"
+                                        class="block"
+                                    >
+                                        Civil Status
+                                        <sup class="text-red-500">*</sup>
+                                    </x-form.label>
+                                    <x-form.select 
+                                        name="family_member_civil_status" 
+                                        id="family_member_civil_status" 
+                                        class="w-full"
+                                        required
+                                    >
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Divorced">Divorced</option>
+                                        <option value="Widowed">Widowed</option>
+                                        <option value="Separated">Separated</option>
+                                    </x-form.select>
+                                </div>
+                            </div>
+                            <div>
+                                <x-form.label
+                                    for="family_member_occupation"
+                                    class="block"
+                                >
+                                    Occupation
+                                </x-form.label>
+                                <x-form.input
+                                    id="family_member_occupation"
+                                    class="w-full"
+                                    type="text"
+                                    name="family_member_occupation"
+                                    placeholder="Occupation"
+                                />
+                            </div>
+                            <div>
+                                <x-form.label
+                                    for="family_member_monthly_income"
+                                        class="block"
+                                >
+                                    Monthly Income
+                                    <sup class="text-red-500">*</sup>
+                                </x-form.label>
+                                <x-form.input
+                                    id="family_member_monthly_income"
+                                    class="w-full"
+                                    type="number"
+                                    name="family_member_monthly_income"
+                                    min="1"
+                                    step="1"
+                                    placeholder="e.g. 10000"
+                                />
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-end">
+                            <x-button type="submit" variant="success" class="ml-2">Add</x-button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </x-modal>
@@ -1006,7 +1092,7 @@
     $(document).on('click', '[data-id]', function () {
         const btn = $(this);
 
-        $('#senior_citizen_photo').attr('src', `/beneficiary_photos/${btn.data('photo')}`);
+        $('#senior_citizen_photo').attr('src', btn.data('photo'));
         $('#senior_citizen_id').text(`SC-${String(btn.data('id')).padStart(3, '0')}`);
         $('#senior_citizen_first_name').text(btn.data('first_name'));
         $('#senior_citizen_last_name').text(btn.data('last_name'));
@@ -1020,7 +1106,7 @@
         $('#senior_citizen_occupation').text(btn.data('occupation'));
         $('#senior_citizen_cellphone_number').text(btn.data('cellphone_number'));
         $('#senior_citizen_created_at').text(btn.data('created_at'));
-        $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
+        $('#senior_qr_code').attr('src', btn.data('qr_code'));
         $('#sc_record_id').val(btn.data('id'));
 
         $('#senior_requirement_id').val(btn.data('id'));
@@ -1030,6 +1116,16 @@
         $('#birth_certificate_expires_at').text(btn.data('birth_certificate_expires_at'));
         $('#barangay_certificate').val(btn.data('barangay_certificate'));
         $('#barangay_certificate_expires_at').text(btn.data('barangay_certificate_expires_at'));
+
+        $('#id_card_photo').attr('src', btn.data('photo'));
+        $('#id_card_name').text(`${btn.data('first_name')} ${btn.data('last_name')}`);
+        $('#id_card_pwd_id').text(`PWD-${String(btn.data('id')).padStart(3, '0')}`);
+        $('#id_card_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
+        $('#id_card_sex').text(btn.data('sex'));
+        $('#id_card_contact_number').text(btn.data('cellphone_number'));
+        $('#id_card_birthday').text(new Date(btn.data('date_of_birth')).toLocaleString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
+        $('#id_card_age').text(btn.data('age'));
+        $('#id_card_qr_code').attr('src', btn.data('qr_code'));
     });
 </script>
 
