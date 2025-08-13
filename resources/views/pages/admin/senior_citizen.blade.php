@@ -657,8 +657,8 @@
                             </div>
 
                             <div class="text-xs mt-2">
-                                <strong class="font-semibold">PWD ID:</strong>
-                                <span id="id_card_pwd_id"></span>
+                                <strong class="font-semibold">Senior ID:</strong>
+                                <span id="id_card_sc_id"></span>
                             </div>
                             <div class="text-xs mt-1">
                                 <strong class="font-semibold">ADDRESS:</strong>
@@ -1119,7 +1119,7 @@
 
         $('#id_card_photo').attr('src', btn.data('photo'));
         $('#id_card_name').text(`${btn.data('first_name')} ${btn.data('last_name')}`);
-        $('#id_card_pwd_id').text(`PWD-${String(btn.data('id')).padStart(3, '0')}`);
+        $('#id_card_sc_id').text(`SC-${String(btn.data('id')).padStart(3, '0')}`);
         $('#id_card_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
         $('#id_card_sex').text(btn.data('sex'));
         $('#id_card_contact_number').text(btn.data('cellphone_number'));
