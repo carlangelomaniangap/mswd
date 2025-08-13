@@ -1103,7 +1103,7 @@
             <div x-data="{ tab: 'personal_details' }" x-show="true" @open-modal.window="if ($event.detail === 'view') tab = 'personal_details'" class="flex flex-col h-full">
                 <div class="p-4 flex justify-between items-center bg-blue-600">
                     <h2 class="text-md font-medium text-white dark:text-gray-100">PWD ID Beneficiary Information</h2>
-                    <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close')">
+                    <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close-modal', 'view')">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                         </svg>
@@ -1215,8 +1215,16 @@
                                     <span id="pwd_created_at" class="font-semibold"></span>
                                 </div>
                             </div>
-                            <div>
-                                <img id="qr-code-image" src="" alt="QR Code" class="w-40 h-40">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-center">
+                                    <img id="pwd_qr_code" alt="QR Code" class="w-40 h-40 object-cover">
+                                </div>
+
+                                <div class="flex items-center justify-center">
+                                    <x-button x-on:click="$dispatch('open-modal', 'print-as-id')">
+                                        Print as ID
+                                    </x-button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1319,6 +1327,84 @@
                                 </div>
                             </form>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </x-modal>
+        
+        {{-- Print as ID modal --}}
+        <x-modal name="print-as-id" height="fit" maxWidth="3xl">
+            <div class="p-4 flex justify-between items-center bg-blue-600">
+                <h2 class="text-md font-medium text-white dark:text-gray-100">PWD ID Card</h2>
+                <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close-modal', 'print-as-id')">
+                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="p-4">
+                <div class="flex justify-center gap-6">
+                    {{-- Front ID --}}
+                    <div class="space-y-2">
+                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">FRONT</h3>
+                        <div class="w-80 h-52 bg-white text-black rounded-lg shadow-md border p-4">
+                            <div class="flex space-x-2">
+                                <img id="id_card_photo" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
+                                <h3 id="id_card_name" class="text-lg font-bold"></h3>
+                                <img src="{{asset('images/mswd_logo.png')}}" alt="Logo" class="w-12 h-12 object-cover">
+                            </div>
+
+                            <div class="text-xs mt-2">
+                                <strong class="font-semibold">PWD ID:</strong>
+                                <span id="id_card_pwd_id"></span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">ADDRESS:</strong>
+                                <span id="id_card_address"></span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">SEX:</strong>
+                                <span id="id_card_sex"></span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">CONTACT NO:</strong>
+                                <span id="id_card_contact_number"></span></div>
+
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">BIRTHDAY:</strong>
+                                <span id="id_card_birthday"></span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <strong class="font-semibold">TYPE OF DISABILITY:</strong>
+                                <span id="id_card_type_of_disability"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- "w-[358px] h-[228px] --}}
+
+                    {{-- Back ID --}}
+                    <div class="space-y-2">
+                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">BACK</h3>
+                        <div class="w-80 h-52 grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
+                            <div class="flex items-center justify-center">
+                                <img id="id_card_qr_code" alt="QR Code" class="w-36 h-36 object-cover">
+                            </div>
+                            <div class="flex flex-col items-center justify-center">
+                                <p class="text-[10px] text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa fuga eligendi perferendis possimus dolor voluptates modi error minima, nam vel sed commodi sint debitis.</p>
+
+                                <div class="mt-6">
+                                    <div class="border-b border-black w-32"></div>
+                                        <p class="text-center text-xs mt-1">Signature</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-6">
+                        <x-button>Print</x-button>
                     </div>
                 </div>
             </div>
@@ -1592,7 +1678,7 @@
     $(document).on('click', '[data-id]', function () {
         const btn = $(this);
 
-        $('#update_preview').attr('src', `/beneficiary_photos/${btn.data('photo')}`);
+        $('#update_preview').attr('src', btn.data('photo'));
         $('#update_id').val(btn.data('id'));
         $('#update_first_name').val(btn.data('first_name'));
         $('#update_middle_name').val(btn.data('middle_name'));
@@ -1677,7 +1763,7 @@
     $(document).on('click', '[data-id]', function () {
         const btn = $(this);
 
-        $('#pwd_photo').attr('src', `/beneficiary_photos/${btn.data('photo')}`);
+        $('#pwd_photo').attr('src', btn.data('photo'));
         $('#pwd_id').text(`PWD-${String(btn.data('id')).padStart(3, '0')}`);
         $('#pwd_first_name').text(btn.data('first_name'));
         $('#pwd_last_name').text(btn.data('last_name'));
@@ -1698,7 +1784,7 @@
         $('#pwd_relationship_to_pwd').text(btn.data('relationship_to_pwd'));
         $('#pwd_emerg_contact_number').text(btn.data('emerg_contact_number'));
         $('#pwd_created_at').text(btn.data('created_at'));
-        $('#qr-code-image').attr('src', `/qrcodes/${btn.data('qr_code')}`);
+        $('#pwd_qr_code').attr('src', btn.data('qr_code'));
 
         $('#pwd_requirement_id').val(btn.data('id'));
         $('#valid_id').val(btn.data('valid_id'));
@@ -1709,6 +1795,16 @@
         $('#barangay_certificate_expires_at').text(btn.data('barangay_certificate_expires_at'));
         $('#birth_certificate').val(btn.data('birth_certificate'));
         $('#birth_certificate_expires_at').text(btn.data('birth_certificate_expires_at'));
+
+        $('#id_card_photo').attr('src', btn.data('photo'));
+        $('#id_card_name').text(`${btn.data('first_name')} ${btn.data('last_name')}`);
+        $('#id_card_pwd_id').text(`PWD-${String(btn.data('id')).padStart(3, '0')}`);
+        $('#id_card_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
+        $('#id_card_sex').text(btn.data('sex'));
+        $('#id_card_contact_number').text(btn.data('cellphone_number'));
+        $('#id_card_birthday').text(new Date(btn.data('date_of_birth')).toLocaleString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
+        $('#id_card_type_of_disability').text(btn.data('type_of_disability'));
+        $('#id_card_qr_code').attr('src', btn.data('qr_code'));
     });
 </script>
 
