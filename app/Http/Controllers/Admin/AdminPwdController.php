@@ -47,6 +47,20 @@ class AdminPwdController extends Controller
             'emerg_contact_number' => 'required|string|regex:/^09\d{9}$/',
         ]);
 
+        // Check if a beneficiary with the same first name, last name, and date of birth already exists
+        $existing = PwdRecord::where('first_name', $validated['first_name'])
+            ->where('last_name', $validated['last_name'])
+            ->where('date_of_birth', $validated['date_of_birth'])
+            ->first();
+
+        // If a beneficiary is found, return an error response
+        if ($existing) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Beneficiary already exists.',
+            ]);
+        }
+
         $photoPath = null;
 
         if ($request->hasFile('photo')) {
@@ -367,6 +381,20 @@ class AdminPwdController extends Controller
             'relationship_to_pwd' => 'required|string|max:255',
             'emerg_contact_number' => 'required|string|regex:/^09\d{9}$/',
         ]);
+
+        // Check if a beneficiary with the same first name, last name, and date of birth already exists
+        $existing = PwdRecord::where('first_name', $validated['first_name'])
+            ->where('last_name', $validated['last_name'])
+            ->where('date_of_birth', $validated['date_of_birth'])
+            ->first();
+
+        // If a beneficiary is found, return an error response
+        if ($existing) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Beneficiary already exists.',
+            ]);
+        }
 
         if ($request->hasFile('photo')) {
             $photo = $request->file('photo');
