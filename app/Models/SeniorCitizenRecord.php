@@ -39,4 +39,9 @@ class SeniorCitizenRecord extends Model
     {
         return $this->hasOne(SeniorRequirement::class, 'senior_record_id');
     }
+
+    public function seniorfamilyMember()
+    {
+        return $this->hasMany(SeniorFamilyMember::class, 'sc_record_id');
+    }
 }

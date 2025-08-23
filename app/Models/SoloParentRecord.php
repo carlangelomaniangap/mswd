@@ -55,4 +55,9 @@ class SoloParentRecord extends Model
     {
         return $this->hasOne(SoloParentRequirement::class, 'solo_parent_record_id');
     }
+    
+    public function soloparentfamilyMember()
+    {
+        return $this->hasMany(SoloParentFamilyMember::class, 'sp_record_id');
+    }
 }

@@ -23,6 +23,6 @@ class AicsPayoutHistory extends Model
 
     public function aicsRecord()
     {
-        return $this->belongsTo(AicsRecord::class, 'aics_record_id');
+        return $this->belongsTo(AicsRecord::class, 'aics_record_id_payout');
     }
 }
