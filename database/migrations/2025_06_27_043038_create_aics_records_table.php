@@ -30,7 +30,7 @@ return new class extends Migration
             $table->enum('educational_attainment', ['No Formal Education', 'Elementary Undergraduate', 'Elementary Graduate', 'High School Undergraduate', 'High School Graduate', 'Vocational Graduate', 'College Undergraduate', 'College Graduate', 'Post Graduate']);
             $table->string('occupation');
             $table->string('cellphone_number');
-            $table->enum('nature_of_problem' ,['Medical', 'Financial', 'Educational', 'Burial', 'Transportation', 'Food',' Others']);
+            $table->enum('nature_of_problem' ,['Medical', 'Financial', 'Educational', 'Burial', 'Transportation', 'Food', 'Others']);
             $table->string('problem_description');
             $table->string('qr_code');
             $table->unsignedBigInteger('user_id');
