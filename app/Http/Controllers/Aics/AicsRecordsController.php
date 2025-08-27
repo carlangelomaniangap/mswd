@@ -213,9 +213,19 @@ class AicsRecordsController extends Controller
 
         foreach ($models as $model => $columns) {
             foreach ($columns as $column => $expiresAt) {
-                $model::where($expiresAt, '<=', $now)
+                $expiredRequirements = $model::where($expiresAt, '<=', $now)
                     ->where($column, '!=', 'Renewal')
-                    ->update([$column => 'Renewal']);
+                    ->get();
+
+                foreach ($expiredRequirements as $req) {
+                    $req->update([$column => 'Renewal']);
+
+                    $record = $req->aicsRecord;
+                    if ($record) {
+                        $record->status = 'Expired';
+                        $record->save();
+                    }
+                }
             }
         }
 
