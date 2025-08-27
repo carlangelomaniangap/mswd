@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Record Data</title>
+    <title>Aics Record Data</title>
     <link rel="icon" href="{{ asset('images/mswd_logo.png') }}" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -32,7 +32,7 @@
                 }"
             >
                 <div class="p-4 flex items-center justify-between">
-                    <h1 class="font-bold text-2xl">Beneficiary Record Data</h1>
+                    <h1 class="font-bold text-2xl">Aics Record Data</h1>
 
                     <x-button
                         type="button"
@@ -341,63 +341,3 @@
         }
     });
 </script>
-
-{{-- @section('title', 'Record')
-
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('PWD Records') }}
-            </h2>
-        </div>
-    </x-slot>
-
-    <div
-        x-data="mainState"
-        :class="{ dark: isDarkMode }"
-        x-on:resize.window="handleWindowResize"
-        x-cloak
-    >
-        <div class="min-h-screen text-gray-900 bg-gray-100 dark:bg-dark-eval-0 dark:text-gray-200">
-            <header
-                class="sticky top-0 z-10 transition-transform duration-500 bg-white dark:bg-dark-eval-1"
-                :class="{
-                    '-translate-y-full': scrollingDown,
-                    'translate-y-0': scrollingUp,
-                }"
-            >
-                <div class="p-4 flex items-center justify-between">
-                    <h1 class="font-bold text-2xl">Beneficiary Record Data</h1>
-
-                    <x-button
-                        type="button"
-                        class="hidden md:inline-flex"
-                        icon-only
-                        variant="secondary"
-                        sr-text="Toggle dark mode"
-                        x-on:click="toggleTheme"
-                    >
-                        <x-heroicon-o-moon
-                            x-show="!isDarkMode"
-                            aria-hidden="true"
-                            class="w-6 h-6"
-                        />
-
-                        <x-heroicon-o-sun
-                            x-show="isDarkMode"
-                            aria-hidden="true"
-                            class="w-6 h-6"
-                        />
-                    </x-button>
-                </div>
-            </header>
-
-            <main class="p-4 sm:p-6 flex-1">
-                <div id="recordData" class="bg-white dark:bg-dark-eval-1 shadow rounded p-4">Loading...</div>
-            </main>
-        </div>
-    </div>
-</x-app-layout> --}}
-
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}

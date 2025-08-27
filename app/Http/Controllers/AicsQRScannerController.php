@@ -8,11 +8,11 @@ use App\Models\AicsRecord;
 use App\Models\SeniorCitizenRecord;
 use App\Models\SoloParentRecord;
 
-class QRScannerController extends Controller
+class AicsQRScannerController extends Controller
 {
     public function index(Request $request)
     {
-        return view('pages.qrcode_scanner', [ 
+        return view('pages.aics_qrcode_scanner', [ 
             'recordId' => $request->query('qrcode')
         ]);
     }
