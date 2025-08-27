@@ -11,7 +11,7 @@ class AicsMedicalRequirement extends Model
         'letter_to_the_mayor',
         'letter_to_the_mayor_expires_at',
         'letter_to_the_mayor_updated_at',
-        'medical_certficate',
+        'medical_certificate',
         'medical_certificate_expires_at',
         'medical_certificate_updated_at',
         'laboratory_or_prescription',
