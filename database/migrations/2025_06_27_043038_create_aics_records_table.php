@@ -33,6 +33,7 @@ return new class extends Migration
             $table->enum('nature_of_problem' ,['Medical', 'Financial', 'Educational', 'Burial', 'Transportation', 'Food', 'Others']);
             $table->string('problem_description');
             $table->string('qr_code');
+            $table->enum('status', ['Eligible', 'In Progress', 'Expired', 'Not Eligible'])->default('In Progress');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('user_role');

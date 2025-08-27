@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminPwdController;
 use App\Http\Controllers\Admin\AdminPwdRequirementsController;
 use App\Http\Controllers\Admin\AdminAicsController;
+use App\Http\Controllers\Admin\AdminAicsRequirementsController;
 use App\Http\Controllers\Admin\AdminAicsFamilyMemberController;
 use App\Http\Controllers\Admin\AdminAicsPayoutController;
 use App\Http\Controllers\Admin\AdminSeniorCitizenController;
@@ -17,12 +18,14 @@ use App\Http\Controllers\Admin\AdminSoloParentFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSoloParentRequirementsController;
 use App\Http\Controllers\Admin\AdminManageAccountController;
 
+
 use App\Http\Controllers\Pwd\PwdDashboardController;
 use App\Http\Controllers\Pwd\PwdRecordsController;
 use App\Http\Controllers\Pwd\PwdRequirementsController;
 
 use App\Http\Controllers\Aics\AicsDashboardController;
 use App\Http\Controllers\Aics\AicsRecordsController;
+use App\Http\Controllers\Aics\AicsRequirementsController;
 use App\Http\Controllers\Aics\AicsFamilyMemberController;
 use App\Http\Controllers\Aics\AicsPayoutController;
 
@@ -67,6 +70,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/aics', [AdminAicsController::class, 'index'])->name('aics');
         Route::post('/aics/store', [AdminAicsController::class,'store'])->name('store');
         Route::get('/aics/data', [AdminAicsController::class, 'fetchData']);
+        Route::post('/aics/{id}/update/requirements', [AdminAicsRequirementsController::class, 'update']);
         Route::post('/aics/store/family-member', [AdminAicsFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/aics/{id}/family-member', [AdminAicsFamilyMemberController::class, 'getData']);
         Route::post('/aics/store/payout', [AdminAicsPayoutController::class,'store']);
@@ -112,6 +116,7 @@ Route::middleware(['auth', 'role:aics'])
         Route::get('/records', [AicsRecordsController::class, 'index'])->name('records');
         Route::post('/records/store', [AicsRecordsController::class,'store'])->name('store');
         Route::get('/records/data', [AicsRecordsController::class, 'fetchData']);
+        Route::post('/records/{id}/update/requirements', [AicsRequirementsController::class, 'update']);
         Route::post('/records/store/family-member', [AicsFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/records/{id}/family-member', [AicsFamilyMemberController::class, 'getData']);
         Route::post('/records/store/payout', [AicsPayoutController::class,'store']);

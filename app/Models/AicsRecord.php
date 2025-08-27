@@ -27,6 +27,7 @@ class AicsRecord extends Model
         'nature_of_problem',
         'problem_description',
         'qr_code',
+        'status',
         'user_id',
         'user_role',
         'user_name'
@@ -35,5 +36,25 @@ class AicsRecord extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function aicsfamilyMember()
+    {
+        return $this->hasMany(AicsFamilyMember::class, 'aics_record_id');
+    }
+
+    public function aicspayoutHistory()
+    {
+        return $this->hasMany(AicsPayoutHistory::class, 'aics_record_id_payout');
+    }
+
+    public function aicsmedicalRequirement()
+    {
+        return $this->hasOne(AicsMedicalRequirement::class, 'aics_record_id');
+    }
+
+    public function aicsburialRequirement()
+    {
+        return $this->hasOne(AicsBurialRequirement::class, 'aics_record_id');
     }
 }

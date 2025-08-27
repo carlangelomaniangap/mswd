@@ -461,7 +461,6 @@
                     <th>Contact No.</th>
                     <th>AICS ID</th>
                     <th>Status</th>
-                    <th>Eligibility</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -579,95 +578,19 @@
 
                     {{-- Requirements page --}}
                     <div x-show="tab === 'requirements'" x-cloak>
-                        <div class="pl-6 pr-6 pt-4 pb-4">
-                            <p class="text-sm font-semibold text-gray-600 pb-2">Requirements Status</p>
+                        <div class="p-6">
+                            <p class="text-sm font-semibold text-gray-600 dark:text-white">Requirements Status</p>
 
-                            <div class="space-y-2">
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">VALID ID</p>
-                                        <p class="text-xs">Last updated</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="valid_id"
-                                            id="valid_id"
-                                            class=""
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="complete">Complete</option>
-                                            <option value="denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
-                                </div>
+                            <form id="Requirements" class="space-y-2">
+                                @csrf
+                                <input type="hidden" id="aics_requirement_id" name="aics_requirement_id">
 
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">Medical Certificate</p>
-                                        <p class="text-xs">Last updated</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="medical_certificate"
-                                            id="medical_certificate"
-                                            class=""
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="complete">Complete</option>
-                                            <option value="denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
-                                </div>
+                                <div id="requirementsContainer" class="space-y-2"></div>
 
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">Barangay Certificate</p>
-                                        <p class="text-xs">Last updated</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="barangay_certificate"
-                                            id="barangay_certificate"
-                                            class=""
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="complete">Complete</option>
-                                            <option value="denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
+                                <div class="pt-2 flex justify-end">
+                                    <x-button id="EditBtn" type="submit" variant="primary">Update</x-button>
                                 </div>
-
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">Birth Certificate</p>
-                                        <p class="text-xs">Last updated</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="birth_certificate"
-                                            id="birth_certificate"
-                                            class=""
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="complete">Complete</option>
-                                            <option value="denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pr-6 text-xs flex items-center justify-end space-x-2">
-                            <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
-                            <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
-                            <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
+                            </form>
                         </div>
                     </div>
 
@@ -1100,19 +1023,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    document.getElementById('photo').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(event) {
-        const img = document.getElementById('preview');
-        img.src = event.target.result;
-        img.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-    });
-
     document.querySelectorAll('#cellphone_number, #family_member_monthly_income, #family_member_age, #amount').forEach(el => {
         el.addEventListener('keydown', function(e) {
             const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'Home', 'End'];
@@ -1172,7 +1082,6 @@
                 { data: 'cellphone_number' },
                 { data: 'aics_id' },
                 { data: 'status' },
-                { data: 'eligibility' },
                 {
                     orderable: false,
                     searchable: false,
@@ -1201,6 +1110,7 @@
                                 data-created_at="${row.created_at}"
                                 data-type="${row.nature_of_problem}"
                                 data-qr_code="${row.qr_code}"
+                                data-requirements='${encodeURIComponent(JSON.stringify(row.requirements))}'
                                 x-on:click="$dispatch('open-modal', 'view')"
                             >
                                 <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -1358,6 +1268,52 @@
         $('#id_card_birthday').text(new Date(btn.data('date_of_birth')).toLocaleString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
         $('#id_card_nature_of_problem').text(btn.data('nature_of_problem'));
         $('#id_card_qr_code').attr('src', btn.data('qr_code'));
+
+        // requirements
+        $('#aics_requirement_id').val(btn.data('id'));
+
+        const requirements = JSON.parse(decodeURIComponent(btn.attr('data-requirements')));
+        let html = '';
+
+        // Define the labels of requirements
+        const fields = [
+            { key: 'letter_to_the_mayor', label: 'Letter to the Mayor' },
+            { key: 'medical_certificate', label: 'Medical Certificate' },
+            { key: 'laboratory_or_prescription', label: 'Laboratory or Prescription' },
+            { key: 'death_certificate', label: 'Death Certificate' },
+            { key: 'funeral_contract', label: 'Funeral Contract' },
+            { key: 'barangay_indigency', label: 'Barangay Indigency' },
+            { key: 'valid_id', label: 'Valid ID' },
+            { key: 'cedula', label: 'Cedula' },
+            { key: 'barangay_certificate_or_marriage_contract', label: 'Barangay Certificate/Marriage Contract' },
+            // add more fields if needed
+        ];
+
+        fields.forEach(field => {
+            if (requirements[field.key]) {
+                html += `
+                    <div class="w-full p-4 border flex items-center justify-between">
+                        <div>
+                            <p class="text-sm">${field.label}</p>
+                            <p id="${field.key}_expires_at" class="text-xs">${requirements[field.key + '_expires_at']}</p>
+                        </div>
+
+                        <div class="pl-1.5 w-32">
+                            <x-form.select name="${field.key}" id="${field.key}" size="sm">
+                                <option value="" selected disabled>Select</option>
+                                <option value="Complete" ${requirements[field.key] === 'Complete' ? 'selected' : ''}>Complete</option>
+                                <option value="Denied" ${requirements[field.key] === 'Denied' ? 'selected' : ''}>Denied</option>
+                                <option value="Incomplete" ${requirements[field.key] === 'Incomplete' ? 'selected' : ''} disabled>Incomplete</option>
+                                <option value="Renewal" ${requirements[field.key] === 'Renewal' ? 'selected' : ''} disabled>Renewal</option>
+                            </x-form.select>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        // Inject into the div with id "requirementsContainer"
+        $('#requirementsContainer').html(html);
     });
 </script>
 
@@ -1503,6 +1459,80 @@
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-payout' })); // close the modal
                             $('#payout_history').DataTable().ajax.reload(null, false); // reload the table
                         });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: response.message,
+                            text: response.text
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+{{-- Update Requirements Script --}}
+<script>
+    $(document).ready(function () {
+        const $form = $('#Requirements');
+        let originalValues = {};
+
+        // Function to read all select/inputs inside the form dynamically
+        function getFormValues() {
+            const values = {};
+            $form.find('select').each(function () {
+                values[this.name] = $(this).val();
+            });
+            return values;
+        }
+
+        // Initialize originalValues after dynamic fields are injected
+        originalValues = getFormValues();
+
+        // Disable the Update button initially
+        $('#EditBtn').prop('disabled', true);
+
+        // Listen for changes on any select/input inside the form
+        $form.on('input change', 'select', function () {
+            const currentValues = getFormValues();
+            if (JSON.stringify(currentValues) !== JSON.stringify(originalValues)) {
+                $('#EditBtn').prop('disabled', false); // Enable the button update
+            } else {
+                $('#EditBtn').prop('disabled', true); // Disabled the button update
+            }
+        });
+
+        $('#Requirements').on('submit', function (e) {
+            e.preventDefault();
+
+            const id = $('#aics_requirement_id').val(); // get hidden id input
+            const formData = new FormData(this); // get the form input data
+
+            $.ajax({
+                url: `/aics/records/${id}/update/requirements`,
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        response.requirements.forEach(req => {
+                            $.each(req, function (key, value) {
+                                // Only update the <p> tags that exist on the page
+                                if (key.endsWith('_expires_at') && $('#' + key).length) {
+                                    $('#' + key).text(value);
+                                }
+                            });
+                        });
+                        $('#EditBtn').prop('disabled', true); // Disabled the button update
+                        $('#aics_records').DataTable().ajax.reload(null, false); // reload the Beneficiary table
                     } else {
                         Swal.fire({
                             icon: 'error',

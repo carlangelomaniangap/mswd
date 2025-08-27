@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AicsBurialRequirement;
+use App\Models\AicsMedicalRequirement;
 use App\Models\AicsRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +41,20 @@ class AdminAicsController extends Controller
             'problem_description' => 'required|string|max:255',
         ]);
 
+        // Check if a beneficiary with the same first name, last name, and date of birth already exists
+        $existing = AicsRecord::where('first_name', $validated['first_name'])
+            ->where('last_name', $validated['last_name'])
+            ->where('date_of_birth', $validated['date_of_birth'])
+            ->first();
+
+        // If a beneficiary is found, return an error response
+        if ($existing) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Beneficiary already exists.',
+            ]);
+        }
+
         $photoPath = null;
 
         if ($request->hasFile('photo')) {
@@ -58,7 +74,8 @@ class AdminAicsController extends Controller
         $user = Auth::user();
 
         $nextId = AicsRecord::max('id') + 1;
-        $qr_code = "qr_aics_{$nextId}.svg";
+        $formattedId = str_pad($nextId, 3, '0', STR_PAD_LEFT);
+        $qr_code = "qr_aics_{$formattedId}.svg";
 
         $record = AicsRecord::create([
             'photo' => $photoPath,
@@ -81,12 +98,13 @@ class AdminAicsController extends Controller
             'nature_of_problem' => $validated['nature_of_problem'],
             'problem_description' => $validated['problem_description'],
             'qr_code' => $qr_code,
+            'status'=> 'In Progress',
             'user_id' => $user->id,
             'user_role' => $user->role,
             'user_name' => $user->name
         ]);
 
-        $qrText = 'AICS-' . str_pad($record->id, 3, '0', STR_PAD_LEFT);
+        $qrText = url("/admin/beneficiary/scan?qrcode=" . 'AICS-' . str_pad($record->id, 3, '0', STR_PAD_LEFT));
         $qrPath = public_path("qrcodes/{$qr_code}");
 
         if (!file_exists(public_path('qrcodes'))) {
@@ -94,6 +112,72 @@ class AdminAicsController extends Controller
         }
 
         QrCode::format('svg')->size(200)->generate($qrText, $qrPath);
+
+        if($record->nature_of_problem === 'Medical') {
+            AicsMedicalRequirement::create([
+                'aics_record_id' => $record->id,
+                'letter_to_the_mayor' => 'Incomplete',
+                'letter_to_the_mayor_expires_at' => null,
+                'letter_to_the_mayor_updated_at' => null,
+                'medical_certificate' => 'Incomplete',
+                'medical_certificate_expires_at' => null,
+                'medical_certificate_updated_at' => null,
+                'laboratory_or_prescription' => 'Incomplete',
+                'laboratory_or_prescription_expires_at' => null,
+                'laboratory_or_prescription_updated_at' => null,
+                'barangay_indigency' => 'Incomplete',
+                'barangay_indigency_expires_at' => null,
+                'barangay_indigency_updated_at' => null,
+                'valid_id' => 'Incomplete',
+                'valid_id_expires_at' => null,
+                'valid_id_updated_at' => null,
+                'cedula' => 'Incomplete',
+                'cedula_expires_at' => null,
+                'cedula_updated_at' => null,
+                'barangay_certificate_or_marriage_contract' => 'Incomplete',
+                'barangay_certificate_or_marriage_contract_expires_at' => null,
+                'barangay_certificate_or_marriage_contract_updated_at' => null,
+                'user_id' => $user->id,
+                'user_role' => $user->role,
+                'user_name' => $user->name,
+            ]);
+        } elseif ($record->nature_of_problem === 'Financial') {
+
+        } elseif ($record->nature_of_problem === 'Educational') {
+
+        } elseif ($record->nature_of_problem === 'Burial') {
+            AicsBurialRequirement::create([
+                'aics_record_id' => $record->id,
+                'letter_to_the_mayor' => 'Incomplete',
+                'letter_to_the_mayor_expires_at' => null,
+                'letter_to_the_mayor_updated_at' => null,
+                'death_certificate' => 'Incomplete',
+                'death_certificate_expires_at' => null,
+                'death_certificate_updated_at' => null,
+                'funeral_contract' => 'Incomplete',
+                'funeral_contract_expires_at' => null,
+                'funeral_contract_updated_at' => null,
+                'barangay_indigency' => 'Incomplete',
+                'barangay_indigency_expires_at' => null,
+                'barangay_indigency_updated_at' => null,
+                'valid_id' => 'Incomplete',
+                'valid_id_expires_at' => null,
+                'valid_id_updated_at' => null,
+                'cedula' => 'Incomplete',
+                'cedula_expires_at' => null,
+                'cedula_updated_at' => null,
+                'barangay_certificate_or_marriage_contract' => 'Incomplete',
+                'barangay_certificate_or_marriage_contract_expires_at' => null,
+                'barangay_certificate_or_marriage_contract_updated_at' => null,
+                'user_id' => $user->id,
+                'user_role' => $user->role,
+                'user_name' => $user->name,
+            ]);
+        } elseif ($record->nature_of_problem === 'Transportation') {
+
+        } elseif ($record->nature_of_problem === 'Food') {
+
+        }
 
         return response()->json([
             'success' => true,
@@ -103,9 +187,171 @@ class AdminAicsController extends Controller
 
     public function fetchData()
     {
-        $records = AicsRecord::orderBy('id', 'desc')->get();
+        $now = now()->setTimezone('Asia/Manila');
+        // $now = Carbon::create(2025, 7, 16, 0, 0, 0, 'Asia/Manila');
 
-        $data = $records->map(function ($record) {
+        $models = [
+            AicsMedicalRequirement::class => [
+                'letter_to_the_mayor' => 'letter_to_the_mayor_expires_at',
+                'medical_certificate' => 'medical_certificate_expires_at',
+                'laboratory_or_prescription' => 'laboratory_or_prescription_expires_at',
+                'barangay_indigency' => 'barangay_indigency_expires_at',
+                'valid_id' => 'valid_id_expires_at',
+                'cedula' => 'cedula_expires_at',
+                'barangay_certificate_or_marriage_contract' => 'barangay_certificate_or_marriage_contract_expires_at',
+            ],
+            AicsBurialRequirement::class => [
+                'letter_to_the_mayor' => 'letter_to_the_mayor_expires_at',
+                'death_certificate' => 'death_certificate_expires_at',
+                'funeral_contract' => 'funeral_contract_expires_at',
+                'barangay_indigency' => 'barangay_indigency_expires_at',
+                'valid_id' => 'valid_id_expires_at',
+                'cedula' => 'cedula_expires_at',
+                'barangay_certificate_or_marriage_contract' => 'barangay_certificate_or_marriage_contract_expires_at',
+            ],
+        ];
+
+        foreach ($models as $model => $columns) {
+            foreach ($columns as $column => $expiresAt) {
+                $model::where($expiresAt, '<=', $now)
+                    ->where($column, '!=', 'Renewal')
+                    ->update([$column => 'Renewal']);
+            }
+        }
+
+        $records = AicsRecord::with([
+            'aicsmedicalRequirement',
+            // 'aicsfinancialRequirement',
+            // 'aicseducationalRequirement',
+            'aicsburialRequirement',
+            // 'aicstransportationRequirement',
+            // 'aicsfoodRequirement',
+        ])->orderBy('id', 'desc')->get();
+
+        $data = $records->map(function ($record) use ($now) {
+
+            $getExpirationInfo = function ($status, $expiresAt) use ($now) {
+
+                // If status is "Incomplete", it's still in progress
+                if ($status === 'Incomplete') {
+                    return "In Progress";
+                }
+
+                // If status is "Denied", it's not eligible
+                if ($status === 'Denied') {
+                    return "Not Eligible";
+                }
+
+                // Convert expiration date to timestamp
+                $expiresDate = strtotime($expiresAt);
+                // Get current time as timestamp
+                $nowDate = $now->timestamp;
+
+                // Get how many seconds have passed since expiration
+                $diffInSeconds = $nowDate - $expiresDate;
+
+                // If already expired
+                if ($diffInSeconds > 0) {
+                    // Get full days since it expired
+                    $daysOverdue = floor($diffInSeconds / (60 * 60 * 24)); // Calculate days overdue
+                    // Get full hours after days are removed
+                    $hoursOverdue = floor(($diffInSeconds % (60 * 60 * 24)) / (60 * 60)); // Calculate remaining hours
+
+                    // Return days if overdue by at least 1 day
+                    if ($daysOverdue > 0) {
+                        return "Expired: More than {$daysOverdue} " . ($daysOverdue == 1 ? 'day' : 'days') . " in renewal";
+                    }
+
+                    // Return hours if overdue by at least 1 hour
+                    if ($hoursOverdue > 0) {
+                        return "Expired: More than {$hoursOverdue} " . ($hoursOverdue == 1 ? 'hour' : 'hours') . " in renewal";
+                    }
+
+                    // Get full minutes after hours are removed
+                    $minutesOverdue = floor(($diffInSeconds % (60 * 60)) / 60);
+
+                    // Return minutes if overdue by at least 1 minute
+                    if ($minutesOverdue > 0) {
+                        return "Expired: More than {$minutesOverdue} minute" . ($minutesOverdue == 1 ? '' : 's') . " in renewal";
+                    }
+
+                    // If overdue by less than 1 minute
+                    return "Expired: Less than a minute ago";
+                };
+
+                // If status is "Complete"
+                if ($status === 'Complete') {
+                    // Get date 3 months before expiration
+                    $updatedDate = strtotime("-3 months", $expiresDate);
+                    return "Last updated: " . date('F j, Y', $updatedDate);
+                }
+
+                // If status is "Renewal"
+                if ($status === 'Renewal') {
+                    return "Expired: " . date('F j, Y', $expiresDate);
+                }
+            };
+
+            if ($record->nature_of_problem === 'Medical') {
+                $requirement = $record->aicsmedicalRequirement;
+
+                $requirements = [
+                    'letter_to_the_mayor' => $requirement->letter_to_the_mayor,
+                    'letter_to_the_mayor_expires_at' => $getExpirationInfo($requirement->letter_to_the_mayor, $requirement->letter_to_the_mayor_expires_at, $requirement->letter_to_the_mayor_updated_at),
+                    'medical_certificate' => $requirement->medical_certificate,
+                    'medical_certificate_expires_at' => $getExpirationInfo($requirement->medical_certificate, $requirement->medical_certificate_expires_at, $requirement->medical_certificate_updated_at),
+                    'laboratory_or_prescription' => $requirement->laboratory_or_prescription,
+                    'laboratory_or_prescription_expires_at' => $getExpirationInfo($requirement->laboratory_or_prescription, $requirement->laboratory_or_prescription_expires_at, $requirement->laboratory_or_prescription_updated_at),
+                    'barangay_indigency' => $requirement->barangay_indigency,
+                    'barangay_indigency_expires_at' => $getExpirationInfo($requirement->barangay_indigency, $requirement->barangay_indigency_expires_at, $requirement->barangay_indigency_updated_at),
+                    'valid_id' => $requirement->valid_id,
+                    'valid_id_expires_at' => $getExpirationInfo($requirement->valid_id, $requirement->valid_id_expires_at, $requirement->valid_id_updated_at),
+                    'cedula' => $requirement->cedula,
+                    'cedula_expires_at' => $getExpirationInfo($requirement->cedula, $requirement->cedula_expires_at, $requirement->cedula_updated_at),
+                    'barangay_certificate_or_marriage_contract' => $requirement->barangay_certificate_or_marriage_contract,
+                    'barangay_certificate_or_marriage_contract_expires_at' => $getExpirationInfo($requirement->barangay_certificate_or_marriage_contract, $requirement->barangay_certificate_or_marriage_contract_expires_at, $requirement->barangay_certificate_or_marriage_contract_updated_at),
+                ];
+            } elseif ($record->nature_of_problem === 'Financial') {
+                
+            } elseif ($record->nature_of_problem === 'Educational') {
+                
+            } elseif ($record->nature_of_problem === 'Burial') {
+                $requirement = $record->aicsburialRequirement;
+
+                $requirements = [
+                    'letter_to_the_mayor' => $requirement->letter_to_the_mayor,
+                    'letter_to_the_mayor_expires_at' => $getExpirationInfo($requirement->letter_to_the_mayor, $requirement->letter_to_the_mayor_expires_at, $requirement->letter_to_the_mayor_updated_at),
+                    'death_certificate' => $requirement->death_certificate,
+                    'death_certificate_expires_at' => $getExpirationInfo($requirement->death_certificate, $requirement->death_certificate_expires_at, $requirement->death_certificate_updated_at),
+                    'funeral_contract' => $requirement->funeral_contract,
+                    'funeral_contract_expires_at' => $getExpirationInfo($requirement->funeral_contract, $requirement->funeral_contract_expires_at, $requirement->funeral_contract_updated_at),
+                    'barangay_indigency' => $requirement->barangay_indigency,
+                    'barangay_indigency_expires_at' => $getExpirationInfo($requirement->barangay_indigency, $requirement->barangay_indigency_expires_at, $requirement->barangay_indigency_updated_at),
+                    'valid_id' => $requirement->valid_id,
+                    'valid_id_expires_at' => $getExpirationInfo($requirement->valid_id, $requirement->valid_id_expires_at, $requirement->valid_id_updated_at),
+                    'cedula' => $requirement->cedula,
+                    'cedula_expires_at' => $getExpirationInfo($requirement->cedula, $requirement->cedula_expires_at, $requirement->cedula_updated_at),
+                    'barangay_certificate_or_marriage_contract' => $requirement->barangay_certificate_or_marriage_contract,
+                    'barangay_certificate_or_marriage_contract_expires_at' => $getExpirationInfo($requirement->barangay_certificate_or_marriage_contract, $requirement->barangay_certificate_or_marriage_contract_expires_at, $requirement->barangay_certificate_or_marriage_contract_updated_at),
+                ];
+            } elseif ($record->nature_of_problem === 'Transportation') {
+                
+            } elseif ($record->nature_of_problem === 'Food') {
+                
+            }
+
+            $statusStyles = [
+                'Eligible' => 'bg-green-500 text-white',
+                'In Progress' => 'bg-yellow-300 text-yellow-700',
+                'Expired' => 'bg-orange-500 text-white',
+                'Not Eligible' => 'bg-red-500 text-white',
+            ];
+
+            // Get the style based on the record’s status
+            $style = $statusStyles[$record->status];
+
+            // Combine the style with status
+            $status = "<span class='text-sm rounded-full px-2 py-1 {$style}'>$record->status</span>";
 
             // Initialize Photo variable with a value of null
             $photo = null;
@@ -180,8 +426,10 @@ class AdminAicsController extends Controller
                 'sex' => $record->sex,
                 'cellphone_number' => $record->cellphone_number,
                 'aics_id' => '<span class="text-sm text-white bg-blue-500 rounded-full px-2 py-1">AICS-' . str_pad($record->id, 3, '0', STR_PAD_LEFT) . '</span>',
-                'status' => '<span class="text-sm bg-yellow-300 text-yellow-700 rounded-full px-2 py-1">Expired</span>',
-                'eligibility' => '<span class="text-sm bg-green-300 text-green-700 rounded-full px-2 py-1">Eligible</span>'
+                'status' => $status,
+
+                // requirements
+                'requirements' => $requirements,
             ];
         });
 

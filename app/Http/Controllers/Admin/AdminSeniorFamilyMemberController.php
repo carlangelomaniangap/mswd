@@ -21,6 +21,20 @@ class AdminSeniorFamilyMemberController extends Controller
             'family_member_monthly_income' => 'required|integer',
         ]);
 
+        // Check if a family member with the same name, relationship, and age already exists
+        $existing = SeniorFamilyMember::where('family_member_name', $validated['family_member_name'])
+            ->where('relationship', operator: $validated['relationship'])
+            ->where('family_member_age', operator: $validated['family_member_age'])
+            ->first();
+
+        // If a family member is found, return an error response
+        if ($existing) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Family member already exists.',
+            ]);
+        }
+
         $user = Auth::user();
 
         SeniorFamilyMember::create([
