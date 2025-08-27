@@ -104,7 +104,7 @@ class AicsRecordsController extends Controller
             'user_name' => $user->name
         ]);
 
-        $qrText = url("/admin/beneficiary/scan?qrcode=" . 'AICS-' . str_pad($record->id, 3, '0', STR_PAD_LEFT));
+        $qrText = url("/aics/record/data/scan?qrcode=" . 'AICS-' . str_pad($record->id, 3, '0', STR_PAD_LEFT));
         $qrPath = public_path("qrcodes/{$qr_code}");
 
         if (!file_exists(public_path('qrcodes'))) {

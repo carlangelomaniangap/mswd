@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QRScannerController;
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminPwdController;
@@ -17,7 +18,6 @@ use App\Http\Controllers\Admin\AdminSoloParentController;
 use App\Http\Controllers\Admin\AdminSoloParentFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSoloParentRequirementsController;
 use App\Http\Controllers\Admin\AdminManageAccountController;
-
 
 use App\Http\Controllers\Pwd\PwdDashboardController;
 use App\Http\Controllers\Pwd\PwdRecordsController;
@@ -52,6 +52,10 @@ use App\Http\Controllers\Solo_Parent\SoloParentRequirementsController;
 
 Route::get('/', function () {
     return view('auth.login');
+});
+Route::middleware(['auth', 'role:admin,aics'])->group(function () {
+    Route::get('/aics/record/data/scan', [QRScannerController::class, 'index'])->name('qrcode_scanner');
+    Route::get('/aics/record/data/scan/{id}', [QRScannerController::class, 'scan']);
 });
 
 Route::middleware(['auth', 'role:admin'])
