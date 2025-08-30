@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AicsQRScannerController;
 use App\Http\Controllers\PwdQRScannerController;
+use App\Http\Controllers\SeniorQRScannerController;
+use App\Http\Controllers\SoloParentQRScannerController;
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminPwdController;
@@ -63,6 +65,16 @@ Route::middleware(['auth', 'role:admin,aics'])->group(function () {
 Route::middleware(['auth', 'role:admin,pwd'])->group(function () {
     Route::get('/pwd/record/data/scan', [PwdQRScannerController::class, 'index'])->name('qrcode_scanner');
     Route::get('/pwd/record/data/scan/{id}', [PwdQRScannerController::class, 'scan']);
+});
+
+Route::middleware(['auth', 'role:admin,senior_citizen'])->group(function () {
+    Route::get('/senior_citizen/record/data/scan', [SeniorQRScannerController::class, 'index'])->name('qrcode_scanner');
+    Route::get('/senior_citizen/record/data/scan/{id}', [SeniorQRScannerController::class, 'scan']);
+});
+
+Route::middleware(['auth', 'role:admin,solo_parent'])->group(function () {
+    Route::get('/solo_parent/record/data/scan', [SoloParentQRScannerController::class, 'index'])->name('qrcode_scanner');
+    Route::get('/solo_parent/record/data/scan/{id}', [SoloParentQRScannerController::class, 'scan']);
 });
 
 Route::middleware(['auth', 'role:admin'])
