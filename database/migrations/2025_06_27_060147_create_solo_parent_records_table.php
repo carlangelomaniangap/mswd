@@ -47,6 +47,7 @@ return new class extends Migration
             $table->string('relationship_to_solo_parent');
             $table->string('emerg_contact_number');
             $table->string('qr_code');
+            $table->enum('status', ['Eligible', 'In Progress', 'Expired', 'Not Eligible'])->default('In Progress');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('user_role');

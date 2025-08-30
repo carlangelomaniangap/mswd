@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Solo_Parent;
 
 use App\Http\Controllers\Controller;
+use App\Models\SoloParentRecord;
 use App\Models\SoloParentRequirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,7 @@ class SoloParentRequirementsController extends Controller
             'affidavit_of_solo_parent' => 'nullable|in:Complete,Incomplete,Renewal,Denied',
         ]);
 
-        // Fetch all PwdRequirement records linked to the given PWD record ID.
+        // Fetch all SoloParentRequirement records linked to the given Solo Parent record ID.
         $requirements = SoloParentRequirement::where('solo_parent_record_id', $id)->get();
 
         // Get the authenticated user's information.
@@ -39,13 +40,11 @@ class SoloParentRequirementsController extends Controller
                         $requirement->{$column} = $status;
                         $requirement->{$column . '_updated_at'} = now();
 
+                        $expiresCol = $column . '_expires_at';
                         if ($status === 'Complete') {
-                            $currentExpiration = $requirement->{$column . '_expires_at'};
-                            $requirement->{$column . '_expires_at'} = ($currentExpiration && $currentExpiration > now())
-                                ? now()->parse($currentExpiration)->addMonths(3)
-                                : now()->addMonths(3);
+                            $requirement->{$expiresCol} = now()->addMonths(3);
                         } else {
-                            $requirement->{$column . '_expires_at'} = null;
+                            $requirement->{$expiresCol} = null;
                         }
                     }
                 }
@@ -59,7 +58,7 @@ class SoloParentRequirementsController extends Controller
 
         $now = now()->setTimezone('Asia/Manila');
 
-        $getExpirationInfo = function ($status, $expiresAt) use ($now) {
+        $getExpirationInfo = function ($status, $expiresAt, $updatedAt) use ($now) {
 
             // If status is "Incomplete", it's still in progress
             if ($status === 'Incomplete') {
@@ -111,8 +110,7 @@ class SoloParentRequirementsController extends Controller
             // If status is "Complete"
             if ($status === 'Complete') {
                 // Get date 3 months before expiration
-                $updatedDate = strtotime("-3 months", $expiresDate);
-                return "Last updated: " . date('F j, Y', $updatedDate);
+                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
             }
 
             // If status is "Renewal"
@@ -120,6 +118,30 @@ class SoloParentRequirementsController extends Controller
                 return "Expired: " . date('F j, Y', $expiresDate);
             }
         };
+
+        $record = SoloParentRecord::findOrFail($id);
+
+        $requirement = $record->soloParentRequirement;
+
+        $values = array_map('trim', [
+            $requirement->valid_id,
+            $requirement->birth_certificate,
+            $requirement->solo_parent_id_application_form,
+            $requirement->affidavit_of_solo_parent,
+        ]);
+
+        if (!in_array('Incomplete', $values, true) && !in_array('Renewal', $values, true) && !in_array('Denied', $values, true)) {
+            $status = 'Eligible';
+        } elseif (in_array('Incomplete', $values, true)) {
+            $status = 'In Progress';
+        } elseif (in_array('Renewal', $values, true)) {
+            $status = 'Expired';
+        } elseif (in_array('Denied', $values, true)) {
+            $status = 'Not Eligible';
+        }
+
+        $record->status = $status;
+        $record->save();
 
         return response()->json([
             'success' => true,
@@ -129,7 +151,8 @@ class SoloParentRequirementsController extends Controller
                 'birth_certificate_expires_at' => $getExpirationInfo($requirement->birth_certificate, $requirement->birth_certificate_expires_at, $requirement->birth_certificate_updated_at),
                 'solo_parent_id_application_form_expires_at' => $getExpirationInfo($requirement->solo_parent_id_application_form, $requirement->solo_parent_id_application_form_expires_at, $requirement->solo_parent_id_application_form_updated_at),
                 'affidavit_of_solo_parent_expires_at' => $getExpirationInfo($requirement->affidavit_of_solo_parent, $requirement->affidavit_of_solo_parent_expires_at, $requirement->affidavit_of_solo_parent_updated_at),
-            ]
+            ],
+            'status' => $status
         ]);
     }
 }

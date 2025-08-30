@@ -41,6 +41,7 @@ class SoloParentRecord extends Model
         'relationship_to_solo_parent',
         'emerg_contact_number',
         'qr_code',
+        'status',
         'user_id',
         'user_role',
         'user_name'
