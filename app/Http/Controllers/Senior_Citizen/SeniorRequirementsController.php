@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Senior_Citizen;
 
 use App\Http\Controllers\Controller;
+use App\Models\SeniorCitizenRecord;
 use App\Models\SeniorRequirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,13 +39,11 @@ class SeniorRequirementsController extends Controller
                         $requirement->{$column} = $status;
                         $requirement->{$column . '_updated_at'} = now();
 
+                        $expiresCol = $column . '_expires_at';
                         if ($status === 'Complete') {
-                            $currentExpiration = $requirement->{$column . '_expires_at'};
-                            $requirement->{$column . '_expires_at'} = ($currentExpiration && $currentExpiration > now())
-                                ? now()->parse($currentExpiration)->addMonths(3)
-                                : now()->addMonths(3);
+                            $requirement->{$expiresCol} = now()->addMonths(3);
                         } else {
-                            $requirement->{$column . '_expires_at'} = null;
+                            $requirement->{$expiresCol} = null;
                         }
                     }
                 }
@@ -58,7 +57,7 @@ class SeniorRequirementsController extends Controller
 
         $now = now()->setTimezone('Asia/Manila');
 
-        $getExpirationInfo = function ($status, $expiresAt) use ($now) {
+        $getExpirationInfo = function ($status, $expiresAt, $updatedAt) use ($now) {
 
             // If status is "Incomplete", it's still in progress
             if ($status === 'Incomplete') {
@@ -110,8 +109,7 @@ class SeniorRequirementsController extends Controller
             // If status is "Complete"
             if ($status === 'Complete') {
                 // Get date 3 months before expiration
-                $updatedDate = strtotime("-3 months", $expiresDate);
-                return "Last updated: " . date('F j, Y', $updatedDate);
+                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
             }
 
             // If status is "Renewal"
@@ -120,6 +118,29 @@ class SeniorRequirementsController extends Controller
             }
         };
 
+        $record = SeniorCitizenRecord::findOrFail($id);
+
+        $requirement = $record->seniorRequirement;
+
+        $values = array_map('trim', [
+            $requirement->valid_id,
+            $requirement->birth_certificate,
+            $requirement->barangay_certificate,
+        ]);
+
+        if (!in_array('Incomplete', $values, true) && !in_array('Renewal', $values, true) && !in_array('Denied', $values, true)) {
+            $status = 'Eligible';
+        } elseif (in_array('Incomplete', $values, true)) {
+            $status = 'In Progress';
+        } elseif (in_array('Renewal', $values, true)) {
+            $status = 'Expired';
+        } elseif (in_array('Denied', $values, true)) {
+            $status = 'Not Eligible';
+        }
+
+        $record->status = $status;
+        $record->save();
+
         return response()->json([
             'success' => true,
             'message' => 'Requirements updated successfully.',
@@ -127,7 +148,8 @@ class SeniorRequirementsController extends Controller
                 'valid_id_expires_at' => $getExpirationInfo($requirement->valid_id, $requirement->valid_id_expires_at, $requirement->valid_id_updated_at),
                 'birth_certificate_expires_at' => $getExpirationInfo($requirement->birth_certificate, $requirement->birth_certificate_expires_at, $requirement->birth_certificate_updated_at),
                 'barangay_certificate_expires_at' => $getExpirationInfo($requirement->barangay_certificate, $requirement->barangay_certificate_expires_at, $requirement->barangay_certificate_updated_at),
-            ]
+            ],
+            'status' => $status
         ]);
     }
 }

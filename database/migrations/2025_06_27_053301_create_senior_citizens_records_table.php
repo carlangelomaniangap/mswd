@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('occupation');
             $table->string('cellphone_number');
             $table->string('qr_code');
+            $table->enum('status', ['Eligible', 'In Progress', 'Expired', 'Not Eligible'])->default('In Progress');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('user_role');
