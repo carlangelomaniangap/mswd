@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\PwdRecord;
 use App\Models\PwdRequirement;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -80,7 +79,8 @@ class AdminPwdController extends Controller
         $user = Auth::user();
 
         $nextId = PwdRecord::max('id') + 1;
-        $qr_code = "qr_pwd_{$nextId}.svg";
+        $formattedId = str_pad($nextId, 3, '0', STR_PAD_LEFT);
+        $qr_code = "qr_pwd_{$formattedId}.svg";
 
         $record = PwdRecord::create([
             'photo' => $photoPath,
@@ -109,12 +109,13 @@ class AdminPwdController extends Controller
             'relationship_to_pwd' => $validated['relationship_to_pwd'],
             'emerg_contact_number' => $validated['emerg_contact_number'],
             'qr_code' => $qr_code,
+            'status'=> 'In Progress',
             'user_id' => $user->id,
             'user_role' => $user->role,
             'user_name' => $user->name
         ]);
 
-        $qrText = 'PWD-' . str_pad($record->id, 3, '0', STR_PAD_LEFT);
+        $qrText = url("/pwd/record/data/scan?qrcode=" . 'PWD-' . str_pad($record->id, 3, '0', STR_PAD_LEFT));
         $qrPath = public_path("qrcodes/{$qr_code}");
 
         if (!file_exists(public_path('qrcodes'))) {
@@ -161,9 +162,19 @@ class AdminPwdController extends Controller
         ];
 
         foreach ($columns as $column => $expiresAt) {
-            PwdRequirement::where($expiresAt, '<=', $now)
+            $expiredRequirements = PwdRequirement::where($expiresAt, '<=', $now)
                 ->where($column, '!=', 'Renewal')
-                ->update([$column => 'Renewal']);
+                ->get();
+
+            foreach ($expiredRequirements as $req) {
+                $req->update([$column => 'Renewal']);
+
+                $record = $req->pwdRecord;
+                if ($record) {
+                    $record->status = 'Expired';
+                    $record->save();
+                }
+            }
         }
 
         $records = PwdRecord::with('pwdRequirement')->orderBy('id', 'desc')->get();
@@ -172,24 +183,20 @@ class AdminPwdController extends Controller
 
             $requirement = $record->pwdRequirement;
 
-            $values = array_map('trim', [
-                $requirement->valid_id,
-                $requirement->medical_certificate,
-                $requirement->barangay_certificate,
-                $requirement->birth_certificate,
-            ]);
+            $statusStyles = [
+                'Eligible' => 'bg-green-500 text-white',
+                'In Progress' => 'bg-yellow-300 text-yellow-700',
+                'Expired' => 'bg-orange-500 text-white',
+                'Not Eligible' => 'bg-red-500 text-white',
+            ];
 
-            if (!in_array('Incomplete', $values, true) && !in_array('Renewal', $values, true) && !in_array('Denied', $values, true)) {
-                $status = '<span class="text-sm bg-green-500 text-white rounded-full px-2 py-1">Eligible</span>';
-            } elseif (in_array('Incomplete', $values, true)) {
-                $status = '<span class="text-sm bg-yellow-300 text-yellow-700 rounded-full px-2 py-1">In Progress</span>';
-            } elseif (in_array('Renewal', $values, true)) {
-                $status = '<span class="text-sm bg-orange-500 text-white rounded-full px-2 py-1">Expired</span>';
-            } elseif (in_array('Denied', $values, true)) {
-                $status = '<span class="text-sm bg-red-500 text-white rounded-full px-2 py-1">Not Eligible</span>';
-            }
+            // Get the style based on the record’s status
+            $style = $statusStyles[$record->status];
 
-            $getExpirationInfo = function ($status, $expiresAt) use ($now) {
+            // Combine the style with status
+            $status = "<span class='text-sm rounded-full px-2 py-1 {$style}'>$record->status</span>";
+
+            $getExpirationInfo = function ($status, $expiresAt, $updatedAt) use ($now) {
 
                 // If status is "Incomplete", it's still in progress
                 if ($status === 'Incomplete') {
@@ -241,8 +248,7 @@ class AdminPwdController extends Controller
                 // If status is "Complete"
                 if ($status === 'Complete') {
                     // Get date 3 months before expiration
-                    $updatedDate = strtotime("-3 months", $expiresDate);
-                    return "Last updated: " . date('F j, Y', $updatedDate);
+                    return "Last updated: " . date('F j, Y', strtotime($updatedAt));
                 }
 
                 // If status is "Renewal"

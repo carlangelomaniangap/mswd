@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PwdRecord;
 use App\Models\PwdRequirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,13 +40,11 @@ class AdminPwdRequirementsController extends Controller
                         $requirement->{$column} = $status;
                         $requirement->{$column . '_updated_at'} = now();
 
+                        $expiresCol = $column . '_expires_at';
                         if ($status === 'Complete') {
-                            $currentExpiration = $requirement->{$column . '_expires_at'};
-                            $requirement->{$column . '_expires_at'} = ($currentExpiration && $currentExpiration > now())
-                                ? now()->parse($currentExpiration)->addMonths(3)
-                                : now()->addMonths(3);
+                            $requirement->{$expiresCol} = now()->addMonths(3);
                         } else {
-                            $requirement->{$column . '_expires_at'} = null;
+                            $requirement->{$expiresCol} = null;
                         }
                     }
                 }
@@ -59,7 +58,7 @@ class AdminPwdRequirementsController extends Controller
 
         $now = now()->setTimezone('Asia/Manila');
 
-        $getExpirationInfo = function ($status, $expiresAt) use ($now) {
+        $getExpirationInfo = function ($status, $expiresAt, $updatedAt) use ($now) {
 
             // If status is "Incomplete", it's still in progress
             if ($status === 'Incomplete') {
@@ -111,8 +110,7 @@ class AdminPwdRequirementsController extends Controller
             // If status is "Complete"
             if ($status === 'Complete') {
                 // Get date 3 months before expiration
-                $updatedDate = strtotime("-3 months", $expiresDate);
-                return "Last updated: " . date('F j, Y', $updatedDate);
+                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
             }
 
             // If status is "Renewal"
@@ -120,6 +118,30 @@ class AdminPwdRequirementsController extends Controller
                 return "Expired: " . date('F j, Y', $expiresDate);
             }
         };
+
+        $record = PwdRecord::findOrFail($id);
+
+        $requirement = $record->pwdRequirement;
+
+        $values = array_map('trim', [
+            $requirement->valid_id,
+            $requirement->medical_certificate,
+            $requirement->barangay_certificate,
+            $requirement->birth_certificate,
+        ]);
+
+        if (!in_array('Incomplete', $values, true) && !in_array('Renewal', $values, true) && !in_array('Denied', $values, true)) {
+            $status = 'Eligible';
+        } elseif (in_array('Incomplete', $values, true)) {
+            $status = 'In Progress';
+        } elseif (in_array('Renewal', $values, true)) {
+            $status = 'Expired';
+        } elseif (in_array('Denied', $values, true)) {
+            $status = 'Not Eligible';
+        }
+
+        $record->status = $status;
+        $record->save();
 
         return response()->json([
             'success' => true,
@@ -129,7 +151,8 @@ class AdminPwdRequirementsController extends Controller
                 'medical_certificate_expires_at' => $getExpirationInfo($requirement->medical_certificate, $requirement->medical_certificate_expires_at, $requirement->medical_certificate_updated_at),
                 'barangay_certificate_expires_at' => $getExpirationInfo($requirement->barangay_certificate, $requirement->barangay_certificate_expires_at, $requirement->barangay_certificate_updated_at),
                 'birth_certificate_expires_at' => $getExpirationInfo($requirement->birth_certificate, $requirement->birth_certificate_expires_at, $requirement->birth_certificate_updated_at),
-            ]
+            ],
+            'status' => $status
         ]);
     }
 }
