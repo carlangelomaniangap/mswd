@@ -67,7 +67,7 @@
                             <div class="flex flex-col items-center gap-4">
                                 <img id="photo" alt="Photo" class="w-32 h-32 object-cover rounded border">
                                 <img id="qr_code" alt="QR Code" class="w-32 h-32 object-cover rounded border">
-                                <div><strong>PWD ID:</strong> <span id="aics_id">Loading...</span></div>
+                                <div><strong>PWD ID:</strong> <span id="pwd_id">Loading...</span></div>
                             </div>
 
                             <div class="col-span-2">
@@ -224,7 +224,7 @@
 
                         $('#photo').attr('src', data.photo);
                         $('#qr_code').attr('src', data.qr_code);
-                        $('#aics_id').text(`PWD-${String(data.id).padStart(3, '0')}`);
+                        $('#pwd_id').text(`PWD-${String(data.id).padStart(3, '0')}`);
                         $('#full_name').text([data.first_name, data.middle_name, data.last_name].filter(Boolean).join(' '));
                         $('#address').text([data.house_no_unit_floor, data.street, data.barangay, data.city_municipality, data.province].filter(Boolean).join(', '));
                         $('#type_of_disability').text(data.type_of_disability);

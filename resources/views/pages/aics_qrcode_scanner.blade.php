@@ -288,15 +288,18 @@
                                 <table class="min-w-full border border-gray-300">
                                     <thead>
                                         <tr class="bg-gray-200 dark:bg-dark-eval-0">
-                                            <th class="border px-2 py-1">Date</th>
-                                            <th class="border px-2 py-1">Amount</th>
-                                            <th class="border px-2 py-1">Type</th>
-                                            <th class="border px-2 py-1">Claimed by</th>
+                                            <th class="border px-2 py-1">Name</th>
+                                            <th class="border px-2 py-1">Relationship</th>
+                                            <th class="border px-2 py-1">Age</th>
+                                            <th class="border px-2 py-1">Civil Status</th>
+                                            <th class="border px-2 py-1">Educational Attainment</th>
+                                            <th class="border px-2 py-1">Occupation</th>
+                                            <th class="border px-2 py-1">Monthly Income</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="border px-2 py-1 text-center align-middle" colspan="4">No family members</td>
+                                            <td class="border px-2 py-1 text-center align-middle" colspan="7">No family members</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -310,7 +313,7 @@
                                             <th class="border px-2 py-1">Relationship</th>
                                             <th class="border px-2 py-1">Age</th>
                                             <th class="border px-2 py-1">Civil Status</th>
-                                            <th class="border px-2 py-1">Education</th>
+                                            <th class="border px-2 py-1">Educational Attainment</th>
                                             <th class="border px-2 py-1">Occupation</th>
                                             <th class="border px-2 py-1">Monthly Income</th>
                                         </tr>
