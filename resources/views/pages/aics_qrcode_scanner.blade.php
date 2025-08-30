@@ -169,8 +169,8 @@
                     <div class="bg-white dark:bg-dark-eval-1 shadow rounded p-4">
                         {{-- Requirements --}}
                         <h3 class="font-bold text-lg pb-4">Requirements</h3>
-                        <div><strong>Status:</strong> <span id="status"></span></div>
-                        <div id="requirementsContainer"></div>
+                        <div class="pb-4"><strong>Status:</strong> <span id="status"></span></div>
+                        <div id="requirementsContainer" class="space-y-4"></div>
                     </div>
 
                     <div class="bg-white dark:bg-dark-eval-1 shadow rounded p-4">
@@ -225,29 +225,57 @@
 
                         // Define the labels of requirements
                         const fields = [
-                            { key: 'letter_to_the_mayor', label: 'Letter to the Mayor' },
-                            { key: 'letter_to_the_mayor_expires_at', label: 'Letter Expiry' },
-                            { key: 'medical_certificate', label: 'Medical Certificate' },
-                            { key: 'medical_certificate_expires_at', label: 'Medical Expiry' },
-                            { key: 'laboratory_or_prescription', label: 'Laboratory or Prescription' },
-                            { key: 'laboratory_or_prescription_expires_at', label: 'Laboratory Expiry' },
-                            { key: 'death_certificate', label: 'Death Certificate' },
-                            { key: 'death_certificate_expires_at', label: 'Death Expiry' },
-                            { key: 'funeral_contract', label: 'Funeral Contract' },
-                            { key: 'funeral_contract_expires_at', label: 'Funeral Expiry' },
-                            { key: 'barangay_indigency', label: 'Barangay Indigency' },
-                            { key: 'barangay_indigency_expires_at', label: 'Indigency Expiry' },
-                            { key: 'valid_id', label: 'Valid ID' },
-                            { key: 'valid_id_expires_at', label: 'Valid ID Expiry' },
-                            { key: 'cedula', label: 'Cedula' },
-                            { key: 'cedula_expires_at', label: 'Cedula Expiry' },
-                            { key: 'barangay_certificate_or_marriage_contract', label: 'Barangay Certificate/Marriage Contract' },
-                            { key: 'barangay_certificate_or_marriage_contract_expires_at', label: 'Certificate Expiry' },
+                            { key: 'letter_to_the_mayor', label: 'Letter to the Mayor', expiredANDupdatedKey: 'letter_to_the_mayor' },
+                            { key: 'medical_certificate', label: 'Medical Certificate', expiredANDupdatedKey: 'medical_certificate' },
+                            { key: 'laboratory_or_prescription', label: 'Laboratory or Prescription', expiredANDupdatedKey: 'laboratory_or_prescription' },
+                            { key: 'death_certificate', label: 'Death Certificate', expiredANDupdatedKey: 'death_certificate' },
+                            { key: 'death_certificate', label: 'Death Certificate', expiredANDupdatedKey: 'death_certificate' },
+                            { key: 'funeral_contract', label: 'Funeral Contract', expiredANDupdatedKey: 'funeral_contract' },
+                            { key: 'barangay_indigency', label: 'Barangay Indigency', expiredANDupdatedKey: 'barangay_indigency' },
+                            { key: 'valid_id', label: 'Valid ID', expiredANDupdatedKey: 'valid_id' },
+                            { key: 'cedula', label: 'Cedula', expiredANDupdatedKey: 'cedula' },
+                            { key: 'barangay_certificate_or_marriage_contract', label: 'Barangay Certificate/Marriage Contract', expiredANDupdatedKey: 'barangay_certificate_or_marriage_contract' },
                         ];
+
+                        const containerStyles = {
+                            'Complete': 'bg-green-100 border-2 border-green-500',
+                            'Incomplete': 'bg-yellow-100 border-2 border-yellow-500',
+                            'Renewal': 'bg-orange-100 border-2 border-orange-500',
+                            'Denied': 'bg-red-100 border-2 border-red-500'
+                        };
+
+                        const statusStyles = {
+                            'Complete': 'bg-white px-2 py-1 border-2 border-green-500 rounded',
+                            'Incomplete': 'bg-white px-2 py-1 border-2 border-yellow-500 rounded',
+                            'Renewal': 'bg-white px-2 py-1 border-2 border-orange-500 rounded',
+                            'Denied': 'bg-white px-2 py-1 border-2 border-red-500 rounded'
+                        };
+
+                        const textStyles = {
+                            'Complete': 'text-green-700',
+                            'Incomplete': 'text-yellow-700',
+                            'Renewal': 'text-orange-700',
+                            'Denied': 'text-red-700'
+                        };
 
                         fields.forEach(field => {
                             if (requirements[field.key] !== undefined) {
-                                html += `<li><strong>${field.label}:</strong> ${requirements[field.key]}</li>`;
+                                const status = requirements[field.key];
+                                const ContainerColor = containerStyles[status];
+                                const textColor = textStyles[status];
+                                const statusColor = statusStyles[status];
+
+                                html += `
+                                    <div class="w-full p-4 ${ContainerColor} flex items-center justify-between">
+                                        <div>
+                                            <p class="${textColor} font-semibold">${field.label}</p>
+                                            <p class="${textColor} text-sm">${requirements[field.expiredANDupdatedKey]}</p>
+                                        </div>
+                                        <div>
+                                            <p class="${textColor} font-semibold ${statusColor}">${requirements[field.key]}</p>
+                                        </div>
+                                    </div>
+                                `;
                             }
                         });
 
@@ -256,7 +284,23 @@
                         const familyMembers = data.family_members;
 
                         if (familyMembers.length === 0) {
-                            $('#familyMembersContainer').html('<p>No family members</p>');
+                            $('#familyMembersContainer').html(`
+                                <table class="min-w-full border border-gray-300">
+                                    <thead>
+                                        <tr class="bg-gray-200 dark:bg-dark-eval-0">
+                                            <th class="border px-2 py-1">Date</th>
+                                            <th class="border px-2 py-1">Amount</th>
+                                            <th class="border px-2 py-1">Type</th>
+                                            <th class="border px-2 py-1">Claimed by</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border px-2 py-1 text-center align-middle" colspan="4">No family members</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            `);
                         } else {
                             let familyHtml = `
                                 <table class="min-w-full border border-gray-300">
@@ -299,7 +343,23 @@
                         const payoutHistory = data.payout_history;
 
                         if (payoutHistory.length === 0) {
-                            $('#payoutHistoriesContainer').html('<p>No payout history</p>');
+                            $('#payoutHistoriesContainer').html(`
+                                <table class="min-w-full border border-gray-300">
+                                    <thead>
+                                        <tr class="bg-gray-200 dark:bg-dark-eval-0">
+                                            <th class="border px-2 py-1">Date</th>
+                                            <th class="border px-2 py-1">Amount</th>
+                                            <th class="border px-2 py-1">Type</th>
+                                            <th class="border px-2 py-1">Claimed by</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border px-2 py-1 text-center align-middle" colspan="4">No payout history</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            `);
                         } else {
                             let payoutHtml = `
                                 <table class="min-w-full border border-gray-300">
