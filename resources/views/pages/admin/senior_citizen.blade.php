@@ -608,24 +608,17 @@
                                     Add Member
                                 </button>
                             </div>
-                            <div class="space-y-6">
-                                <div class="w-full h-full">
-                                    <table id="family_member" class="display text-xs border border-gray-400 dark:border-gray-600" style="width: 100%">
-                                        <thead class="bg-gray-200 dark:bg-dark-eval-1">
-                                            <tr>
-                                                <th>NAME</th>
-                                                <th>RELATIONSHIP</th>
-                                                <th>AGE</th>
-                                                <th>STATUS</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="text-xs flex items-center justify-end space-x-2">
-                                    <button class="px-4 py-2 border-2 text-blue-600 border-blue-600">Print Details</button>
-                                    <button class="px-4 py-2 border-2 text-green-600 border-green-600">Edit Record</button>
-                                    <button class="px-4 py-2 border-2 text-red-600 border-red-600">Delete Record</button>
-                                </div>
+                            <div class="w-full h-full">
+                                <table id="family_member" class="display text-xs border border-gray-400 dark:border-gray-600" style="width: 100%">
+                                    <thead class="bg-gray-200 dark:bg-dark-eval-1">
+                                        <tr>
+                                            <th>NAME</th>
+                                            <th>RELATIONSHIP</th>
+                                            <th>AGE</th>
+                                            <th>STATUS</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                     </div>
