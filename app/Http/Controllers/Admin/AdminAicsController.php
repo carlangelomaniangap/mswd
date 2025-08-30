@@ -240,7 +240,7 @@ class AdminAicsController extends Controller
 
         $data = $records->map(function ($record) use ($now) {
 
-            $getExpirationInfo = function ($status, $expiresAt) use ($now) {
+            $getExpirationInfo = function ($status, $expiresAt, $updatedAt) use ($now) {
 
                 // If status is "Incomplete", it's still in progress
                 if ($status === 'Incomplete') {
@@ -292,8 +292,7 @@ class AdminAicsController extends Controller
                 // If status is "Complete"
                 if ($status === 'Complete') {
                     // Get date 3 months before expiration
-                    $updatedDate = strtotime("-3 months", $expiresDate);
-                    return "Last updated: " . date('F j, Y', $updatedDate);
+                    return "Last updated: " . date('F j, Y', strtotime($updatedAt));
                 }
 
                 // If status is "Renewal"

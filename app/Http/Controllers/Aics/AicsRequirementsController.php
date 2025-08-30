@@ -44,7 +44,7 @@ class AicsRequirementsController extends Controller
 
         $now = now()->setTimezone('Asia/Manila');
 
-        $getExpirationInfo = function ($status, $expiresAt) use ($now) {
+        $getExpirationInfo = function ($status, $expiresAt, $updatedAt) use ($now) {
 
             // If status is "Incomplete", it's still in progress
             if ($status === 'Incomplete') {
@@ -96,8 +96,7 @@ class AicsRequirementsController extends Controller
             // If status is "Complete"
             if ($status === 'Complete') {
                 // Get date 3 months before expiration
-                $updatedDate = strtotime("-3 months", $expiresDate);
-                return "Last updated: " . date('F j, Y', $updatedDate);
+                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
             }
 
             // If status is "Renewal"
@@ -112,15 +111,15 @@ class AicsRequirementsController extends Controller
             $requirements = $model::where('aics_record_id', $id)->get();
 
             foreach ($requirements as $requirement) {
-                foreach ($columns[$model] as $col) {
-                    if (isset($validated[$col])) {
-                        $status = $validated[$col];
+                foreach ($columns[$model] as $column) {
+                    if (isset($validated[$column])) {
+                        $status = $validated[$column];
 
-                        if ($requirement->{$col} !== $status) {
-                            $requirement->{$col} = $status;
-                            $requirement->{$col . '_updated_at'} = now();
+                        if ($requirement->{$column} !== $status) {
+                            $requirement->{$column} = $status;
+                            $requirement->{$column . '_updated_at'} = now();
 
-                            $expiresCol = $col . '_expires_at';
+                            $expiresCol = $column . '_expires_at';
                             if ($status === 'Complete') {
                                 $requirement->{$expiresCol} = now()->addMonths(3);
                             } else {
@@ -137,9 +136,9 @@ class AicsRequirementsController extends Controller
 
                 // Prepare expiration info for response
                 $requirementArray = ['nature_of_problem' => $requirement->nature_of_problem];
-                foreach ($columns[$model] as $col) {
-                    $requirementArray[$col] = $requirement->{$col};
-                    $requirementArray[$col . '_expires_at'] = $getExpirationInfo($requirement->{$col}, $requirement->{$col . '_expires_at'});
+                foreach ($columns[$model] as $column) {
+                    $requirementArray[$column] = $requirement->{$column};
+                    $requirementArray[$column . '_expires_at'] = $getExpirationInfo($requirement->{$column}, $requirement->{$column . '_expires_at'}, $requirement->{$column . '_updated_at'});
                 }
 
                 $allRequirements[] = $requirementArray;
