@@ -225,16 +225,27 @@
 
                         // Define the labels of requirements
                         const fields = [
-                            { key: 'letter_to_the_mayor', label: 'Letter to the Mayor', expiredANDupdatedKey: 'letter_to_the_mayor' },
-                            { key: 'medical_certificate', label: 'Medical Certificate', expiredANDupdatedKey: 'medical_certificate' },
-                            { key: 'laboratory_or_prescription', label: 'Laboratory or Prescription', expiredANDupdatedKey: 'laboratory_or_prescription' },
-                            { key: 'death_certificate', label: 'Death Certificate', expiredANDupdatedKey: 'death_certificate' },
-                            { key: 'death_certificate', label: 'Death Certificate', expiredANDupdatedKey: 'death_certificate' },
-                            { key: 'funeral_contract', label: 'Funeral Contract', expiredANDupdatedKey: 'funeral_contract' },
-                            { key: 'barangay_indigency', label: 'Barangay Indigency', expiredANDupdatedKey: 'barangay_indigency' },
-                            { key: 'valid_id', label: 'Valid ID', expiredANDupdatedKey: 'valid_id' },
-                            { key: 'cedula', label: 'Cedula', expiredANDupdatedKey: 'cedula' },
-                            { key: 'barangay_certificate_or_marriage_contract', label: 'Barangay Certificate/Marriage Contract', expiredANDupdatedKey: 'barangay_certificate_or_marriage_contract' },
+                            { key: 'personal_letter', label: 'Personal Letter (1 orig., 1 Photocopy)', expiredANDupdatedKey: 'personal_letter_expires_at' },
+                            { key: 'brgy_cert_of_indigency_ng_pasyente_at_client', label: 'BRGY. Certificate of Indigency ng Pasyente at Client <br> (1 orig., 1 Photocopy)', expiredANDupdatedKey: 'brgy_cert_of_indigency_ng_pasyente_at_client_expires_at' },
+                            { key: 'brgy_cert_of_indigency_ng_pasyente_at_magulang', label: 'BRGY. Certificate of Indigency ng Pasyente at Magulang <br> (1 orig. 1 Photocopy)', expiredANDupdatedKey: 'brgy_cert_of_indigency_ng_pasyente_at_magulang_expires_at' },
+                            { key: 'brgy_cert_of_indigency', label: 'BRGY. Certificate of Indigency (1 orig., 1 Photocopy)', expiredANDupdatedKey: 'brgy_cert_of_indigency_expires_at' },
+                            { key: 'medical_abstract_or_medical_certificate', label: 'Medical Abstract/Medical Certificate <br> (2 Photocopies)', expiredANDupdatedKey: 'medical_abstract_or_medical_certificate_expires_at' },
+                            { key: 'latest_na_reseta_with_costing', label: 'Latest na Reseta with Costing (2 Photocopies)', expiredANDupdatedKey: 'latest_na_reseta_with_costing_expires_at' },
+                            { key: 'latest_na_laboratory_test_with_costing', label: 'Latest na Laboratory Test with Costing <br> (2 Photocopies)', expiredANDupdatedKey: 'latest_na_laboratory_test_with_costing_expires_at' },
+                            { key: 'hospital_bill', label: 'Hospital Bill <br> - Final Bill (If Discharged) <br> - Progress (If Still In) <br> - Promissory Note', expiredANDupdatedKey: 'hospital_bill_expires_at' },
+                            { key: 'birth_certificate_of_patient', label: 'Birth Certificate of Patient (2 Photocopies)', expiredANDupdatedKey: 'birth_certificate_of_patient_expires_at' },
+                            { key: 'brgy_certificate_of_proof_ng_pangangalaga', label: 'Brgy. Certificate of Proof ng Pangangalaga <br> (1 orig., 1 Photocopy)', expiredANDupdatedKey: 'brgy_certificate_of_proof_ng_pangangalaga_expires_at' },
+                            { key: 'birth_certificate_of_client', label: 'Birth Certificate of Client (2 Photocopies)', expiredANDupdatedKey: 'birth_certificate_of_client_expires_at' },
+                            { key: 'marriage_cert_or_brgy_cert_of_cohabitation', label: 'Marriage Certificate/BRGY. Certificate of Cohabitation <br> (2 Photocopies)', expiredANDupdatedKey: 'marriage_cert_or_brgy_cert_of_cohabitation_expires_at' },
+                            { key: 'birth_certificate_of_pasyente_at_client', label: 'Birth Certificate of Pasyente at Client <br> (2 Photocopies)', expiredANDupdatedKey: 'birth_certificate_of_pasyente_at_client_expires_at' },
+                            { key: 'one_valid_id_client_at_pasyente', label: '1 Valid ID (Client at Pasyente) <br> (2 Photocopies, Back to Back)', expiredANDupdatedKey: 'one_valid_id_client_at_pasyente_expires_at' },
+                            { key: 'authorization_letter', label: 'Autorization Letter (1 orig., 1 Photocopy)', expiredANDupdatedKey: 'authorization_letter_expires_at' },
+                            { key: 'one_valid_id', label: '1 Valid ID (2 Photocopies, Back to Back)', expiredANDupdatedKey: 'one_valid_id_expires_at' },
+                            { key: 'death_certificate', label: 'Death Certificate', expiredANDupdatedKey: 'death_certificate_expires_at' },
+                            { key: 'proof_of_billing_or_promissory_note_from_funeral', label: 'Proof of Billing/Promissory Note From Funeral', expiredANDupdatedKey: 'proof_of_billing_or_promissory_note_from_funeral_expires_at' },
+                            { key: 'marriage_cert_or_birth_cert_or_cert_of_cohabitation', label: 'Marriage Certificate/Birth Certificate/Certificate of Cohabitation <br> (If not Married)', expiredANDupdatedKey: 'marriage_cert_or_birth_cert_or_cert_of_cohabitation_expires_at' },
+                            { key: 'photocopy_of_valid_id', label: 'Photocopy of Valid ID <br> - If PWD Member (PWD ID) <br> - If Senior Citizen (Senior Citizen ID)', expiredANDupdatedKey: 'photocopy_of_valid_id_expires_at' },
+                            { key: 'surrender_id', label: 'Surrender ID (PWD/SC ID)', expiredANDupdatedKey: 'surrender_id_expires_at' },
                         ];
 
                         const containerStyles = {

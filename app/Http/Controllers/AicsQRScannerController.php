@@ -22,11 +22,11 @@ class AicsQRScannerController extends Controller
         $now = now()->setTimezone('Asia/Manila');
 
         // Split the QR code value (e.g. "AICS-001") into two parts: AICS as type and 001 as id
-        // $type = record type (AICS, PWD, SC, SP)
+        // $type = record type (AICS)
         // $id   = record ID ("001") used to find the correct record
         [$type, $id] = explode('-', $id);
 
-        $getExpirationInfo = function ($status, $expiresAt) use ($now) {
+        $getExpirationInfo = function ($status, $expiresAt, $updatedAt) use ($now) {
 
             // If status is "Incomplete", it's still in progress
             if ($status === 'Incomplete') {
@@ -78,8 +78,7 @@ class AicsQRScannerController extends Controller
             // If status is "Complete"
             if ($status === 'Complete') {
                 // Get date 3 months before expiration
-                $updatedDate = strtotime("-3 months", $expiresDate);
-                return "Last updated: " . date('F j, Y', $updatedDate);
+                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
             }
 
             // If status is "Renewal"
@@ -92,52 +91,161 @@ class AicsQRScannerController extends Controller
             $record = AicsRecord::with('aicsfamilyMember', 'aicspayoutHistory')->find($id);
 
             if ($record) {
-                if ($record->nature_of_problem === 'Medical') {
-                    $requirement = $record->aicsmedicalRequirement;
+                if ($record->nature_of_problem === 'Medical (Magulang Ang Magprocess)') {
+                    $requirement = $record->aicsmedicalmagulangRequirement;
 
                     $requirements = [
-                        'letter_to_the_mayor' => $requirement->letter_to_the_mayor,
-                        'letter_to_the_mayor_expires_at' => $getExpirationInfo($requirement->letter_to_the_mayor, $requirement->letter_to_the_mayor_expires_at, $requirement->letter_to_the_mayor_updated_at),
-                        'medical_certificate' => $requirement->medical_certificate,
-                        'medical_certificate_expires_at' => $getExpirationInfo($requirement->medical_certificate, $requirement->medical_certificate_expires_at, $requirement->medical_certificate_updated_at),
-                        'laboratory_or_prescription' => $requirement->laboratory_or_prescription,
-                        'laboratory_or_prescription_expires_at' => $getExpirationInfo($requirement->laboratory_or_prescription, $requirement->laboratory_or_prescription_expires_at, $requirement->laboratory_or_prescription_updated_at),
-                        'barangay_indigency' => $requirement->barangay_indigency,
-                        'barangay_indigency_expires_at' => $getExpirationInfo($requirement->barangay_indigency, $requirement->barangay_indigency_expires_at, $requirement->barangay_indigency_updated_at),
-                        'valid_id' => $requirement->valid_id,
-                        'valid_id_expires_at' => $getExpirationInfo($requirement->valid_id, $requirement->valid_id_expires_at, $requirement->valid_id_updated_at),
-                        'cedula' => $requirement->cedula,
-                        'cedula_expires_at' => $getExpirationInfo($requirement->cedula, $requirement->cedula_expires_at, $requirement->cedula_updated_at),
-                        'barangay_certificate_or_marriage_contract' => $requirement->barangay_certificate_or_marriage_contract,
-                        'barangay_certificate_or_marriage_contract_expires_at' => $getExpirationInfo($requirement->barangay_certificate_or_marriage_contract, $requirement->barangay_certificate_or_marriage_contract_expires_at, $requirement->barangay_certificate_or_marriage_contract_updated_at),
+                        'personal_letter' => $requirement->personal_letter,
+                        'personal_letter_expires_at' => $getExpirationInfo($requirement->personal_letter, $requirement->personal_letter_expires_at, $requirement->personal_letter_updated_at),
+                        'brgy_cert_of_indigency_ng_pasyente_at_client' => $requirement->brgy_cert_of_indigency_ng_pasyente_at_client,
+                        'brgy_cert_of_indigency_ng_pasyente_at_client_expires_at' => $getExpirationInfo($requirement->brgy_cert_of_indigency_ng_pasyente_at_client, $requirement->brgy_cert_of_indigency_ng_pasyente_at_client_expires_at, $requirement->brgy_cert_of_indigency_ng_pasyente_at_client_updated_at),
+                        'medical_abstract_or_medical_certificate' => $requirement->medical_abstract_or_medical_certificate,
+                        'medical_abstract_or_medical_certificate_expires_at' => $getExpirationInfo($requirement->medical_abstract_or_medical_certificate, $requirement->medical_abstract_or_medical_certificate_expires_at, $requirement->medical_abstract_or_medical_certificate_updated_at),
+                        'latest_na_reseta_with_costing' => $requirement->latest_na_reseta_with_costing,
+                        'latest_na_reseta_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_reseta_with_costing, $requirement->latest_na_reseta_with_costing_expires_at, $requirement->latest_na_reseta_with_costing_updated_at),
+                        'latest_na_laboratory_test_with_costing' => $requirement->latest_na_laboratory_test_with_costing,
+                        'latest_na_laboratory_test_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_laboratory_test_with_costing, $requirement->latest_na_laboratory_test_with_costing_expires_at, $requirement->latest_na_laboratory_test_with_costing_updated_at),
+                        'hospital_bill' => $requirement->hospital_bill,
+                        'hospital_bill_expires_at' => $getExpirationInfo($requirement->hospital_bill, $requirement->hospital_bill_expires_at, $requirement->hospital_bill_updated_at),
+                        'birth_certificate_of_patient' => $requirement->birth_certificate_of_patient,
+                        'birth_certificate_of_patient_expires_at' => $getExpirationInfo($requirement->birth_certificate_of_patient, $requirement->birth_certificate_of_patient_expires_at, $requirement->birth_certificate_of_patient_updated_at),
+                        'one_valid_id_client_at_pasyente' => $requirement->one_valid_id_client_at_pasyente,
+                        'one_valid_id_client_at_pasyente_expires_at' => $getExpirationInfo($requirement->one_valid_id_client_at_pasyente, $requirement->one_valid_id_client_at_pasyente_expires_at, $requirement->one_valid_id_client_at_pasyente_updated_at),
+                        'authorization_letter' => $requirement->authorization_letter,
+                        'authorization_letter_expires_at' => $getExpirationInfo($requirement->authorization_letter, $requirement->authorization_letter_expires_at, $requirement->authorization_letter_updated_at),
+                    ];
+                } elseif ($record->nature_of_problem === 'Medical (Tagapag Alaga Ang Magprocess)') {
+                    $requirement = $record->aicsmedicaltagapagalagaRequirement;
+
+                    $requirements = [
+                        'personal_letter' => $requirement->personal_letter,
+                        'personal_letter_expires_at' => $getExpirationInfo($requirement->personal_letter, $requirement->personal_letter_expires_at, $requirement->personal_letter_updated_at),
+                        'brgy_cert_of_indigency_ng_pasyente_at_client' => $requirement->brgy_cert_of_indigency_ng_pasyente_at_client,
+                        'brgy_cert_of_indigency_ng_pasyente_at_client_expires_at' => $getExpirationInfo($requirement->brgy_cert_of_indigency_ng_pasyente_at_client, $requirement->brgy_cert_of_indigency_ng_pasyente_at_client_expires_at, $requirement->brgy_cert_of_indigency_ng_pasyente_at_client_updated_at),
+                        'medical_abstract_or_medical_certificate' => $requirement->medical_abstract_or_medical_certificate,
+                        'medical_abstract_or_medical_certificate_expires_at' => $getExpirationInfo($requirement->medical_abstract_or_medical_certificate, $requirement->medical_abstract_or_medical_certificate_expires_at, $requirement->medical_abstract_or_medical_certificate_updated_at),
+                        'latest_na_reseta_with_costing' => $requirement->latest_na_reseta_with_costing,
+                        'latest_na_reseta_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_reseta_with_costing, $requirement->latest_na_reseta_with_costing_expires_at, $requirement->latest_na_reseta_with_costing_updated_at),
+                        'latest_na_laboratory_test_with_costing' => $requirement->latest_na_laboratory_test_with_costing,
+                        'latest_na_laboratory_test_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_laboratory_test_with_costing, $requirement->latest_na_laboratory_test_with_costing_expires_at, $requirement->latest_na_laboratory_test_with_costing_updated_at),
+                        'hospital_bill' => $requirement->hospital_bill,
+                        'hospital_bill_expires_at' => $getExpirationInfo($requirement->hospital_bill, $requirement->hospital_bill_expires_at, $requirement->hospital_bill_updated_at),
+                        'brgy_certificate_of_proof_ng_pangangalaga' => $requirement->brgy_certificate_of_proof_ng_pangangalaga,
+                        'brgy_certificate_of_proof_ng_pangangalaga_expires_at' => $getExpirationInfo($requirement->brgy_certificate_of_proof_ng_pangangalaga, $requirement->brgy_certificate_of_proof_ng_pangangalaga_expires_at, $requirement->brgy_certificate_of_proof_ng_pangangalaga_updated_at),
+                        'one_valid_id_client_at_pasyente' => $requirement->one_valid_id_client_at_pasyente,
+                        'one_valid_id_client_at_pasyente_expires_at' => $getExpirationInfo($requirement->one_valid_id_client_at_pasyente, $requirement->one_valid_id_client_at_pasyente_expires_at, $requirement->one_valid_id_client_at_pasyente_updated_at),
+                        'authorization_letter' => $requirement->authorization_letter,
+                        'authorization_letter_expires_at' => $getExpirationInfo($requirement->authorization_letter, $requirement->authorization_letter_expires_at, $requirement->authorization_letter_updated_at),
+                    ];
+                } elseif ($record->nature_of_problem === 'Medical (Anak Ang Magprocess)') {
+                    $requirement = $record->aicsmedicalanakRequirement;
+
+                    $requirements = [
+                        'personal_letter' => $requirement->personal_letter,
+                        'personal_letter_expires_at' => $getExpirationInfo($requirement->personal_letter, $requirement->personal_letter_expires_at, $requirement->personal_letter_updated_at),
+                        'brgy_cert_of_indigency_ng_pasyente_at_client' => $requirement->brgy_cert_of_indigency_ng_pasyente_at_client,
+                        'brgy_cert_of_indigency_ng_pasyente_at_client_expires_at' => $getExpirationInfo($requirement->brgy_cert_of_indigency_ng_pasyente_at_client, $requirement->brgy_cert_of_indigency_ng_pasyente_at_client_expires_at, $requirement->brgy_cert_of_indigency_ng_pasyente_at_client_updated_at),
+                        'medical_abstract_or_medical_certificate' => $requirement->medical_abstract_or_medical_certificate,
+                        'medical_abstract_or_medical_certificate_expires_at' => $getExpirationInfo($requirement->medical_abstract_or_medical_certificate, $requirement->medical_abstract_or_medical_certificate_expires_at, $requirement->medical_abstract_or_medical_certificate_updated_at),
+                        'latest_na_reseta_with_costing' => $requirement->latest_na_reseta_with_costing,
+                        'latest_na_reseta_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_reseta_with_costing, $requirement->latest_na_reseta_with_costing_expires_at, $requirement->latest_na_reseta_with_costing_updated_at),
+                        'latest_na_laboratory_test_with_costing' => $requirement->latest_na_laboratory_test_with_costing,
+                        'latest_na_laboratory_test_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_laboratory_test_with_costing, $requirement->latest_na_laboratory_test_with_costing_expires_at, $requirement->latest_na_laboratory_test_with_costing_updated_at),
+                        'hospital_bill' => $requirement->hospital_bill,
+                        'hospital_bill_expires_at' => $getExpirationInfo($requirement->hospital_bill, $requirement->hospital_bill_expires_at, $requirement->hospital_bill_updated_at),
+                        'birth_certificate_of_client' => $requirement->birth_certificate_of_client,
+                        'birth_certificate_of_client_expires_at' => $getExpirationInfo($requirement->birth_certificate_of_client, $requirement->birth_certificate_of_client_expires_at, $requirement->birth_certificate_of_client_updated_at),
+                        'one_valid_id_client_at_pasyente' => $requirement->one_valid_id_client_at_pasyente,
+                        'one_valid_id_client_at_pasyente_expires_at' => $getExpirationInfo($requirement->one_valid_id_client_at_pasyente, $requirement->one_valid_id_client_at_pasyente_expires_at, $requirement->one_valid_id_client_at_pasyente_updated_at),
+                        'authorization_letter' => $requirement->authorization_letter,
+                        'authorization_letter_expires_at' => $getExpirationInfo($requirement->authorization_letter, $requirement->authorization_letter_expires_at, $requirement->authorization_letter_updated_at),
+                    ];
+                } elseif ($record->nature_of_problem === 'Medical (Pasyente Ang Magprocess)') {
+                    $requirement = $record->aicsmedicalpasyenteRequirement;
+
+                    $requirements = [
+                        'personal_letter' => $requirement->personal_letter,
+                        'personal_letter_expires_at' => $getExpirationInfo($requirement->personal_letter, $requirement->personal_letter_expires_at, $requirement->personal_letter_updated_at),
+                        'brgy_cert_of_indigency' => $requirement->brgy_cert_of_indigency,
+                        'brgy_cert_of_indigency_expires_at' => $getExpirationInfo($requirement->brgy_cert_of_indigency, $requirement->brgy_cert_of_indigency_expires_at, $requirement->brgy_cert_of_indigency_updated_at),
+                        'medical_abstract_or_medical_certificate' => $requirement->medical_abstract_or_medical_certificate,
+                        'medical_abstract_or_medical_certificate_expires_at' => $getExpirationInfo($requirement->medical_abstract_or_medical_certificate, $requirement->medical_abstract_or_medical_certificate_expires_at, $requirement->medical_abstract_or_medical_certificate_updated_at),
+                        'latest_na_reseta_with_costing' => $requirement->latest_na_reseta_with_costing,
+                        'latest_na_reseta_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_reseta_with_costing, $requirement->latest_na_reseta_with_costing_expires_at, $requirement->latest_na_reseta_with_costing_updated_at),
+                        'latest_na_laboratory_test_with_costing' => $requirement->latest_na_laboratory_test_with_costing,
+                        'latest_na_laboratory_test_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_laboratory_test_with_costing, $requirement->latest_na_laboratory_test_with_costing_expires_at, $requirement->latest_na_laboratory_test_with_costing_updated_at),
+                        'hospital_bill' => $requirement->hospital_bill,
+                        'hospital_bill_expires_at' => $getExpirationInfo($requirement->hospital_bill, $requirement->hospital_bill_expires_at, $requirement->hospital_bill_updated_at),
+                        'one_valid_id' => $requirement->one_valid_id,
+                        'one_valid_id_expires_at' => $getExpirationInfo($requirement->one_valid_id, $requirement->one_valid_id_expires_at, $requirement->one_valid_id_updated_at),
+                    ];
+                } elseif ($record->nature_of_problem === 'Medical (Asawa/Live in Partner Ang Magprocess)') {
+                    $requirement = $record->aicsmedicalpartnerRequirement;
+
+                    $requirements = [
+                        'personal_letter' => $requirement->personal_letter,
+                        'personal_letter_expires_at' => $getExpirationInfo($requirement->personal_letter, $requirement->personal_letter_expires_at, $requirement->personal_letter_updated_at),
+                        'brgy_cert_of_indigency_ng_pasyente_at_magulang' => $requirement->brgy_cert_of_indigency_ng_pasyente_at_magulang,
+                        'brgy_cert_of_indigency_ng_pasyente_at_magulang_expires_at' => $getExpirationInfo($requirement->brgy_cert_of_indigency_ng_pasyente_at_magulang, $requirement->brgy_cert_of_indigency_ng_pasyente_at_magulang_expires_at, $requirement->brgy_cert_of_indigency_ng_pasyente_at_magulang_updated_at),
+                        'medical_abstract_or_medical_certificate' => $requirement->medical_abstract_or_medical_certificate,
+                        'medical_abstract_or_medical_certificate_expires_at' => $getExpirationInfo($requirement->medical_abstract_or_medical_certificate, $requirement->medical_abstract_or_medical_certificate_expires_at, $requirement->medical_abstract_or_medical_certificate_updated_at),
+                        'latest_na_reseta_with_costing' => $requirement->latest_na_reseta_with_costing,
+                        'latest_na_reseta_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_reseta_with_costing, $requirement->latest_na_reseta_with_costing_expires_at, $requirement->latest_na_reseta_with_costing_updated_at),
+                        'latest_na_laboratory_test_with_costing' => $requirement->latest_na_laboratory_test_with_costing,
+                        'latest_na_laboratory_test_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_laboratory_test_with_costing, $requirement->latest_na_laboratory_test_with_costing_expires_at, $requirement->latest_na_laboratory_test_with_costing_updated_at),
+                        'hospital_bill' => $requirement->hospital_bill,
+                        'hospital_bill_expires_at' => $getExpirationInfo($requirement->hospital_bill, $requirement->hospital_bill_expires_at, $requirement->hospital_bill_updated_at),
+                        'marriage_cert_or_brgy_cert_of_cohabitation' => $requirement->marriage_cert_or_brgy_cert_of_cohabitation,
+                        'marriage_cert_or_brgy_cert_of_cohabitation_expires_at' => $getExpirationInfo($requirement->marriage_cert_or_brgy_cert_of_cohabitation, $requirement->marriage_cert_or_brgy_cert_of_cohabitation_expires_at, $requirement->marriage_cert_or_brgy_cert_of_cohabitation_updated_at),
+                        'one_valid_id_client_at_pasyente' => $requirement->one_valid_id_client_at_pasyente,
+                        'one_valid_id_client_at_pasyente_expires_at' => $getExpirationInfo($requirement->one_valid_id_client_at_pasyente, $requirement->one_valid_id_client_at_pasyente_expires_at, $requirement->one_valid_id_client_at_pasyente_updated_at),
+                        'authorization_letter' => $requirement->authorization_letter,
+                        'authorization_letter_expires_at' => $getExpirationInfo($requirement->authorization_letter, $requirement->authorization_letter_expires_at, $requirement->authorization_letter_updated_at),
+                    ];
+                } elseif ($record->nature_of_problem === 'Medical (Kapatid Ang Magprocess)') {
+                    $requirement = $record->aicsmedicalkapatidRequirement;
+
+                    $requirements = [
+                        'personal_letter' => $requirement->personal_letter,
+                        'personal_letter_expires_at' => $getExpirationInfo($requirement->personal_letter, $requirement->personal_letter_expires_at, $requirement->personal_letter_updated_at),
+                        'brgy_cert_of_indigency_ng_pasyente_at_client' => $requirement->brgy_cert_of_indigency_ng_pasyente_at_client,
+                        'brgy_cert_of_indigency_ng_pasyente_at_client_expires_at' => $getExpirationInfo($requirement->brgy_cert_of_indigency_ng_pasyente_at_client, $requirement->brgy_cert_of_indigency_ng_pasyente_at_client_expires_at, $requirement->brgy_cert_of_indigency_ng_pasyente_at_client_updated_at),
+                        'medical_abstract_or_medical_certificate' => $requirement->medical_abstract_or_medical_certificate,
+                        'medical_abstract_or_medical_certificate_expires_at' => $getExpirationInfo($requirement->medical_abstract_or_medical_certificate, $requirement->medical_abstract_or_medical_certificate_expires_at, $requirement->medical_abstract_or_medical_certificate_updated_at),
+                        'latest_na_reseta_with_costing' => $requirement->latest_na_reseta_with_costing,
+                        'latest_na_reseta_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_reseta_with_costing, $requirement->latest_na_reseta_with_costing_expires_at, $requirement->latest_na_reseta_with_costing_updated_at),
+                        'latest_na_laboratory_test_with_costing' => $requirement->latest_na_laboratory_test_with_costing,
+                        'latest_na_laboratory_test_with_costing_expires_at' => $getExpirationInfo($requirement->latest_na_laboratory_test_with_costing, $requirement->latest_na_laboratory_test_with_costing_expires_at, $requirement->latest_na_laboratory_test_with_costing_updated_at),
+                        'hospital_bill' => $requirement->hospital_bill,
+                        'hospital_bill_expires_at' => $getExpirationInfo($requirement->hospital_bill, $requirement->hospital_bill_expires_at, $requirement->hospital_bill_updated_at),
+                        'birth_certificate_of_pasyente_at_client' => $requirement->birth_certificate_of_pasyente_at_client,
+                        'birth_certificate_of_pasyente_at_client_expires_at' => $getExpirationInfo($requirement->birth_certificate_of_pasyente_at_client, $requirement->birth_certificate_of_pasyente_at_client_expires_at, $requirement->birth_certificate_of_pasyente_at_client_updated_at),
+                        'one_valid_id_client_at_pasyente' => $requirement->one_valid_id_client_at_pasyente,
+                        'one_valid_id_client_at_pasyente_expires_at' => $getExpirationInfo($requirement->one_valid_id_client_at_pasyente, $requirement->one_valid_id_client_at_pasyente_expires_at, $requirement->one_valid_id_client_at_pasyente_updated_at),
+                        'authorization_letter' => $requirement->authorization_letter,
+                        'authorization_letter_expires_at' => $getExpirationInfo($requirement->authorization_letter, $requirement->authorization_letter_expires_at, $requirement->authorization_letter_updated_at),
                     ];
                 } elseif ($record->nature_of_problem === 'Burial') {
                     $requirement = $record->aicsburialRequirement;
 
                     $requirements = [
-                        'letter_to_the_mayor' => $requirement->letter_to_the_mayor,
-                        'letter_to_the_mayor_expires_at' => $getExpirationInfo($requirement->letter_to_the_mayor, $requirement->letter_to_the_mayor_expires_at, $requirement->letter_to_the_mayor_updated_at),
+                        'brgy_cert_of_indigency' => $requirement->brgy_cert_of_indigency,
+                        'brgy_cert_of_indigency_expires_at' => $getExpirationInfo($requirement->brgy_cert_of_indigency, $requirement->brgy_cert_of_indigency_expires_at, $requirement->brgy_cert_of_indigency_updated_at),
                         'death_certificate' => $requirement->death_certificate,
                         'death_certificate_expires_at' => $getExpirationInfo($requirement->death_certificate, $requirement->death_certificate_expires_at, $requirement->death_certificate_updated_at),
-                        'funeral_contract' => $requirement->funeral_contract,
-                        'funeral_contract_expires_at' => $getExpirationInfo($requirement->funeral_contract, $requirement->funeral_contract_expires_at, $requirement->funeral_contract_updated_at),
-                        'barangay_indigency' => $requirement->barangay_indigency,
-                        'barangay_indigency_expires_at' => $getExpirationInfo($requirement->barangay_indigency, $requirement->barangay_indigency_expires_at, $requirement->barangay_indigency_updated_at),
-                        'valid_id' => $requirement->valid_id,
-                        'valid_id_expires_at' => $getExpirationInfo($requirement->valid_id, $requirement->valid_id_expires_at, $requirement->valid_id_updated_at),
-                        'cedula' => $requirement->cedula,
-                        'cedula_expires_at' => $getExpirationInfo($requirement->cedula, $requirement->cedula_expires_at, $requirement->cedula_updated_at),
-                        'barangay_certificate_or_marriage_contract' => $requirement->barangay_certificate_or_marriage_contract,
-                        'barangay_certificate_or_marriage_contract_expires_at' => $getExpirationInfo($requirement->barangay_certificate_or_marriage_contract, $requirement->barangay_certificate_or_marriage_contract_expires_at, $requirement->barangay_certificate_or_marriage_contract_updated_at),
+                        'proof_of_billing_or_promissory_note_from_funeral' => $requirement->proof_of_billing_or_promissory_note_from_funeral,
+                        'proof_of_billing_or_promissory_note_from_funeral_expires_at' => $getExpirationInfo($requirement->proof_of_billing_or_promissory_note_from_funeral, $requirement->proof_of_billing_or_promissory_note_from_funeral_expires_at, $requirement->proof_of_billing_or_promissory_note_from_funeral_updated_at),
+                        'marriage_cert_or_birth_cert_or_cert_of_cohabitation' => $requirement->marriage_cert_or_birth_cert_or_cert_of_cohabitation,
+                        'marriage_cert_or_birth_cert_or_cert_of_cohabitation_expires_at' => $getExpirationInfo($requirement->marriage_cert_or_birth_cert_or_cert_of_cohabitation, $requirement->marriage_cert_or_birth_cert_or_cert_of_cohabitation_expires_at, $requirement->marriage_cert_or_birth_cert_or_cert_of_cohabitation_updated_at),
+                        'photocopy_of_valid_id' => $requirement->photocopy_of_valid_id,
+                        'photocopy_of_valid_id_expires_at' => $getExpirationInfo($requirement->photocopy_of_valid_id, $requirement->photocopy_of_valid_id_expires_at, $requirement->photocopy_of_valid_id_updated_at),
+                        'surrender_id' => $requirement->surrender_id,
+                        'surrender_id_expires_at' => $getExpirationInfo($requirement->surrender_id, $requirement->surrender_id_expires_at, $requirement->surrender_id_updated_at),
+                        'personal_letter' => $requirement->personal_letter,
+                        'personal_letter_expires_at' => $getExpirationInfo($requirement->personal_letter, $requirement->personal_letter_expires_at, $requirement->personal_letter_updated_at),
                     ];
                 }
             }
-        } elseif ($type === 'PWD') {
-            $record = PwdRecord::find($id);
-        } elseif ($type === 'SC') {
-            $record = SeniorCitizenRecord::find($id);
-        } elseif ($type === 'SP') {
-            $record = SoloParentRecord::find($id);
         }
 
         $statusStyles = [
