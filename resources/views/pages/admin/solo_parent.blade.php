@@ -1533,6 +1533,7 @@
                             timer: 1500
                         }).then(() => {
                             $('#addBeneficiary')[0].reset();
+                            $('#preview').attr('src', '/images/default_photo.png');
                             $('#addContainer').scrollTop(0);
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
                             $('#solo_parent_records').DataTable().ajax.reload(null, false); // reload the table
