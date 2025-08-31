@@ -135,28 +135,6 @@ class AdminSeniorCitizenController extends Controller
         $now = now()->setTimezone('Asia/Manila');
         // $now = Carbon::create(2025, 7, 16, 0, 0, 0, 'Asia/Manila');
 
-        $columns = [
-            'valid_id' => 'valid_id_expires_at',
-            'birth_certificate' => 'birth_certificate_expires_at',
-            'barangay_certificate' => 'barangay_certificate_expires_at',
-        ];
-
-        foreach ($columns as $column => $expiresAt) {
-            $expiredRequirements = SeniorRequirement::where($expiresAt, '<=', $now)
-                ->where($column, '!=', 'Renewal')
-                ->get();
-
-            foreach ($expiredRequirements as $req) {
-                $req->update([$column => 'Renewal']);
-
-                $record = $req->seniorCitizenRecord;
-                if ($record) {
-                    $record->status = 'Expired';
-                    $record->save();
-                }
-            }
-        }
-
         $records = SeniorCitizenRecord::with('seniorRequirement')->orderBy('id', 'desc')->get();
 
         $data = $records->map(function ($record) use ($now) {
@@ -186,6 +164,12 @@ class AdminSeniorCitizenController extends Controller
                 // If status is "Denied", it's not eligible
                 if ($status === 'Denied') {
                     return "Not Eligible";
+                }
+
+                // If status is "Complete"
+                if ($status === 'Complete') {
+                    // Get date 3 months before expiration
+                    return "Last updated: " . date('F j, Y', strtotime($updatedAt));
                 }
 
                 // Convert expiration date to timestamp
@@ -224,12 +208,6 @@ class AdminSeniorCitizenController extends Controller
                     // If overdue by less than 1 minute
                     return "Expired: Less than a minute ago";
                 };
-
-                // If status is "Complete"
-                if ($status === 'Complete') {
-                    // Get date 3 months before expiration
-                    return "Last updated: " . date('F j, Y', strtotime($updatedAt));
-                }
 
                 // If status is "Renewal"
                 if ($status === 'Renewal') {

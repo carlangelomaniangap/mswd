@@ -39,11 +39,12 @@ class AdminSeniorRequirementsController extends Controller
                         $requirement->{$column} = $status;
                         $requirement->{$column . '_updated_at'} = now();
 
-                        $expiresCol = $column . '_expires_at';
                         if ($status === 'Complete') {
-                            $requirement->{$expiresCol} = now()->addMonths(3);
+                            $requirement->{$column . '_expires_at'} = null;
+                        } elseif ($status === 'Renewal') {
+                            $requirement->{$column . '_expires_at'} = now();
                         } else {
-                            $requirement->{$expiresCol} = null;
+                            $requirement->{$column . '_expires_at'} = null;
                         }
                     }
                 }
@@ -67,6 +68,12 @@ class AdminSeniorRequirementsController extends Controller
             // If status is "Denied", it's not eligible
             if ($status === 'Denied') {
                 return "Not Eligible";
+            }
+
+            // If status is "Complete"
+            if ($status === 'Complete') {
+                // Get date 3 months before expiration
+                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
             }
 
             // Convert expiration date to timestamp
@@ -105,12 +112,6 @@ class AdminSeniorRequirementsController extends Controller
                 // If overdue by less than 1 minute
                 return "Expired: Less than a minute ago";
             };
-
-            // If status is "Complete"
-            if ($status === 'Complete') {
-                // Get date 3 months before expiration
-                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
-            }
 
             // If status is "Renewal"
             if ($status === 'Renewal') {
