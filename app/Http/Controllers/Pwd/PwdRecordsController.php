@@ -208,6 +208,12 @@ class PwdRecordsController extends Controller
                     return "Not Eligible";
                 }
 
+                // If status is "Complete"
+                if ($status === 'Complete') {
+                    // Get date 3 months before expiration
+                    return "Last updated: " . date('F j, Y', strtotime($updatedAt));
+                }
+
                 // Convert expiration date to timestamp
                 $expiresDate = strtotime($expiresAt);
                 // Get current time as timestamp
@@ -244,12 +250,6 @@ class PwdRecordsController extends Controller
                     // If overdue by less than 1 minute
                     return "Expired: Less than a minute ago";
                 };
-
-                // If status is "Complete"
-                if ($status === 'Complete') {
-                    // Get date 3 months before expiration
-                    return "Last updated: " . date('F j, Y', strtotime($updatedAt));
-                }
 
                 // If status is "Renewal"
                 if ($status === 'Renewal') {
