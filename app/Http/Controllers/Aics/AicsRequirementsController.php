@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Aics;
 
 use App\Http\Controllers\Controller;
 use App\Models\AicsBurialRequirement;
-use App\Models\AicsMedicalRequirement;
+use App\Models\AicsMedicalAnakRequirement;
+use App\Models\AicsMedicalKapatidRequirement;
+use App\Models\AicsMedicalMagulangRequirement;
+use App\Models\AicsMedicalPartnerRequirement;
+use App\Models\AicsMedicalPasyenteRequirement;
+use App\Models\AicsMedicalTagapagAlagaRequirement;
 use App\Models\AicsRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,28 +22,88 @@ class AicsRequirementsController extends Controller
         $user = Auth::user();
 
         $models = [
-            AicsMedicalRequirement::class,
+            AicsMedicalMagulangRequirement::class,
+            AicsMedicalTagapagAlagaRequirement::class,
+            AicsMedicalAnakRequirement::class,
+            AicsMedicalPasyenteRequirement::class,
+            AicsMedicalPartnerRequirement::class,
+            AicsMedicalKapatidRequirement::class,
             AicsBurialRequirement::class,
         ];
 
         $columns = [
-            AicsMedicalRequirement::class => [
-                'letter_to_the_mayor',
-                'medical_certificate',
-                'laboratory_or_prescription',
-                'barangay_indigency',
-                'valid_id',
-                'cedula',
-                'barangay_certificate_or_marriage_contract',
+            AicsMedicalMagulangRequirement::class => [
+                'personal_letter',
+                'brgy_cert_of_indigency_ng_pasyente_at_client',
+                'medical_abstract_or_medical_certificate',
+                'latest_na_reseta_with_costing',
+                'latest_na_laboratory_test_with_costing',
+                'hospital_bill',
+                'birth_certificate_of_patient',
+                'one_valid_id_client_at_pasyente',
+                'authorization_letter',
+            ],
+            AicsMedicalTagapagAlagaRequirement::class => [
+                'personal_letter',
+                'brgy_cert_of_indigency_ng_pasyente_at_client',
+                'medical_abstract_or_medical_certificate',
+                'latest_na_reseta_with_costing',
+                'latest_na_laboratory_test_with_costing',
+                'hospital_bill',
+                'brgy_certificate_of_proof_ng_pangangalaga',
+                'one_valid_id_client_at_pasyente',
+                'authorization_letter',
+            ],
+            AicsMedicalAnakRequirement::class => [
+                'personal_letter',
+                'brgy_cert_of_indigency_ng_pasyente_at_client',
+                'medical_abstract_or_medical_certificate',
+                'latest_na_reseta_with_costing',
+                'latest_na_laboratory_test_with_costing',
+                'hospital_bill',
+                'birth_certificate_of_client',
+                'one_valid_id_client_at_pasyente',
+                'authorization_letter',
+            ],
+            AicsMedicalPasyenteRequirement::class => [
+                'personal_letter',
+                'brgy_cert_of_indigency',
+                'medical_abstract_or_medical_certificate',
+                'latest_na_reseta_with_costing',
+                'latest_na_laboratory_test_with_costing',
+                'hospital_bill',
+                'one_valid_id',
+            ],
+            AicsMedicalPartnerRequirement::class => [
+                'personal_letter',
+                'brgy_cert_of_indigency_ng_pasyente_at_magulang',
+                'medical_abstract_or_medical_certificate',
+                'latest_na_reseta_with_costing',
+                'latest_na_laboratory_test_with_costing',
+                'hospital_bill',
+                'marriage_cert_or_brgy_cert_of_cohabitation',
+                'one_valid_id_client_at_pasyente',
+                'authorization_letter',
+            ],
+            AicsMedicalKapatidRequirement::class => [
+                'personal_letter',
+                'brgy_cert_of_indigency_ng_pasyente_at_client',
+                'medical_abstract_or_medical_certificate',
+                'latest_na_reseta_with_costing',
+                'latest_na_laboratory_test_with_costing',
+                'hospital_bill',
+                'birth_certificate_of_pasyente_at_client',
+                'one_valid_id_client_at_pasyente',
+                'authorization_letter',
             ],
             AicsBurialRequirement::class => [
-                'letter_to_the_mayor',
+                'brgy_cert_of_indigency',
                 'death_certificate',
-                'funeral_contract',
-                'barangay_indigency',
-                'valid_id',
-                'cedula',
-                'barangay_certificate_or_marriage_contract',
+                'proof_of_billing_or_promissory_note_from_funeral',
+                'marriage_cert_or_birth_cert_or_cert_of_cohabitation',
+                'photocopy_of_valid_id',
+                'surrender_id',
+                'personal_letter',
             ],
         ];
 
@@ -147,27 +212,99 @@ class AicsRequirementsController extends Controller
 
         $record = AicsRecord::findOrFail($id);
 
-        if ($record->nature_of_problem === 'Medical') {
-            $requirement = $record->aicsmedicalRequirement;
+        if ($record->nature_of_problem === 'Medical (Magulang Ang Magprocess)') {
+            $requirement = $record->aicsmedicalmagulangRequirement;
+
             $values = array_map('trim', [
-                $requirement->letter_to_the_mayor,
-                $requirement->medical_certificate,
-                $requirement->laboratory_or_prescription,
-                $requirement->barangay_indigency,
-                $requirement->valid_id,
-                $requirement->cedula,
-                $requirement->barangay_certificate_or_marriage_contract,
+                $requirement->personal_letter,
+                $requirement->brgy_cert_of_indigency_ng_pasyente_at_client,
+                $requirement->medical_abstract_or_medical_certificate,
+                $requirement->latest_na_reseta_with_costing,
+                $requirement->latest_na_laboratory_test_with_costing,
+                $requirement->hospital_bill,
+                $requirement->birth_certificate_of_patient,
+                $requirement->one_valid_id_client_at_pasyente,
+                $requirement->authorization_letter,
+            ]);
+        } elseif ($record->nature_of_problem === 'Medical (Tagapag Alaga Ang Magprocess)') {
+            $requirement = $record->aicsmedicaltagapagalagaRequirement;
+
+            $values = array_map('trim', [
+                $requirement->personal_letter,
+                $requirement->brgy_cert_of_indigency_ng_pasyente_at_client,
+                $requirement->medical_abstract_or_medical_certificate,
+                $requirement->latest_na_reseta_with_costing,
+                $requirement->latest_na_laboratory_test_with_costing,
+                $requirement->hospital_bill,
+                $requirement->brgy_certificate_of_proof_ng_pangangalaga,
+                $requirement->one_valid_id_client_at_pasyente,
+                $requirement->authorization_letter,
+            ]);
+        } elseif ($record->nature_of_problem === 'Medical (Anak Ang Magprocess)') {
+                $requirement = $record->aicsmedicalanakRequirement;
+
+            $values = array_map('trim', [
+                $requirement->personal_letter,
+                $requirement->brgy_cert_of_indigency_ng_pasyente_at_client,
+                $requirement->medical_abstract_or_medical_certificate,
+                $requirement->latest_na_reseta_with_costing,
+                $requirement->latest_na_laboratory_test_with_costing,
+                $requirement->hospital_bill,
+                $requirement->birth_certificate_of_client,
+                $requirement->one_valid_id_client_at_pasyente,
+                $requirement->authorization_letter,
+            ]);
+        } elseif ($record->nature_of_problem === 'Medical (Pasyente Ang Magprocess)') {
+            $requirement = $record->aicsmedicalpasyenteRequirement;
+
+            $values = array_map('trim', [
+                $requirement->personal_letter,
+                $requirement->brgy_cert_of_indigency,
+                $requirement->medical_abstract_or_medical_certificate,
+                $requirement->latest_na_reseta_with_costing,
+                $requirement->latest_na_laboratory_test_with_costing,
+                $requirement->hospital_bill,
+                $requirement->one_valid_id,
+            ]);
+        } elseif ($record->nature_of_problem === 'Medical (Asawa/Live in Partner Ang Magprocess)') {
+            $requirement = $record->aicsmedicalpartnerRequirement;
+
+            $values = array_map('trim', [
+                $requirement->personal_letter,
+                $requirement->brgy_cert_of_indigency_ng_pasyente_at_magulang,
+                $requirement->medical_abstract_or_medical_certificate,
+                $requirement->latest_na_reseta_with_costing,
+                $requirement->latest_na_laboratory_test_with_costing,
+                $requirement->hospital_bill,
+                $requirement->marriage_cert_or_brgy_cert_of_cohabitation,
+                $requirement->one_valid_id_client_at_pasyente,
+                $requirement->authorization_letter,
+            ]);
+        } elseif ($record->nature_of_problem === 'Medical (Kapatid Ang Magprocess)') {
+            $requirement = $record->aicsmedicalkapatidRequirement;
+
+            $values = array_map('trim', [
+                $requirement->personal_letter,
+                $requirement->brgy_cert_of_indigency_ng_pasyente_at_client,
+                $requirement->medical_abstract_or_medical_certificate,
+                $requirement->latest_na_reseta_with_costing,
+                $requirement->latest_na_laboratory_test_with_costing,
+                $requirement->hospital_bill,
+                $requirement->birth_certificate_of_pasyente_at_client,
+                $requirement->one_valid_id_client_at_pasyente,
+                $requirement->authorization_letter,
             ]);
         } elseif ($record->nature_of_problem === 'Burial') {
             $requirement = $record->aicsburialRequirement;
+
             $values = array_map('trim', [
-                $requirement->letter_to_the_mayor,
+                $requirement->brgy_cert_of_indigency,
                 $requirement->death_certificate,
-                $requirement->funeral_contract,
-                $requirement->barangay_indigency,
-                $requirement->valid_id,
-                $requirement->cedula,
-                $requirement->barangay_certificate_or_marriage_contract,
+                $requirement->proof_of_billing_or_promissory_note_from_funeral,
+                $requirement->marriage_cert_or_birth_cert_or_cert_of_cohabitation,
+                $requirement->photocopy_of_valid_id,
+                $requirement->surrender_id,
+                $requirement->personal_letter,
             ]);
         }
 

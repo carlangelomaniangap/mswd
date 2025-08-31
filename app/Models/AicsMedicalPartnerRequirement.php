@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class AicsMedicalPartnerRequirement extends Model
+{
+    protected $fillable = [
+        'aics_record_id',
+        'personal_letter',
+        'personal_letter_expires_at',
+        'personal_letter_updated_at',
+        'brgy_cert_of_indigency_ng_pasyente_at_magulang',
+        'brgy_cert_of_indigency_ng_pasyente_at_magulang_expires_at',
+        'brgy_cert_of_indigency_ng_pasyente_at_magulang_updated_at',
+        'medical_abstract_or_medical_certificate',
+        'medical_abstract_or_medical_certificate_expires_at',
+        'medical_abstract_or_medical_certificate_updated_at',
+        'latest_na_reseta_with_costing',
+        'latest_na_reseta_with_costing_expires_at',
+        'latest_na_reseta_with_costing_updated_at',
+        'latest_na_laboratory_test_with_costing',
+        'latest_na_laboratory_test_with_costing_expires_at',
+        'latest_na_laboratory_test_with_costing_updated_at',
+        'hospital_bill',
+        'hospital_bill_expires_at',
+        'hospital_bill_updated_at',
+        'marriage_cert_or_brgy_cert_of_cohabitation',
+        'marriage_cert_or_brgy_cert_of_cohabitation_expires_at',
+        'marriage_cert_or_brgy_cert_of_cohabitation_updated_at',
+        'one_valid_id_client_at_pasyente',
+        'one_valid_id_client_at_pasyente_expires_at',
+        'one_valid_id_client_at_pasyente_updated_at',
+        'authorization_letter',
+        'authorization_letter_expires_at',
+        'authorization_letter_updated_at',
+        'user_id',
+        'user_role',
+        'user_name'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function aicsRecord()
+    {
+        return $this->belongsTo(AicsRecord::class, 'aics_record_id');
+    }
+}

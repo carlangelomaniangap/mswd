@@ -30,7 +30,7 @@ return new class extends Migration
             $table->enum('educational_attainment', ['No Formal Education', 'Elementary Undergraduate', 'Elementary Graduate', 'High School Undergraduate', 'High School Graduate', 'Vocational Graduate', 'College Undergraduate', 'College Graduate', 'Post Graduate']);
             $table->string('occupation');
             $table->string('cellphone_number');
-            $table->enum('nature_of_problem' ,['Medical', 'Financial', 'Educational', 'Burial', 'Transportation', 'Food', 'Others']);
+            $table->enum('nature_of_problem' ,['Medical (Magulang Ang Magprocess)', 'Medical (Tagapag Alaga Ang Magprocess)', 'Medical (Anak Ang Magprocess)','Medical (Pasyente Ang Magprocess)', 'Medical (Asawa/Live in Partner Ang Magprocess)', 'Medical (Kapatid Ang Magprocess)', 'Burial']);
             $table->string('problem_description');
             $table->string('qr_code');
             $table->enum('status', ['Eligible', 'In Progress', 'Expired', 'Not Eligible'])->default('In Progress');

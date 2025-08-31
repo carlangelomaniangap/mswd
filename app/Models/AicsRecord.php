@@ -48,9 +48,34 @@ class AicsRecord extends Model
         return $this->hasMany(AicsPayoutHistory::class, 'aics_record_id_payout');
     }
 
-    public function aicsmedicalRequirement()
+    public function aicsmedicalmagulangRequirement()
     {
-        return $this->hasOne(AicsMedicalRequirement::class, 'aics_record_id');
+        return $this->hasOne(AicsMedicalMagulangRequirement::class, 'aics_record_id');
+    }
+
+    public function aicsmedicaltagapagalagaRequirement()
+    {
+        return $this->hasOne(AicsMedicalTagapagAlagaRequirement::class, 'aics_record_id');
+    }
+
+    public function aicsmedicalanakRequirement()
+    {
+        return $this->hasOne(AicsMedicalAnakRequirement::class, 'aics_record_id');
+    }
+
+    public function aicsmedicalpasyenteRequirement()
+    {
+        return $this->hasOne(AicsMedicalPasyenteRequirement::class, 'aics_record_id');
+    }
+
+    public function aicsmedicalpartnerRequirement()
+    {
+        return $this->hasOne(AicsMedicalPartnerRequirement::class, 'aics_record_id');
+    }
+
+    public function aicsmedicalkapatidRequirement()
+    {
+        return $this->hasOne(AicsMedicalKapatidRequirement::class, 'aics_record_id');
     }
 
     public function aicsburialRequirement()

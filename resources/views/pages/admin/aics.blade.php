@@ -399,13 +399,13 @@
                                         required
                                     >
                                         <option value="" selected disabled>Select</option>
-                                        <option value="Medical">Medical</option>
-                                        <option value="Financial">Financial</option>
-                                        <option value="Educational">Educational</option>
+                                        <option value="Medical (Magulang Ang Magprocess)">Medical (Magulang Ang Magprocess)</option>
+                                        <option value="Medical (Tagapag Alaga Ang Magprocess)">Medical (Tagapag Alaga Ang Magprocess)</option>
+                                        <option value="Medical (Anak Ang Magprocess)">Medical (Anak Ang Magprocess)</option>
+                                        <option value="Medical (Pasyente Ang Magprocess)">Medical (Pasyente Ang Magprocess)</option>
+                                        <option value="Medical (Asawa/Live in Partner Ang Magprocess)">Medical (Asawa/Live in Partner Ang Magprocess)</option>
+                                        <option value="Medical (Kapatid Ang Magprocess)">Medical (Kapatid Ang Magprocess)</option>
                                         <option value="Burial">Burial</option>
-                                        <option value="Transportation">Transportation</option>
-                                        <option value="Food">Food</option>
-                                        <option value="Others">Others</option>
                                     </x-form.select>
                                 </div>
 
@@ -1009,6 +1009,19 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    document.getElementById('photo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+        const img = document.getElementById('preview');
+        img.src = event.target.result;
+        img.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    });
+
     document.querySelectorAll('#cellphone_number, #family_member_monthly_income, #family_member_age, #amount').forEach(el => {
         el.addEventListener('keydown', function(e) {
             const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'Home', 'End'];
@@ -1175,6 +1188,7 @@
                             timer: 1500
                         }).then(() => {
                             $('#addBeneficiary')[0].reset();
+                            $('#preview').attr('src', '/images/default_photo.png');
                             $('#addContainer').scrollTop(0);
                             window.dispatchEvent(new CustomEvent('close-modal', { detail: 'add-beneficiary' })); // close the modal
                             $('#aics_records').DataTable().ajax.reload(null, false); // reload the table
@@ -1263,16 +1277,27 @@
 
         // Define the labels of requirements
         const fields = [
-            { key: 'letter_to_the_mayor', label: 'Letter to the Mayor' },
-            { key: 'medical_certificate', label: 'Medical Certificate' },
-            { key: 'laboratory_or_prescription', label: 'Laboratory or Prescription' },
+            { key: 'personal_letter', label: 'Personal Letter (1 orig., 1 Photocopy)' },
+            { key: 'brgy_cert_of_indigency_ng_pasyente_at_client', label: 'BRGY. Certificate of Indigency ng Pasyente at Client <br> (1 orig., 1 Photocopy)' },
+            { key: 'brgy_cert_of_indigency_ng_pasyente_at_magulang', label: 'BRGY. Certificate of Indigency ng Pasyente at Magulang <br> (1 orig. 1 Photocopy)' },
+            { key: 'brgy_cert_of_indigency', label: 'BRGY. Certificate of Indigency (1 orig., 1 Photocopy)' },
+            { key: 'medical_abstract_or_medical_certificate', label: 'Medical Abstract/Medical Certificate <br> (2 Photocopies)' },
+            { key: 'latest_na_reseta_with_costing', label: 'Latest na Reseta with Costing (2 Photocopies)' },
+            { key: 'latest_na_laboratory_test_with_costing', label: 'Latest na Laboratory Test with Costing <br> (2 Photocopies)' },
+            { key: 'hospital_bill', label: 'Hospital Bill <br> - Final Bill (If Discharged) <br> - Progress (If Still In) <br> - Promissory Note' },
+            { key: 'birth_certificate_of_patient', label: 'Birth Certificate of Patient (2 Photocopies)' },
+            { key: 'brgy_certificate_of_proof_ng_pangangalaga', label: 'Brgy. Certificate of Proof ng Pangangalaga <br> (1 orig., 1 Photocopy)' },
+            { key: 'birth_certificate_of_client', label: 'Birth Certificate of Client (2 Photocopies)' },
+            { key: 'marriage_cert_or_brgy_cert_of_cohabitation', label: 'Marriage Certificate/BRGY. Certificate of Cohabitation <br> (2 Photocopies)' },
+            { key: 'birth_certificate_of_pasyente_at_client', label: 'Birth Certificate of Pasyente at Client <br> (2 Photocopies)' },
+            { key: 'one_valid_id_client_at_pasyente', label: '1 Valid ID (Client at Pasyente) <br> (2 Photocopies, Back to Back)' },
+            { key: 'authorization_letter', label: 'Autorization Letter (1 orig., 1 Photocopy)' },
+            { key: 'one_valid_id', label: '1 Valid ID (2 Photocopies, Back to Back)' },
             { key: 'death_certificate', label: 'Death Certificate' },
-            { key: 'funeral_contract', label: 'Funeral Contract' },
-            { key: 'barangay_indigency', label: 'Barangay Indigency' },
-            { key: 'valid_id', label: 'Valid ID' },
-            { key: 'cedula', label: 'Cedula' },
-            { key: 'barangay_certificate_or_marriage_contract', label: 'Barangay Certificate/Marriage Contract' },
-            // add more fields if needed
+            { key: 'proof_of_billing_or_promissory_note_from_funeral', label: 'Proof of Billing/Promissory Note From Funeral' },
+            { key: 'marriage_cert_or_birth_cert_or_cert_of_cohabitation', label: 'Marriage Certificate/Birth Certificate/Certificate of Cohabitation <br> (If not Married)' },
+            { key: 'photocopy_of_valid_id', label: 'Photocopy of Valid ID <br> - If PWD Member (PWD ID) <br> - If Senior Citizen (Senior Citizen ID)' },
+            { key: 'surrender_id', label: 'Surrender ID (PWD/SC ID)' },
         ];
 
         fields.forEach(field => {
