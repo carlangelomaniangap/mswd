@@ -42,7 +42,7 @@ class SoloParentRequirementsController extends Controller
 
                         $expiresCol = $column . '_expires_at';
                         if ($status === 'Complete') {
-                            $requirement->{$expiresCol} = now()->addMonths(3);
+                            $requirement->{$expiresCol} = now()->addYear();
                         } else {
                             $requirement->{$expiresCol} = null;
                         }
@@ -68,6 +68,12 @@ class SoloParentRequirementsController extends Controller
             // If status is "Denied", it's not eligible
             if ($status === 'Denied') {
                 return "Not Eligible";
+            }
+
+            // If status is "Complete"
+            if ($status === 'Complete') {
+                // Get date 3 months before expiration
+                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
             }
 
             // Convert expiration date to timestamp
@@ -106,12 +112,6 @@ class SoloParentRequirementsController extends Controller
                 // If overdue by less than 1 minute
                 return "Expired: Less than a minute ago";
             };
-
-            // If status is "Complete"
-            if ($status === 'Complete') {
-                // Get date 3 months before expiration
-                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
-            }
 
             // If status is "Renewal"
             if ($status === 'Renewal') {

@@ -905,9 +905,9 @@
                                         >
                                             <option value="" selected disabled>Select</option>
                                             <option value="Complete">Complete</option>
+                                            <option value="Incomplete" hidden>Incomplete</option>
+                                            <option value="Renewal" hidden>Renewal</option>
                                             <option value="Denied">Denied</option>
-                                            <option value="Incomplete" disabled>Incomplete</option>
-                                            <option value="Renewal" disabled>Renewal</option>
                                         </x-form.select>
                                     </div>
                                 </div>
@@ -926,9 +926,9 @@
                                         >
                                             <option value="" selected disabled>Select</option>
                                             <option value="Complete">Complete</option>
+                                            <option value="Incomplete" hidden>Incomplete</option>
+                                            <option value="Renewal" hidden>Renewal</option>
                                             <option value="Denied">Denied</option>
-                                            <option value="Incomplete" disabled>Incomplete</option>
-                                            <option value="Renewal" disabled>Renewal</option>
                                         </x-form.select>
                                     </div>
                                 </div>
@@ -947,9 +947,9 @@
                                         >
                                             <option value="" selected disabled>Select</option>
                                             <option value="Complete">Complete</option>
+                                            <option value="Incomplete" hidden>Incomplete</option>
+                                            <option value="Renewal" hidden>Renewal</option>
                                             <option value="Denied">Denied</option>
-                                            <option value="Incomplete" disabled>Incomplete</option>
-                                            <option value="Renewal" disabled>Renewal</option>
                                         </x-form.select>
                                     </div>
                                 </div>
@@ -968,9 +968,9 @@
                                         >
                                             <option value="" selected disabled>Select</option>
                                             <option value="Complete">Complete</option>
+                                            <option value="Incomplete" hidden>Incomplete</option>
+                                            <option value="Renewal" hidden>Renewal</option>
                                             <option value="Denied">Denied</option>
-                                            <option value="Incomplete" disabled>Incomplete</option>
-                                            <option value="Renewal" disabled>Renewal</option>
                                         </x-form.select>
                                     </div>
                                 </div>
