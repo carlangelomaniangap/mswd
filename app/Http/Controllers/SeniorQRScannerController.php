@@ -23,7 +23,7 @@ class SeniorQRScannerController extends Controller
         // $id   = record ID ("001") used to find the correct record
         [$type, $id] = explode('-', $id);
 
-        $getExpirationInfo = function ($status, $expiresAt) use ($now) {
+        $getExpirationInfo = function ($status, $expiresAt, $updatedAt) use ($now) {
 
             // If status is "Incomplete", it's still in progress
             if ($status === 'Incomplete') {
@@ -33,6 +33,12 @@ class SeniorQRScannerController extends Controller
             // If status is "Denied", it's not eligible
             if ($status === 'Denied') {
                 return "Not Eligible";
+            }
+
+            // If status is "Complete"
+            if ($status === 'Complete') {
+                // Get date 3 months before expiration
+                return "Last updated: " . date('F j, Y', strtotime($updatedAt));
             }
 
             // Convert expiration date to timestamp
@@ -71,13 +77,6 @@ class SeniorQRScannerController extends Controller
                 // If overdue by less than 1 minute
                 return "Expired: Less than a minute ago";
             };
-
-            // If status is "Complete"
-            if ($status === 'Complete') {
-                // Get date 3 months before expiration
-                $updatedDate = strtotime("-3 months", $expiresDate);
-                return "Last updated: " . date('F j, Y', $updatedDate);
-            }
 
             // If status is "Renewal"
             if ($status === 'Renewal') {
