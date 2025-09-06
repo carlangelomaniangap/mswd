@@ -9,7 +9,7 @@
         </div>
     </x-slot>
 
-    <div class="space-y-4">
+    <div class="space-y-4 ">
         <div class="grid grid-cols-1 grid-rows-4 sm:grid-cols-4 sm:grid-rows-1 gap-4">
             <div class="p-6 text-white bg-green-600 shadow-md dark:bg-green-500">
                 <div class="flex items-center justify-between">
@@ -68,134 +68,18 @@
             </div>
         </div>
 
-        <div class="px-6 pt-4 pb-6 bg-white dark:bg-dark-eval-1 shadow-md">
-            <h3 class="pb-2 font-semibold text-lg">Barangay Statistics</h3>
-
-            <div class="grid grid-cols-3 grid-rows-3 gap-4">
-                <div class="bg-gray-100 dark:bg-dark-eval-0 shadow-md p-2">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5>Bangkal</h5>
-                            <p class="font-bold text-xl text-blue-600" id="bangkal">
-                                <span class="text-sm text-gray-700 dark:text-white font-normal">Loading…</span>
-                            </p>
-                        </div>
-                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                        </svg>
-                    </div>
+        <div class="grid grid-cols-2 grid-rows-1 gap-4">
+            <div class="bg-white p-4 space-y-4">
+                <h3 class="font-semibold">Brangay Statistics</h3>
+                <div class="flex items-center justify-center">
+                    <canvas id="barangaystats" height="300" width="300"></canvas>
                 </div>
+            </div>
 
-                <div class="bg-gray-100 dark:bg-dark-eval-0 shadow-md p-2">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5>Calaylayan</h5>
-                            <p class="font-bold text-xl text-blue-600" id="calaylayan">
-                                <span class="text-sm text-gray-700 dark:text-white font-normal">Loading…</span>
-                            </p>
-                        </div>
-                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="bg-gray-100 dark:bg-dark-eval-0 shadow-md p-2">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5>Capitangan</h5>
-                            <p class="font-bold text-xl text-blue-600" id="capitangan">
-                                <span class="text-sm text-gray-700 dark:text-white font-normal">Loading…</span>
-                            </p>
-                        </div>
-                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="bg-gray-100 dark:bg-dark-eval-0 shadow-md p-2">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5>Gabon</h5>
-                            <p class="font-bold text-xl text-blue-600" id="gabon">
-                                <span class="text-sm text-gray-700 dark:text-white font-normal">Loading…</span>
-                            </p>
-                        </div>
-                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="bg-gray-100 dark:bg-dark-eval-0 shadow-md p-2">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5>Laon</h5>
-                            <p class="font-bold text-xl text-blue-600" id="laon">
-                                <span class="text-sm text-gray-700 dark:text-white font-normal">Loading…</span>
-                            </p>
-                        </div>
-                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="bg-gray-100 dark:bg-dark-eval-0 shadow-md p-2">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5>Mabatang</h5>
-                            <p class="font-bold text-xl text-blue-600" id="mabatang">
-                                <span class="text-sm text-gray-700 dark:text-white font-normal">Loading…</span>
-                            </p>
-                        </div>
-                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="bg-gray-100 dark:bg-dark-eval-0 shadow-md p-2">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5>Omboy</h5>
-                            <p class="font-bold text-xl text-blue-600" id="omboy">
-                                <span class="text-sm text-gray-700 dark:text-white font-normal">Loading…</span>
-                            </p>
-                        </div>
-                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="bg-gray-100 dark:bg-dark-eval-0 shadow-md p-2">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5>Salian</h5>
-                            <p class="font-bold text-xl text-blue-600" id="salian">
-                                <span class="text-sm text-gray-700 dark:text-white font-normal">Loading…</span>
-                            </p>
-                        </div>
-                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="bg-gray-100 dark:bg-dark-eval-0 shadow-md p-2">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5>Wawa</h5>
-                            <p class="font-bold text-xl text-blue-600" id="wawa">
-                                <span class="text-sm text-gray-700 dark:text-white font-normal">Loading…</span>
-                            </p>
-                        </div>
-                        <svg class="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
-                        </svg>
-                    </div>
+            <div class="bg-white p-4 space-y-4">
+                <h3 class="font-semibold">Status Statistics</h3>
+                <div class="flex items-center justify-center">
+                    <canvas id="statusstats" height="300" width="300"></canvas>
                 </div>
             </div>
         </div>
@@ -203,49 +87,127 @@
 </x-app-layout>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        function fetchCount() {
-            $.ajax({
-                url: `/admin/dashboard/fetch`,
-                method: 'GET',
-                success: function(data) {
-                    $('#total_beneficiaries').text(data.total_beneficiaries);
-                    $('#total_beneficiaries_age_8_to_16').text(data.total_beneficiaries_age_8_to_16);
-                    $('#total_beneficiaries_age_17_to_30').text(data.total_beneficiaries_age_17_to_30);
-                    $('#age_31_above_total').text(data.age_31_above_total);
-                    $('#bangkal').html(
-                        data.bangkal + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
-                    );
-                    $('#calaylayan').html(
-                        data.calaylayan + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
-                    );
-                    $('#capitangan').html(
-                        data.capitangan + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
-                    );
-                    $('#gabon').html(
-                        data.gabon + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
-                    );
-                    $('#laon').html(
-                        data.laon + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
-                    );
-                    $('#mabatang').html(
-                        data.mabatang + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
-                    );
-                    $('#omboy').html(
-                        data.omboy + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
-                    );
-                    $('#salian').html(
-                        data.salian + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
-                    );
-                    $('#wawa').html(
-                        data.wawa + ' <span class="text-sm font-normal text-gray-700 dark:text-white">beneficiaries</span>'
-                    );
+    const barangaycanvas = document.getElementById('barangaystats').getContext('2d');
+    const statuscanvas = document.getElementById('statusstats').getContext('2d');
+
+    const barangayChart = new Chart(barangaycanvas, {
+        type: 'pie',
+        data: {
+            labels: ['Bangkal', 'Calaylayan', 'Capitangan', 'Gabon', 'Laon', 'Mabatang', 'Omboy', 'Salian', 'Wawa'],
+            datasets: [{
+                label: 'Beneficiaries',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                backgroundColor: [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#8AFF33', '#FF33F6', '#33FFF0'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'right',
+                    align: 'center',
+                    labels: {
+                        boxWidth: 20,
+                        padding: 10
+                    }
                 }
-            });
+            },
+            animation: { duration: 500 }
         }
-        fetchCount();
-        setInterval(fetchCount, 1000);
     });
+
+    const statusChart = new Chart(statuscanvas, {
+        type: 'bar',
+        data: {
+            labels: ['Eligible', 'In Progress', 'Expired', 'Not Eligible'], // status on X-axis
+            datasets: [{
+                label: 'Total Count',
+                data: [0, 0, 0, 0], // initial values
+                backgroundColor: [
+                    'rgba(40, 167, 69, 0.3)',   // Eligible - Light Green
+                    'rgba(255, 193, 7, 0.3)',   // In Progress - Light Yellow
+                    'rgba(253, 126, 20, 0.3)',  // Expired - Light Orange
+                    'rgba(220, 53, 69, 0.3)'    // Not Eligible - Light Red
+                ],
+                borderColor: [
+                    '#1e7e34', // Eligible - Darker Green
+                    '#e0a800', // In Progress - Darker Yellow
+                    '#e8590c', // Expired - Darker Orange
+                    '#b02a37'  // Not Eligible - Darker Red
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: true }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 5
+                    },
+                    title: {
+                        display: true,
+                        text: 'Count'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Status'
+                    }
+                }
+            }
+        }
+    });
+
+    function fetch() {
+        $.ajax({
+            url: `/admin/dashboard/fetch`,
+            method: 'GET',
+            success: function(data) {
+                $('#total_beneficiaries').text(data.total_beneficiaries);
+                $('#total_beneficiaries_age_8_to_16').text(data.total_beneficiaries_age_8_to_16);
+                $('#total_beneficiaries_age_17_to_30').text(data.total_beneficiaries_age_17_to_30);
+                $('#age_31_above_total').text(data.age_31_above_total);
+
+                barangayChart.data.datasets[0].data = [
+                    data.bangkal,
+                    data.calaylayan,
+                    data.capitangan,
+                    data.gabon,
+                    data.laon,
+                    data.mabatang,
+                    data.omboy,
+                    data.salian,
+                    data.wawa
+                ];
+                barangayChart.update();
+
+                statusChart.data.datasets[0].data = [
+                    data.overall_status['Eligible'] ?? 0,
+                    data.overall_status['In Progress'] ?? 0,
+                    data.overall_status['Expired'] ?? 0,
+                    data.overall_status['Not Eligible'] ?? 0
+                ];
+                statusChart.update();
+            }
+        });
+    }
+
+    fetch();
+    setInterval(fetch, 1000);
 </script>

@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\AdminSoloParentController;
 use App\Http\Controllers\Admin\AdminSoloParentFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSoloParentRequirementsController;
 use App\Http\Controllers\Admin\AdminManageAccountController;
+use App\Http\Controllers\Admin\AdminPrintIDCardController;
 
 use App\Http\Controllers\Pwd\PwdDashboardController;
 use App\Http\Controllers\Pwd\PwdRecordsController;
@@ -57,27 +58,27 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::middleware(['auth', 'role:admin,aics'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin,aics'])->group(function () {
     Route::get('/aics/record/data/scan', [AicsQRScannerController::class, 'index'])->name('qrcode_scanner');
     Route::get('/aics/record/data/scan/{id}', [AicsQRScannerController::class, 'scan']);
 });
 
-Route::middleware(['auth', 'role:admin,pwd'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin,pwd'])->group(function () {
     Route::get('/pwd/record/data/scan', [PwdQRScannerController::class, 'index'])->name('qrcode_scanner');
     Route::get('/pwd/record/data/scan/{id}', [PwdQRScannerController::class, 'scan']);
 });
 
-Route::middleware(['auth', 'role:admin,senior_citizen'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin,senior_citizen'])->group(function () {
     Route::get('/senior_citizen/record/data/scan', [SeniorQRScannerController::class, 'index'])->name('qrcode_scanner');
     Route::get('/senior_citizen/record/data/scan/{id}', [SeniorQRScannerController::class, 'scan']);
 });
 
-Route::middleware(['auth', 'role:admin,solo_parent'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin,solo_parent'])->group(function () {
     Route::get('/solo_parent/record/data/scan', [SoloParentQRScannerController::class, 'index'])->name('qrcode_scanner');
     Route::get('/solo_parent/record/data/scan/{id}', [SoloParentQRScannerController::class, 'scan']);
 });
 
-Route::middleware(['auth', 'role:admin'])
+Route::middleware(['auth', 'verified', 'role:admin'])
     ->prefix('admin')
     ->as('admin.')
     ->group(function () {
@@ -116,9 +117,11 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/manage_account', [AdminManageAccountController::class, 'index'])->name('manage_account');
         Route::get('/manage_account/data', [AdminManageAccountController::class, 'fetchData']);
         Route::post('/manage_account/{id}/update', [AdminManageAccountController::class, 'update']);
+
+        Route::get('/{beneficiary}/print_id_card', [AdminPrintIDCardController::class, 'print']);
 });
 
-Route::middleware(['auth', 'role:pwd'])
+Route::middleware(['auth', 'verified', 'role:pwd'])
     ->prefix('pwd')
     ->as('pwd.')
     ->group(function () {
@@ -129,13 +132,16 @@ Route::middleware(['auth', 'role:pwd'])
         Route::get('/records/data', [PwdRecordsController::class, 'fetchData']);
         Route::post('/records/{id}/update', [PwdRecordsController::class,'update'])->name('update');
         Route::post('/records/{id}/update/requirements', [PwdRequirementsController::class, 'update']);
+
+        Route::get('/print_id_card', [PwdRecordsController::class, 'print']);
 });
 
-Route::middleware(['auth', 'role:aics'])
+Route::middleware(['auth', 'verified', 'role:aics'])
     ->prefix('aics')
     ->as('aics.')
     ->group(function () {
         Route::get('/dashboard', [AicsDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard/fetch', [AicsDashboardController::class, 'fetch']);
         Route::get('/records', [AicsRecordsController::class, 'index'])->name('records');
         Route::post('/records/store', [AicsRecordsController::class,'store'])->name('store');
         Route::get('/records/data', [AicsRecordsController::class, 'fetchData']);
@@ -144,9 +150,11 @@ Route::middleware(['auth', 'role:aics'])
         Route::get('/records/{id}/family-member', [AicsFamilyMemberController::class, 'getData']);
         Route::post('/records/store/payout', [AicsPayoutController::class,'store']);
         Route::get('/records/{id}/payout-histories', [AicsPayoutController::class, 'getData']);
+
+        Route::get('/print_id_card', [AicsRecordsController::class, 'print']);
 });
 
-Route::middleware(['auth', 'role:senior_citizen'])
+Route::middleware(['auth', 'verified', 'role:senior_citizen'])
     ->prefix('senior_citizen')
     ->as('senior_citizen.')
     ->group(function () {
@@ -158,9 +166,11 @@ Route::middleware(['auth', 'role:senior_citizen'])
         Route::post('/records/store/family-member', [SeniorFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/records/{id}/family-member', [SeniorFamilyMemberController::class, 'getData']);
         Route::post('/records/{id}/update/requirements', [SeniorRequirementsController::class, 'update']);
+
+        Route::get('/print_id_card', [SeniorCitizenRecordsController::class, 'print']);
 });
 
-Route::middleware(['auth', 'role:solo_parent'])
+Route::middleware(['auth', 'verified', 'role:solo_parent'])
     ->prefix('solo_parent')
     ->as('solo_parent.')
     ->group(function () {
@@ -172,26 +182,14 @@ Route::middleware(['auth', 'role:solo_parent'])
         Route::post('/records/store/family-member', [SoloParentFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/records/{id}/family-member', [SoloParentFamilyMemberController::class, 'getData']);
         Route::post('/records/{id}/update/requirements', [SoloParentRequirementsController::class, 'update']);
+
+        Route::get('/print_id_card', [SoloParentRecordsController::class, 'print']);
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-// useless routes
-// Just to demo sidebar dropdown links active states.
-Route::get('/buttons/text', function () {
-    return view('buttons-showcase.text');
-})->middleware(['auth'])->name('buttons.text');
-
-Route::get('/buttons/icon', function () {
-    return view('buttons-showcase.icon');
-})->middleware(['auth'])->name('buttons.icon');
-
-Route::get('/buttons/text-icon', function () {
-    return view('buttons-showcase.text-icon');
-})->middleware(['auth'])->name('buttons.text-icon');
 
 require __DIR__ . '/auth.php';

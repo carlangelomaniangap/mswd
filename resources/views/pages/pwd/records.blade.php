@@ -1404,7 +1404,7 @@
                     </div>
 
                     <div class="flex justify-center mt-6">
-                        <x-button>Print</x-button>
+                        <x-button id="btnPrintID">Print</x-button>
                     </div>
                 </div>
             </div>
@@ -1806,6 +1806,31 @@
         $('#id_card_birthday').text(new Date(btn.data('date_of_birth')).toLocaleString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
         $('#id_card_type_of_disability').text(btn.data('type_of_disability'));
         $('#id_card_qr_code').attr('src', btn.data('qr_code'));
+
+        $('#btnPrintID')
+        .data('id', btn.data('id'))
+        .data('first_name', btn.data('first_name'))
+        .data('last_name', btn.data('last_name'))
+        .data('address', `${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`)
+        .data('date_of_birth', btn.data('date_of_birth'))
+        .data('sex', btn.data('sex'))
+        .data('cellphone_number', btn.data('cellphone_number'))
+        .data('qr_code', btn.data('qr_code'));
+    });
+
+    $('#btnPrintID').on('click', function () {
+        const recordID = $(this).data('id');
+
+        if (!recordID) {
+            alert('Cannot print: record not found.');
+            return;
+        }
+
+        const type = 'PWD';
+
+        const id = `${type}-${String(recordID).padStart(3, '0')}`;
+
+        window.open(`/pwd/print_id_card?id=${id}`, '_blank');
     });
 </script>
 

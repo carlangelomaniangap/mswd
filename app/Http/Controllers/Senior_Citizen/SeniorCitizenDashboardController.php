@@ -40,6 +40,14 @@ class SeniorCitizenDashboardController extends Controller
 
         $wawa  = SeniorCitizenRecord::where('barangay', 'Wawa')->count();
 
+        $statuses = ['Eligible', 'In Progress', 'Expired', 'Not Eligible'];
+
+        $overall_status = [];
+
+        foreach ($statuses as $status) {
+            $overall_status[$status] = SeniorCitizenRecord::where('status', $status)->count();
+        }
+
         return response()->json( [
             'total_beneficiaries' => $total_beneficiaries,
             'total_beneficiaries_age_60_to_69' => $total_beneficiaries_age_60_to_69,
@@ -53,7 +61,8 @@ class SeniorCitizenDashboardController extends Controller
             'mabatang' => $mabatang,
             'omboy' => $omboy,
             'salian' => $salian,
-            'wawa' => $wawa
+            'wawa' => $wawa,
+            'overall_status' => $overall_status
         ]);
     }
 }

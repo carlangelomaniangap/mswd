@@ -40,6 +40,14 @@ class PwdDashboardController extends Controller
 
         $wawa  = PwdRecord::where('barangay', 'Wawa')->count();
 
+        $statuses = ['Eligible', 'In Progress', 'Expired', 'Not Eligible'];
+
+        $overall_status = [];
+
+        foreach ($statuses as $status) {
+            $overall_status[$status] = PwdRecord::where('status', $status)->count();
+        }
+
         return response()->json( [
             'total_beneficiaries' => $total_beneficiaries,
             'total_beneficiaries_age_8_to_16' => $total_beneficiaries_age_8_to_16,
@@ -53,7 +61,8 @@ class PwdDashboardController extends Controller
             'mabatang' => $mabatang,
             'omboy' => $omboy,
             'salian' => $salian,
-            'wawa' => $wawa
+            'wawa' => $wawa,
+            'overall_status' => $overall_status
         ]);
     }
 }

@@ -1029,7 +1029,7 @@
                     {{-- Front ID --}}
                     <div class="space-y-2">
                         <h3 class="font-bold text-xs text-gray-700 dark:text-white">FRONT</h3>
-                        <div class="w-80 h-52 bg-white text-black rounded-lg shadow-md border p-4">
+                        <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex space-x-2">
                                 <img id="id_card_photo" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
                                 <h3 id="id_card_name" class="text-lg font-bold"></h3>
@@ -1064,12 +1064,10 @@
                         </div>
                     </div>
 
-                    {{-- "w-[358px] h-[228px] --}}
-
                     {{-- Back ID --}}
                     <div class="space-y-2">
                         <h3 class="font-bold text-xs text-gray-700 dark:text-white">BACK</h3>
-                        <div class="w-80 h-52 grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
+                        <div class="w-[358px] h-[228px] grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex items-center justify-center">
                                 <img id="id_card_qr_code" alt="QR Code" class="w-36 h-36 object-cover">
                             </div>
@@ -1086,7 +1084,7 @@
                     </div>
 
                     <div class="flex justify-center mt-6">
-                        <x-button>Print</x-button>
+                        <x-button id="btnPrintID">Print</x-button>
                     </div>
                 </div>
             </div>
@@ -1636,6 +1634,32 @@
         $('#id_card_birthday').text(new Date(btn.data('date_of_birth')).toLocaleString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
         $('#id_card_age').text(btn.data('age'));
         $('#id_card_qr_code').attr('src', btn.data('qr_code'));
+
+        $('#btnPrintID')
+        .data('id', btn.data('id'))
+        .data('first_name', btn.data('first_name'))
+        .data('last_name', btn.data('last_name'))
+        .data('address', `${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`)
+        .data('date_of_birth', btn.data('date_of_birth'))
+        .data('sex', btn.data('sex'))
+        .data('cellphone_number', btn.data('cellphone_number'))
+        .data('age', btn.data('age'))
+        .data('qr_code', btn.data('qr_code'));
+    });
+
+    $('#btnPrintID').on('click', function () {
+        const recordID = $(this).data('id');
+
+        if (!recordID) {
+            alert('Cannot print: record not found.');
+            return;
+        }
+
+        const type = 'SP';
+
+        const id = `${type}-${String(recordID).padStart(3, '0')}`;
+
+        window.open(`/solo_parent/print_id_card?id=${id}`, '_blank');
     });
 </script>
 

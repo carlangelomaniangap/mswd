@@ -40,6 +40,14 @@ class SoloParentDashboardController extends Controller
 
         $wawa  = SoloParentRecord::where('barangay', 'Wawa')->count();
 
+        $statuses = ['Eligible', 'In Progress', 'Expired', 'Not Eligible'];
+
+        $overall_status = [];
+
+        foreach ($statuses as $status) {
+            $overall_status[$status] = SoloParentRecord::where('status', $status)->count();
+        }
+
         return response()->json( [
             'total_beneficiaries' => $total_beneficiaries,
             'total_beneficiaries_age_18_to_24' => $total_beneficiaries_age_18_to_24,
@@ -53,7 +61,8 @@ class SoloParentDashboardController extends Controller
             'mabatang' => $mabatang,
             'omboy' => $omboy,
             'salian' => $salian,
-            'wawa' => $wawa
+            'wawa' => $wawa,
+            'overall_status' => $overall_status
         ]);
     }
 }

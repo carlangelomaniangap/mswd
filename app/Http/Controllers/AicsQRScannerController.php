@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PwdRecord;
 use App\Models\AicsRecord;
-use App\Models\SeniorCitizenRecord;
-use App\Models\SoloParentRecord;
 
 class AicsQRScannerController extends Controller
 {
