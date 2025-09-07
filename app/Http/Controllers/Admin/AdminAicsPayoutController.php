@@ -37,15 +37,24 @@ class AdminAicsPayoutController extends Controller
             ->latest()
             ->first();
 
-        if ($lastPayout && $lastPayout->created_at->addMonths(3)->setTimezone('Asia/Manila') > now('Asia/Manila')) {
-            $nextPayoutDate = $lastPayout->created_at->addMonths(3)->setTimezone('Asia/Manila');
+        if ($lastPayout) {
+            // Decide interval: 6 months if last payout < 4000, else 12 months
+            $intervalMonths = $lastPayout->amount < 4000 ? 6 : 12;
+
+            // Calculate when the next payout is allowed
+            $nextPayoutDate = $lastPayout->created_at->copy()->addMonths($intervalMonths)->setTimezone('Asia/Manila');
+
+            // How many days left until the next payout
             $daysRemaining = (int) now('Asia/Manila')->diffInDays($nextPayoutDate);
 
-            return response()->json([
-                'success' => false,
-                'message' => 'This beneficiary already received a payout.',
-                'text' => 'Next payout in ' . $daysRemaining . ' day' . ($daysRemaining > 1 ? 's' : '') . ' (' . $nextPayoutDate->format('F j, Y') . ')',
-            ]);
+            // Stop if it's too early for the next payout
+            if (now('Asia/Manila') < $nextPayoutDate) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This beneficiary already received a payout.',
+                    'text' => 'Next payout in ' . $daysRemaining . ' day' . ($daysRemaining > 1 ? 's' : '') . ' (' . $nextPayoutDate->format('F j, Y') . ')',
+                ]);
+            }
         }
 
         AicsPayoutHistory::create([
