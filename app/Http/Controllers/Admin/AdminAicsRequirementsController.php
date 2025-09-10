@@ -308,14 +308,14 @@ class AdminAicsRequirementsController extends Controller
             ]);
         }
 
-        if (!in_array('Incomplete', $values, true) && !in_array('Renewal', $values, true) && !in_array('Denied', $values, true)) {
-            $status = 'Eligible';
+        if (in_array('Denied', $values, true)) {
+            $status = 'Not Eligible';
         } elseif (in_array('Incomplete', $values, true)) {
             $status = 'In Progress';
         } elseif (in_array('Renewal', $values, true)) {
             $status = 'Expired';
-        } elseif (in_array('Denied', $values, true)) {
-            $status = 'Not Eligible';
+        } elseif (!in_array('Incomplete', $values, true) && !in_array('Renewal', $values, true) && !in_array('Denied', $values, true)) {
+            $status = 'Eligible';
         }
 
         $record->status = $status;

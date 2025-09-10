@@ -524,6 +524,8 @@ class AdminAicsController extends Controller
                 }
             };
 
+            $requirements = [];
+
             if ($record->nature_of_problem === 'Medical (Magulang Ang Magprocess)') {
                 $requirement = $record->aicsmedicalmagulangRequirement;
 

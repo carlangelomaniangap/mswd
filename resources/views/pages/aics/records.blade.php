@@ -1298,22 +1298,48 @@
             { key: 'surrender_id', label: 'Surrender ID (PWD/SC ID)' },
         ];
 
+        const containerStyles = {
+            'Complete': 'bg-green-100 border-2 border-green-500',
+            'Incomplete': 'bg-yellow-100 border-2 border-yellow-500',
+            'Renewal': 'bg-orange-100 border-2 border-orange-500',
+            'Denied': 'bg-red-100 border-2 border-red-500'
+        };
+
+        const statusStyles = {
+            'Complete': 'bg-white px-2 py-1 border-2 border-green-500 rounded',
+            'Incomplete': 'bg-white px-2 py-1 border-2 border-yellow-500 rounded',
+            'Renewal': 'bg-white px-2 py-1 border-2 border-orange-500 rounded',
+            'Denied': 'bg-white px-2 py-1 border-2 border-red-500 rounded'
+        };
+
+        const textStyles = {
+            'Complete': 'text-green-700',
+            'Incomplete': 'text-yellow-700',
+            'Renewal': 'text-orange-700',
+            'Denied': 'text-red-700'
+        };
+
         fields.forEach(field => {
             if (requirements[field.key]) {
+                const status = requirements[field.key];
+                const ContainerColor = containerStyles[status];
+                const textColor = textStyles[status];
+                const statusColor = statusStyles[status];
+
                 html += `
-                    <div class="w-full p-4 border flex items-center justify-between">
+                    <div class="w-full p-4 ${ContainerColor} flex items-center justify-between">
                         <div>
-                            <p class="text-sm">${field.label}</p>
-                            <p id="${field.key}_expires_at" class="text-xs">${requirements[field.key + '_expires_at']}</p>
+                            <p class="text-sm ${textColor}">${field.label}</p>
+                            <p id="${field.key}_expires_at" class="text-xs ${textColor}">${requirements[field.key + '_expires_at']}</p>
                         </div>
 
-                        <div class="pl-1.5 w-32">
-                            <x-form.select name="${field.key}" id="${field.key}" size="sm">
+                        <div>
+                            <x-form.select name="${field.key}" id="${field.key}" size="sm" class="${textColor} font-semibold ${statusColor}">
                                 <option value="" selected disabled>Select</option>
                                 <option value="Complete" ${requirements[field.key] === 'Complete' ? 'selected' : ''}>Complete</option>
+                                <option value="Incomplete" ${requirements[field.key] === 'Incomplete' ? 'selected' : ''} hidden>Incomplete</option>
+                                <option value="Renewal" ${requirements[field.key] === 'Renewal' ? 'selected' : ''} hidden>Renewal</option>
                                 <option value="Denied" ${requirements[field.key] === 'Denied' ? 'selected' : ''}>Denied</option>
-                                <option value="Incomplete" ${requirements[field.key] === 'Incomplete' ? 'selected' : ''} disabled>Incomplete</option>
-                                <option value="Renewal" ${requirements[field.key] === 'Renewal' ? 'selected' : ''} disabled>Renewal</option>
                             </x-form.select>
                         </div>
                     </div>
@@ -1326,6 +1352,7 @@
 
         $('#btnPrintID')
         .data('id', btn.data('id'))
+        .data('beneficiary', 'aics')
         .data('first_name', btn.data('first_name'))
         .data('last_name', btn.data('last_name'))
         .data('address', `${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`)
@@ -1337,6 +1364,7 @@
 
     $('#btnPrintID').on('click', function () {
         const recordID = $(this).data('id');
+        const beneficiary = $(this).data('beneficiary');
 
         if (!recordID) {
             alert('Cannot print: record not found.');
@@ -1347,7 +1375,7 @@
 
         const id = `${type}-${String(recordID).padStart(3, '0')}`;
 
-        window.open(`/aics/print_id_card?id=${id}`, '_blank');
+        window.open(`/admin/${beneficiary}/print_id_card?id=${id}`, '_blank');
     });
 </script>
 
@@ -1557,14 +1585,61 @@
                             showConfirmButton: false,
                             timer: 1500
                         });
+
+                        const containerStyles = {
+                            'Complete': 'bg-green-100 border-2 border-green-500',
+                            'Incomplete': 'bg-yellow-100 border-2 border-yellow-500',
+                            'Renewal': 'bg-orange-100 border-2 border-orange-500',
+                            'Denied': 'bg-red-100 border-2 border-red-500'
+                        };
+
+                        const statusStyles = {
+                            'Complete': 'border-green-500',
+                            'Incomplete': 'border-yellow-500',
+                            'Renewal': 'border-orange-500',
+                            'Denied': 'border-red-500'
+                        };
+
+                        const textStyles = {
+                            'Complete': 'text-green-700',
+                            'Incomplete': 'text-yellow-700',
+                            'Renewal': 'text-orange-700',
+                            'Denied': 'text-red-700'
+                        };
+
+                        // Loop through each requirement
+                        function updateRequirement(key, value, expires) {
+                            const container = $('#' + key).closest('div.w-full.p-4');
+                            const select = $('#' + key);
+
+                            // Update container color
+                            container.attr('class', `w-full p-4 ${containerStyles[value]} flex items-center justify-between`);
+
+                            // Update label color
+                            container.find('p.text-sm').attr('class', `text-sm ${textStyles[value]}`);
+
+                            // Update select and style (keeps x-select design)
+                            select.removeClass(Object.values(statusStyles).join(' ') + ' ' + Object.values(textStyles).join(' '))
+                                .addClass(`${statusStyles[value]} ${textStyles[value]}`);
+
+                            // Update _expires_at text and color if exists
+                            if (expires && $('#' + key + '_expires_at').length) {
+                                $('#' + key + '_expires_at')
+                                    .text(expires)
+                                    .attr('class', `text-xs ${textStyles[value]}`);
+                            }
+                        }
+
+                        // Loop through all requirements
                         response.requirements.forEach(req => {
-                            $.each(req, function (key, value) {
-                                // Only update the <p> tags that exist on the page
-                                if (key.endsWith('_expires_at') && $('#' + key).length) {
-                                    $('#' + key).text(value);
-                                }
+                            $.each(req, function(key, value) {
+                                if (key.endsWith('_expires_at')) return;
+                                if (!containerStyles[value]) return;
+                                const expires = req[key + '_expires_at'];
+                                updateRequirement(key, value, expires);
                             });
                         });
+
                         $('#EditBtn').prop('disabled', true); // Disabled the button update
                         $('#aics_records').DataTable().ajax.reload(null, false); // reload the Beneficiary table
                     } else {

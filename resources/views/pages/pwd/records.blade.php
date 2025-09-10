@@ -1238,7 +1238,7 @@
                                 @csrf
                                 <input type="hidden" id="pwd_requirement_id" name="pwd_requirement_id">
 
-                                <div class="w-full p-4 border flex items-center justify-between">
+                                <div class="w-full p-4 flex items-center justify-between">
                                     <div>
                                         <p class="text-sm">VALID ID</p>
                                         <p id="valid_id_expires_at" class="text-xs"></p>
@@ -1259,7 +1259,7 @@
                                     </div>
                                 </div>
 
-                                <div class="w-full p-4 border flex items-center justify-between">
+                                <div class="w-full p-4 flex items-center justify-between">
                                     <div>
                                         <p class="text-sm">Medical Certificate</p>
                                         <p id="medical_certificate_expires_at" class="text-xs"></p>
@@ -1280,7 +1280,7 @@
                                     </div>
                                 </div>
 
-                                <div class="w-full p-4 border flex items-center justify-between">
+                                <div class="w-full p-4 flex items-center justify-between">
                                     <div>
                                         <p class="text-sm">Barangay Certificate</p>
                                         <p id="barangay_certificate_expires_at" class="text-xs"></p>
@@ -1301,7 +1301,7 @@
                                     </div>
                                 </div>
 
-                                <div class="w-full p-4 border flex items-center justify-between">
+                                <div class="w-full p-4 flex items-center justify-between">
                                     <div>
                                         <p class="text-sm">Birth Certificate</p>
                                         <p id="birth_certificate_expires_at" class="text-xs"></p>
@@ -1348,7 +1348,7 @@
                     {{-- Front ID --}}
                     <div class="space-y-2">
                         <h3 class="font-bold text-xs text-gray-700 dark:text-white">FRONT</h3>
-                        <div class="w-80 h-52 bg-white text-black rounded-lg shadow-md border p-4">
+                        <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex space-x-2">
                                 <img id="id_card_photo" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
                                 <h3 id="id_card_name" class="text-lg font-bold"></h3>
@@ -1369,7 +1369,8 @@
                             </div>
                             <div class="text-xs mt-1">
                                 <strong class="font-semibold">CONTACT NO:</strong>
-                                <span id="id_card_contact_number"></span></div>
+                                <span id="id_card_contact_number"></span>
+                            </div>
 
                             <div class="text-xs mt-1">
                                 <strong class="font-semibold">BIRTHDAY:</strong>
@@ -1382,12 +1383,10 @@
                         </div>
                     </div>
 
-                    {{-- "w-[358px] h-[228px] --}}
-
                     {{-- Back ID --}}
                     <div class="space-y-2">
                         <h3 class="font-bold text-xs text-gray-700 dark:text-white">BACK</h3>
-                        <div class="w-80 h-52 grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
+                        <div class="w-[358px] h-[228px] grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex items-center justify-center">
                                 <img id="id_card_qr_code" alt="QR Code" class="w-36 h-36 object-cover">
                             </div>
@@ -1797,6 +1796,41 @@
         $('#birth_certificate').val(btn.data('birth_certificate'));
         $('#birth_certificate_expires_at').text(btn.data('birth_certificate_expires_at'));
 
+        const containerStyles = {
+            'Complete': 'bg-green-100 border-2 border-green-500',
+            'Incomplete': 'bg-yellow-100 border-2 border-yellow-500',
+            'Renewal': 'bg-orange-100 border-2 border-orange-500',
+            'Denied': 'bg-red-100 border-2 border-red-500'
+        };
+
+        const statusStyles = {
+            'Complete': 'bg-white px-2 py-1 border-2 border-green-500 rounded',
+            'Incomplete': 'bg-white px-2 py-1 border-2 border-yellow-500 rounded',
+            'Renewal': 'bg-white px-2 py-1 border-2 border-orange-500 rounded',
+            'Denied': 'bg-white px-2 py-1 border-2 border-red-500 rounded'
+        };
+
+        const textStyles = {
+            'Complete': 'text-green-700',
+            'Incomplete': 'text-yellow-700',
+            'Renewal': 'text-orange-700',
+            'Denied': 'text-red-700'
+        };
+
+        // apply styles to each requirement
+        ['valid_id','medical_certificate','barangay_certificate','birth_certificate'].forEach(key => {
+            const value = $(`#${key}`).val();
+            const container = $(`#${key}`).closest('div.w-full.p-4');
+            const label = $(`#${key}_expires_at`).prev();
+            const expiresAt = $(`#${key}_expires_at`);
+            const select = $(`#${key}`);
+
+            container.addClass(`w-full p-4 ${containerStyles[value]} flex items-center justify-between`);
+            label.attr('class', `text-sm ${textStyles[value]}`);
+            expiresAt.addClass(`text-xs ${textStyles[value]}`);
+            select.addClass(`${textStyles[value]} font-semibold ${statusStyles[value]}`);
+        });
+
         $('#id_card_photo').attr('src', btn.data('photo'));
         $('#id_card_name').text(`${btn.data('first_name')} ${btn.data('last_name')}`);
         $('#id_card_pwd_id').text(`PWD-${String(btn.data('id')).padStart(3, '0')}`);
@@ -1809,6 +1843,7 @@
 
         $('#btnPrintID')
         .data('id', btn.data('id'))
+        .data('beneficiary', 'pwd')
         .data('first_name', btn.data('first_name'))
         .data('last_name', btn.data('last_name'))
         .data('address', `${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`)
@@ -1820,6 +1855,7 @@
 
     $('#btnPrintID').on('click', function () {
         const recordID = $(this).data('id');
+        const beneficiary = $(this).data('beneficiary');
 
         if (!recordID) {
             alert('Cannot print: record not found.');
@@ -1830,7 +1866,7 @@
 
         const id = `${type}-${String(recordID).padStart(3, '0')}`;
 
-        window.open(`/pwd/print_id_card?id=${id}`, '_blank');
+        window.open(`/admin/${beneficiary}/print_id_card?id=${id}`, '_blank');
     });
 </script>
 
@@ -1883,10 +1919,49 @@
                             showConfirmButton: false,
                             timer: 1500
                         });
+
                         $('#valid_id_expires_at').text(response.requirement.valid_id_expires_at);
                         $('#medical_certificate_expires_at').text(response.requirement.medical_certificate_expires_at);
                         $('#barangay_certificate_expires_at').text(response.requirement.barangay_certificate_expires_at);
                         $('#birth_certificate_expires_at').text(response.requirement.birth_certificate_expires_at);
+
+                        const containerStyles = {
+                            'Complete': 'bg-green-100 border-2 border-green-500',
+                            'Incomplete': 'bg-yellow-100 border-2 border-yellow-500',
+                            'Renewal': 'bg-orange-100 border-2 border-orange-500',
+                            'Denied': 'bg-red-100 border-2 border-red-500'
+                        };
+
+                        const statusStyles = {
+                            'Complete': 'border-green-500',
+                            'Incomplete': 'border-yellow-500',
+                            'Renewal': 'border-orange-500',
+                            'Denied': 'border-red-500'
+                        };
+
+                        const textStyles = {
+                            'Complete': 'text-green-700',
+                            'Incomplete': 'text-yellow-700',
+                            'Renewal': 'text-orange-700',
+                            'Denied': 'text-red-700'
+                        };
+
+                        // apply styles to each requirement
+                        ['valid_id','medical_certificate','barangay_certificate','birth_certificate'].forEach(key => {
+                            const value = $(`#${key}`).val();
+                            const container = $(`#${key}`).closest('div.w-full.p-4');
+                            const label = $(`#${key}_expires_at`).prev();
+                            const expiresAt = $(`#${key}_expires_at`);
+                            const select = $(`#${key}`);
+
+                            container.attr('class', `w-full p-4 ${containerStyles[value]} flex items-center justify-between`);
+                            label.attr('class', `text-sm ${textStyles[value]}`);
+                            expiresAt.attr('class', `text-xs ${textStyles[value]}`);
+                            
+                            select.removeClass(Object.values(statusStyles).join(' ') + ' ' + Object.values(textStyles).join(' '))
+                                .addClass(`${statusStyles[value]} ${textStyles[value]}`);
+                        });
+
                         $('#EditBtn').prop('disabled', true); // Disabled the button update
                         $('#pwd_records').DataTable().ajax.reload(null, false); // reload the Beneficiary table
                     } else {

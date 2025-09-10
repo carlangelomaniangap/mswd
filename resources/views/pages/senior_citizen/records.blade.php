@@ -525,7 +525,7 @@
                                 @csrf
                                 <input type="hidden" id="senior_requirement_id" name="senior_requirement_id">
 
-                                <div class="w-full p-4 border flex items-center justify-between">
+                                <div class="w-full p-4 flex items-center justify-between">
                                     <div>
                                         <p class="text-sm">VALID ID</p>
                                         <p id="valid_id_expires_at" class="text-xs"></p>
@@ -539,7 +539,7 @@
                                         >
                                             <option value="" selected disabled>Select</option>
                                             <option value="Complete">Complete</option>
-                                            <option value="Incomplete" disabled>Incomplete</option>
+                                            <option value="Incomplete" hidden>Incomplete</option>
                                             <option value="Renewal">Renewal</option>
                                             <option value="Denied">Denied</option>
                                         </x-form.select>
@@ -547,7 +547,7 @@
                                 </div>
 
                                 
-                                <div class="w-full p-4 border flex items-center justify-between">
+                                <div class="w-full p-4 flex items-center justify-between">
                                     <div>
                                         <p class="text-sm">Birth Certificate</p>
                                         <p id="birth_certificate_expires_at" class="text-xs"></p>
@@ -561,14 +561,14 @@
                                         >
                                             <option value="" selected disabled>Select</option>
                                             <option value="Complete">Complete</option>
-                                            <option value="Incomplete" disabled>Incomplete</option>
+                                            <option value="Incomplete" hidden>Incomplete</option>
                                             <option value="Renewal">Renewal</option>
                                             <option value="Denied">Denied</option>
                                         </x-form.select>
                                     </div>
                                 </div>
 
-                                <div class="w-full p-4 border flex items-center justify-between">
+                                <div class="w-full p-4 flex items-center justify-between">
                                     <div>
                                         <p class="text-sm">Barangay Certificate</p>
                                         <p id="barangay_certificate_expires_at" class="text-xs"></p>
@@ -582,7 +582,7 @@
                                         >
                                             <option value="" selected disabled>Select</option>
                                             <option value="Complete">Complete</option>
-                                            <option value="Incomplete" disabled>Incomplete</option>
+                                            <option value="Incomplete" hidden>Incomplete</option>
                                             <option value="Renewal">Renewal</option>
                                             <option value="Denied">Denied</option>
                                         </x-form.select>
@@ -930,7 +930,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         $('#senior_citizen_records').DataTable({
             ajax: {
-                url: '/senior_citizen/records/data',
+                url: '/senior_citizen/recordssenior_citizen/data',
                 dataSrc: 'data'
             },
             ordering: false,
@@ -1048,7 +1048,7 @@
             const formData = new FormData(this); // get the form input data
 
             $.ajax({
-                url: `/senior_citizen/records/store`,
+                url: `/senior_citizen/recordssenior_citizen/store`,
                 method: 'POST',
                 data: formData,
                 contentType: false,
@@ -1109,6 +1109,41 @@
         $('#barangay_certificate').val(btn.data('barangay_certificate'));
         $('#barangay_certificate_expires_at').text(btn.data('barangay_certificate_expires_at'));
 
+        const containerStyles = {
+            'Complete': 'bg-green-100 border-2 border-green-500',
+            'Incomplete': 'bg-yellow-100 border-2 border-yellow-500',
+            'Renewal': 'bg-orange-100 border-2 border-orange-500',
+            'Denied': 'bg-red-100 border-2 border-red-500'
+        };
+
+        const statusStyles = {
+            'Complete': 'bg-white px-2 py-1 border-2 border-green-500 rounded',
+            'Incomplete': 'bg-white px-2 py-1 border-2 border-yellow-500 rounded',
+            'Renewal': 'bg-white px-2 py-1 border-2 border-orange-500 rounded',
+            'Denied': 'bg-white px-2 py-1 border-2 border-red-500 rounded'
+        };
+
+        const textStyles = {
+            'Complete': 'text-green-700',
+            'Incomplete': 'text-yellow-700',
+            'Renewal': 'text-orange-700',
+            'Denied': 'text-red-700'
+        };
+
+        // apply styles to each requirement
+        ['valid_id','birth_certificate','barangay_certificate'].forEach(key => {
+            const value = $(`#${key}`).val();
+            const container = $(`#${key}`).closest('div.w-full.p-4');
+            const label = $(`#${key}_expires_at`).prev();
+            const expiresAt = $(`#${key}_expires_at`);
+            const select = $(`#${key}`);
+
+            container.addClass(`w-full p-4 ${containerStyles[value]} flex items-center justify-between`);
+            label.attr('class', `text-sm ${textStyles[value]}`);
+            expiresAt.addClass(`text-xs ${textStyles[value]}`);
+            select.addClass(`${textStyles[value]} font-semibold ${statusStyles[value]}`);
+        });
+
         $('#id_card_photo').attr('src', btn.data('photo'));
         $('#id_card_name').text(`${btn.data('first_name')} ${btn.data('last_name')}`);
         $('#id_card_sc_id').text(`SC-${String(btn.data('id')).padStart(3, '0')}`);
@@ -1121,6 +1156,7 @@
 
         $('#btnPrintID')
         .data('id', btn.data('id'))
+        .data('beneficiary', 'senior_citizen')
         .data('first_name', btn.data('first_name'))
         .data('last_name', btn.data('last_name'))
         .data('address', `${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`)
@@ -1133,6 +1169,7 @@
 
     $('#btnPrintID').on('click', function () {
         const recordID = $(this).data('id');
+        const beneficiary = $(this).data('beneficiary');
 
         if (!recordID) {
             alert('Cannot print: record not found.');
@@ -1143,7 +1180,7 @@
 
         const id = `${type}-${String(recordID).padStart(3, '0')}`;
 
-        window.open(`/senior_citizen/print_id_card?id=${id}`, '_blank');
+        window.open(`/senior_citizen/records${beneficiary}/print_id_card?id=${id}`, '_blank');
     });
 </script>
 
@@ -1154,7 +1191,7 @@
         $('#family_member').DataTable({
             destroy: true, //remove this//
             ajax: {
-                url: `/senior_citizen/records/${id}/family-member`,
+                url: `/senior_citizen/recordssenior_citizen/${id}/family-member`,
                 dataSrc: 'data'
             },
             ordering: false,
@@ -1189,7 +1226,7 @@
             const formData = new FormData(this); // get the form input data
 
             $.ajax({
-                url: `/senior_citizen/records/store/family-member`,
+                url: `/senior_citizen/recordssenior_citizen/store/family-member`,
                 method: 'POST',
                 data: formData,
                 processData: false,
@@ -1269,9 +1306,48 @@
                             showConfirmButton: false,
                             timer: 1500
                         });
+
                         $('#valid_id_expires_at').text(response.requirement.valid_id_expires_at);
                         $('#birth_certificate_expires_at').text(response.requirement.birth_certificate_expires_at);
                         $('#barangay_certificate_expires_at').text(response.requirement.barangay_certificate_expires_at);
+
+                        const containerStyles = {
+                            'Complete': 'bg-green-100 border-2 border-green-500',
+                            'Incomplete': 'bg-yellow-100 border-2 border-yellow-500',
+                            'Renewal': 'bg-orange-100 border-2 border-orange-500',
+                            'Denied': 'bg-red-100 border-2 border-red-500'
+                        };
+
+                        const statusStyles = {
+                            'Complete': 'border-green-500',
+                            'Incomplete': 'border-yellow-500',
+                            'Renewal': 'border-orange-500',
+                            'Denied': 'border-red-500'
+                        };
+
+                        const textStyles = {
+                            'Complete': 'text-green-700',
+                            'Incomplete': 'text-yellow-700',
+                            'Renewal': 'text-orange-700',
+                            'Denied': 'text-red-700'
+                        };
+
+                        // apply styles to each requirement
+                        ['valid_id','birth_certificate','barangay_certificate'].forEach(key => {
+                            const value = $(`#${key}`).val();
+                            const container = $(`#${key}`).closest('div.w-full.p-4');
+                            const label = $(`#${key}_expires_at`).prev();
+                            const expiresAt = $(`#${key}_expires_at`);
+                            const select = $(`#${key}`);
+
+                            container.attr('class', `w-full p-4 ${containerStyles[value]} flex items-center justify-between`);
+                            label.attr('class', `text-sm ${textStyles[value]}`);
+                            expiresAt.attr('class', `text-xs ${textStyles[value]}`);
+                            
+                            select.removeClass(Object.values(statusStyles).join(' ') + ' ' + Object.values(textStyles).join(' '))
+                                .addClass(`${statusStyles[value]} ${textStyles[value]}`);
+                        });
+
                         $('#EditBtn').prop('disabled', true); // Disabled the button update
                         $('#senior_citizen_records').DataTable().ajax.reload(null, false); // reload the Beneficiary table
                     } else {
