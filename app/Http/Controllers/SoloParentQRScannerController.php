@@ -85,20 +85,230 @@ class SoloParentQRScannerController extends Controller
         };
 
         if ($type === 'SP') {
-            $record = SoloParentRecord::with('soloParentRequirement')->find($id);
+            $record = SoloParentRecord::with('soloparentfamilyMember')->find($id);
 
-            if ($record) {
-                $requirement = $record->soloParentRequirement;
+            $requirements = [];
+
+            if ($record->solo_parent_category === 'Birth of a child as a consequence of rape') {
+                $requirement = $record->spbirthofchildconsRapeReq;
 
                 $requirements = [
-                    'valid_id' => $requirement->valid_id,
-                    'valid_id_expires_at' => $getExpirationInfo($requirement->valid_id, $requirement->valid_id_expires_at, $requirement->valid_id_updated_at),
-                    'birth_certificate' => $requirement->birth_certificate,
-                    'birth_certificate_expires_at' => $getExpirationInfo($requirement->birth_certificate, $requirement->birth_certificate_expires_at, $requirement->birth_certificate_updated_at),
-                    'solo_parent_id_application_form' => $requirement->solo_parent_id_application_form,
-                    'solo_parent_id_application_form_expires_at' => $getExpirationInfo($requirement->solo_parent_id_application_form, $requirement->solo_parent_id_application_form_expires_at, $requirement->solo_parent_id_application_form_updated_at),
-                    'affidavit_of_solo_parent' => $requirement->affidavit_of_solo_parent,
-                    'affidavit_of_solo_parent_expires_at' => $getExpirationInfo($requirement->affidavit_of_solo_parent, $requirement->affidavit_of_solo_parent_expires_at, $requirement->affidavit_of_solo_parent_updated_at),
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'complaint_affidavit' => $requirement->complaint_affidavit,
+                    'complaint_affidavit_expires_at' => $getExpirationInfo($requirement->complaint_affidavit, $requirement->complaint_affidavit_expires_at, $requirement->complaint_affidavit_updated_at),
+                    'medical_record_on_the_incident_of_rape' => $requirement->medical_record_on_the_incident_of_rape,
+                    'medical_record_on_the_incident_of_rape_expires_at' => $getExpirationInfo($requirement->medical_record_on_the_incident_of_rape, $requirement->medical_record_on_the_incident_of_rape_expires_at, $requirement->medical_record_on_the_incident_of_rape_updated_at),
+                    'solo_parent_has_sole_parental_care_of_a_child' => $requirement->solo_parent_has_sole_parental_care_of_a_child,
+                    'solo_parent_has_sole_parental_care_of_a_child_expires_at' => $getExpirationInfo($requirement->solo_parent_has_sole_parental_care_of_a_child, $requirement->solo_parent_has_sole_parental_care_of_a_child_expires_at, $requirement->solo_parent_has_sole_parental_care_of_a_child_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Widow/widower') {
+                $requirement = $record->spwidoworwidowerReq;
+
+                $requirements = [
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'marriage_certificate' => $requirement->marriage_certificate,
+                    'marriage_certificate_expires_at' => $getExpirationInfo($requirement->marriage_certificate, $requirement->marriage_certificate_expires_at, $requirement->marriage_certificate_updated_at),
+                    'death_certificate_of_the_spouse' => $requirement->death_certificate_of_the_spouse,
+                    'death_certificate_of_the_spouse_expires_at' => $getExpirationInfo($requirement->death_certificate_of_the_spouse, $requirement->death_certificate_of_the_spouse_expires_at, $requirement->death_certificate_of_the_spouse_updated_at),
+                    'a2_solo_parent_not_cohabiting' => $requirement->a2_solo_parent_not_cohabiting,
+                    'a2_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->a2_solo_parent_not_cohabiting, $requirement->a2_solo_parent_not_cohabiting_expires_at, $requirement->a2_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Spouse of person deprived of liberty') {
+                $requirement = $record->spspousedeprivedlibertyReq;
+
+                $requirements = [
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'marriage_certificate' => $requirement->marriage_certificate,
+                    'marriage_certificate_expires_at' => $getExpirationInfo($requirement->marriage_certificate, $requirement->marriage_certificate_expires_at, $requirement->marriage_certificate_updated_at),
+                    'certificate_of_detention' => $requirement->certificate_of_detention,
+                    'certificate_of_detention_expires_at' => $getExpirationInfo($requirement->certificate_of_detention, $requirement->certificate_of_detention_expires_at, $requirement->certificate_of_detention_updated_at),
+                    'a3_solo_parent_not_cohabiting' => $requirement->a3_solo_parent_not_cohabiting,
+                    'a3_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->a3_solo_parent_not_cohabiting, $requirement->a3_solo_parent_not_cohabiting_expires_at, $requirement->a3_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Spouse of person with physical or mental incapacity') {
+                $requirement = $record->spspousewithpmiReq;
+
+                $requirements = [
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'marriage_cert_or_affidavit_of_cohabitation' => $requirement->marriage_cert_or_affidavit_of_cohabitation,
+                    'marriage_cert_or_affidavit_of_cohabitation_expires_at' => $getExpirationInfo($requirement->marriage_cert_or_affidavit_of_cohabitation, $requirement->marriage_cert_or_affidavit_of_cohabitation_expires_at, $requirement->marriage_cert_or_affidavit_of_cohabitation_updated_at),
+                    'med_record_med_abstract_or_cert_of_confinement' => $requirement->med_record_med_abstract_or_cert_of_confinement,
+                    'med_record_med_abstract_or_cert_of_confinement_expires_at' => $getExpirationInfo($requirement->med_record_med_abstract_or_cert_of_confinement, $requirement->med_record_med_abstract_or_cert_of_confinement_expires_at, $requirement->med_record_med_abstract_or_cert_of_confinement_updated_at),
+                    'a4_solo_parent_not_cohabiting' => $requirement->a4_solo_parent_not_cohabiting,
+                    'a4_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->a4_solo_parent_not_cohabiting, $requirement->a4_solo_parent_not_cohabiting_expires_at, $requirement->a4_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Due to legal separation or de facto separation') {
+                $requirement = $record->spduetolegalseparationReq;
+
+                $requirements = [
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'marriage_certificate' => $requirement->marriage_certificate,
+                    'marriage_certificate_expires_at' => $getExpirationInfo($requirement->marriage_certificate, $requirement->marriage_certificate_expires_at, $requirement->marriage_certificate_updated_at),
+                    'judicial_decree_of_legal_separation' => $requirement->judicial_decree_of_legal_separation,
+                    'judicial_decree_of_legal_separation_expires_at' => $getExpirationInfo($requirement->judicial_decree_of_legal_separation, $requirement->judicial_decree_of_legal_separation_expires_at, $requirement->judicial_decree_of_legal_separation_updated_at),
+                    'a5_solo_parent_not_cohabiting' => $requirement->a5_solo_parent_not_cohabiting,
+                    'a5_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->a5_solo_parent_not_cohabiting, $requirement->a5_solo_parent_not_cohabiting_expires_at, $requirement->a5_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Due to nullity or annulment of marriage') {
+                $requirement = $record->spduetoannulmentReq;
+
+                $requirements = [
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'marriage_certificate_nullity' => $requirement->marriage_certificate_nullity,
+                    'marriage_certificate_nullity_expires_at' => $getExpirationInfo($requirement->marriage_certificate_nullity, $requirement->marriage_certificate_nullity_expires_at, $requirement->marriage_certificate_nullity_updated_at),
+                    'judicial_decree_of_nullity' => $requirement->judicial_decree_of_nullity,
+                    'judicial_decree_of_nullity_expires_at' => $getExpirationInfo($requirement->judicial_decree_of_nullity, $requirement->judicial_decree_of_nullity_expires_at, $requirement->judicial_decree_of_nullity_updated_at),
+                    'a6_solo_parent_not_cohabiting' => $requirement->a6_solo_parent_not_cohabiting,
+                    'a6_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->a6_solo_parent_not_cohabiting, $requirement->a6_solo_parent_not_cohabiting_expires_at, $requirement->a6_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Abandonment by the spouse') {
+                $requirement = $record->spabandonmentbyspouseReq;
+
+                $requirements = [
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'marriage_certificate_affidavit' => $requirement->marriage_certificate_affidavit,
+                    'marriage_certificate_affidavit_expires_at' => $getExpirationInfo($requirement->marriage_certificate_affidavit, $requirement->marriage_certificate_affidavit_expires_at, $requirement->marriage_certificate_affidavit_updated_at),
+                    'abandonment_of_the_spouse' => $requirement->abandonment_of_the_spouse,
+                    'abandonment_of_the_spouse_expires_at' => $getExpirationInfo($requirement->abandonment_of_the_spouse, $requirement->abandonment_of_the_spouse_expires_at, $requirement->abandonment_of_the_spouse_updated_at),
+                    'record_of_the_fact_of_abandonment' => $requirement->record_of_the_fact_of_abandonment,
+                    'record_of_the_fact_of_abandonment_expires_at' => $getExpirationInfo($requirement->record_of_the_fact_of_abandonment, $requirement->record_of_the_fact_of_abandonment_expires_at, $requirement->record_of_the_fact_of_abandonment_updated_at),
+                    'a7_solo_parent_not_cohabiting' => $requirement->a7_solo_parent_not_cohabiting,
+                    'a7_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->a7_solo_parent_not_cohabiting, $requirement->a7_solo_parent_not_cohabiting_expires_at, $requirement->a7_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident' => $requirement->solo_parent_is_a_resident,
+                    'solo_parent_is_a_resident_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident, $requirement->solo_parent_is_a_resident_expires_at, $requirement->solo_parent_is_a_resident_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Spouse of OFW') {
+                $requirement = $record->spspouseofofwReq;
+
+                $requirements = [
+                    'birth_certificates_of_dependents' => $requirement->birth_certificates_of_dependents,
+                    'birth_certificates_of_dependents_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_dependents, $requirement->birth_certificates_of_dependents_expires_at, $requirement->birth_certificates_of_dependents_updated_at),
+                    'marriage_certificate_ofw' => $requirement->marriage_certificate_ofw,
+                    'marriage_certificate_ofw_expires_at' => $getExpirationInfo($requirement->marriage_certificate_ofw, $requirement->marriage_certificate_ofw_expires_at, $requirement->marriage_certificate_ofw_updated_at),
+                    'ph_overseas_employment' => $requirement->ph_overseas_employment,
+                    'ph_overseas_employment_expires_at' => $getExpirationInfo($requirement->ph_overseas_employment, $requirement->ph_overseas_employment_expires_at, $requirement->ph_overseas_employment_updated_at),
+                    'photocopy_of_ofw_passport' => $requirement->photocopy_of_ofw_passport,
+                    'photocopy_of_ofw_passport_expires_at' => $getExpirationInfo($requirement->photocopy_of_ofw_passport, $requirement->photocopy_of_ofw_passport_expires_at, $requirement->photocopy_of_ofw_passport_updated_at),
+                    'proof_of_income' => $requirement->proof_of_income,
+                    'proof_of_income_expires_at' => $getExpirationInfo($requirement->proof_of_income, $requirement->proof_of_income_expires_at, $requirement->proof_of_income_updated_at),
+                    'b1_2_solo_parent_not_cohabiting' => $requirement->b1_2_solo_parent_not_cohabiting,
+                    'b1_2_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->b1_2_solo_parent_not_cohabiting, $requirement->b1_2_solo_parent_not_cohabiting_expires_at, $requirement->b1_2_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Relative of OFW') {
+                $requirement = $record->sprelativeofofwReq;
+
+                $requirements = [
+                    'birth_certificates_of_dependents' => $requirement->birth_certificates_of_dependents,
+                    'birth_certificates_of_dependents_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_dependents, $requirement->birth_certificates_of_dependents_expires_at, $requirement->birth_certificates_of_dependents_updated_at),
+                    'marriage_certificate_ofw' => $requirement->marriage_certificate_ofw,
+                    'marriage_certificate_ofw_expires_at' => $getExpirationInfo($requirement->marriage_certificate_ofw, $requirement->marriage_certificate_ofw_expires_at, $requirement->marriage_certificate_ofw_updated_at),
+                    'ph_overseas_employment' => $requirement->ph_overseas_employment,
+                    'ph_overseas_employment_expires_at' => $getExpirationInfo($requirement->ph_overseas_employment, $requirement->ph_overseas_employment_expires_at, $requirement->ph_overseas_employment_updated_at),
+                    'photocopy_of_ofw_passport' => $requirement->photocopy_of_ofw_passport,
+                    'photocopy_of_ofw_passport_expires_at' => $getExpirationInfo($requirement->photocopy_of_ofw_passport, $requirement->photocopy_of_ofw_passport_expires_at, $requirement->photocopy_of_ofw_passport_updated_at),
+                    'proof_of_income' => $requirement->proof_of_income,
+                    'proof_of_income_expires_at' => $getExpirationInfo($requirement->proof_of_income, $requirement->proof_of_income_expires_at, $requirement->proof_of_income_updated_at),
+                    'b1_2_solo_parent_not_cohabiting' => $requirement->b1_2_solo_parent_not_cohabiting,
+                    'b1_2_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->b1_2_solo_parent_not_cohabiting, $requirement->b1_2_solo_parent_not_cohabiting_expires_at, $requirement->b1_2_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Unmarried person') {
+                $requirement = $record->spunmarriedpersonReq;
+
+                $requirements = [
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'certificate_of_no_marriage' => $requirement->certificate_of_no_marriage,
+                    'certificate_of_no_marriage_expires_at' => $getExpirationInfo($requirement->certificate_of_no_marriage, $requirement->certificate_of_no_marriage_expires_at, $requirement->certificate_of_no_marriage_updated_at),
+                    'c_solo_parent_not_cohabiting' => $requirement->c_solo_parent_not_cohabiting,
+                    'c_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->c_solo_parent_not_cohabiting, $requirement->c_solo_parent_not_cohabiting_expires_at, $requirement->c_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Legal guardian/Adoptive parent/Foster parent') {
+                $requirement = $record->splegalguardianReq;
+
+                $requirements = [
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'proof_of_guardianship' => $requirement->proof_of_guardianship,
+                    'proof_of_guardianship_expires_at' => $getExpirationInfo($requirement->proof_of_guardianship, $requirement->proof_of_guardianship_expires_at, $requirement->proof_of_guardianship_updated_at),
+                    'd_solo_parent_not_cohabiting' => $requirement->d_solo_parent_not_cohabiting,
+                    'd_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->d_solo_parent_not_cohabiting, $requirement->d_solo_parent_not_cohabiting_expires_at, $requirement->d_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Relative within the fourth (4th) civil degree of consanguinity or affinity') {
+                $requirement = $record->sprelativeconsanguinityReq;
+
+                $requirements = [
+                    'birth_certificates_of_the_child_or_children' => $requirement->birth_certificates_of_the_child_or_children,
+                    'birth_certificates_of_the_child_or_children_expires_at' => $getExpirationInfo($requirement->birth_certificates_of_the_child_or_children, $requirement->birth_certificates_of_the_child_or_children_expires_at, $requirement->birth_certificates_of_the_child_or_children_updated_at),
+                    'death_cert_cert_incapacity' => $requirement->death_cert_cert_incapacity,
+                    'death_cert_cert_incapacity_expires_at' => $getExpirationInfo($requirement->death_cert_cert_incapacity, $requirement->death_cert_cert_incapacity_expires_at, $requirement->death_cert_cert_incapacity_updated_at),
+                    'proof_of_relationship' => $requirement->proof_of_relationship,
+                    'proof_of_relationship_expires_at' => $getExpirationInfo($requirement->proof_of_relationship, $requirement->proof_of_relationship_expires_at, $requirement->proof_of_relationship_updated_at),
+                    'e_solo_parent_not_cohabiting' => $requirement->e_solo_parent_not_cohabiting,
+                    'e_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->e_solo_parent_not_cohabiting, $requirement->e_solo_parent_not_cohabiting_expires_at, $requirement->e_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_is_a_resident_of_the_barangay_and_child' => $requirement->solo_parent_is_a_resident_of_the_barangay_and_child,
+                    'solo_parent_is_a_resident_of_the_barangay_and_child_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_the_barangay_and_child, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_expires_at, $requirement->solo_parent_is_a_resident_of_the_barangay_and_child_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
+                ];
+            } elseif ($record->solo_parent_category === 'Pregnant woman') {
+                $requirement = $record->sppregnantwomanReq;
+
+                $requirements = [
+                    'medical_record_of_pregnancy' => $requirement->medical_record_of_pregnancy,
+                    'medical_record_of_pregnancy_expires_at' => $getExpirationInfo($requirement->medical_record_of_pregnancy, $requirement->medical_record_of_pregnancy_expires_at, $requirement->medical_record_of_pregnancy_updated_at),
+                    'solo_parent_is_a_resident_of_barangay' => $requirement->solo_parent_is_a_resident_of_barangay,
+                    'solo_parent_is_a_resident_of_barangay_expires_at' => $getExpirationInfo($requirement->solo_parent_is_a_resident_of_barangay, $requirement->solo_parent_is_a_resident_of_barangay_expires_at, $requirement->solo_parent_is_a_resident_of_barangay_updated_at),
+                    'f_solo_parent_not_cohabiting' => $requirement->f_solo_parent_not_cohabiting,
+                    'f_solo_parent_not_cohabiting_expires_at' => $getExpirationInfo($requirement->f_solo_parent_not_cohabiting, $requirement->f_solo_parent_not_cohabiting_expires_at, $requirement->f_solo_parent_not_cohabiting_updated_at),
+                    'solo_parent_orientation_seminar_cert_of_attendance' => $requirement->solo_parent_orientation_seminar_cert_of_attendance,
+                    'solo_parent_orientation_seminar_cert_of_attendance_expires_at' => $getExpirationInfo($requirement->solo_parent_orientation_seminar_cert_of_attendance, $requirement->solo_parent_orientation_seminar_cert_of_attendance_expires_at, $requirement->solo_parent_orientation_seminar_cert_of_attendance_updated_at),
                 ];
             }
         }
@@ -216,6 +426,7 @@ class SoloParentQRScannerController extends Controller
             'household_id' => $record->household_id,
             'indigenous_person' => $record->indigenous_person,
             'name_of_affliation' => $record->name_of_affliation,
+            'solo_parent_category' => $record->solo_parent_category,
             'emerg_first_name' => $record->emerg_first_name,
             'emerg_middle_name' => $record->emerg_middle_name,
             'emerg_last_name' => $record->emerg_last_name,

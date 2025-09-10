@@ -40,6 +40,7 @@ return new class extends Migration
             $table->string('household_id')->nullable();
             $table->enum('indigenous_person', ['Yes', 'No']);
             $table->string('name_of_affliation')->nullable();
+            $table->enum('solo_parent_category', ['Birth of a child as a consequence of rape','Widow/widower','Spouse of person deprived of liberty','Spouse of person with physical or mental incapacity','Due to legal separation or de facto separation','Due to nullity or annulment of marriage','Abandonment by the spouse','Spouse of OFW','Relative of OFW','Unmarried person','Legal guardian/Adoptive parent/Foster parent','Relative within the fourth (4th) civil degree of consanguinity or affinity','Pregnant woman']);
             $table->string('emerg_first_name');
             $table->string('emerg_middle_name')->nullable();
             $table->string('emerg_last_name');

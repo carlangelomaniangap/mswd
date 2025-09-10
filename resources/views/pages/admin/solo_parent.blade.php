@@ -551,6 +551,37 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div>
+                                <x-form.label
+                                    for="solo_parent_category"
+                                    class="block"
+                                >
+                                    Solo Parent Category
+                                    <sup class="text-red-500">*</sup>
+                                </x-form.label>
+                                <x-form.select 
+                                    name="solo_parent_category" 
+                                    id="solo_parent_category" 
+                                    class="w-full"
+                                    required
+                                >
+                                    <option value="" selected disabled>Select</option>
+                                    <option value="Birth of a child as a consequence of rape">Birth of a child as a consequence of rape</option>
+                                    <option value="Widow/widower">Widow/widower</option>
+                                    <option value="Spouse of person deprived of liberty">Spouse of person deprived of liberty</option>
+                                    <option value="Spouse of person with physical or mental incapacity">Spouse of person with physical or mental incapacity</option>
+                                    <option value="Due to legal separation or de facto separation">Due to legal separation or de facto separation</option>
+                                    <option value="Due to nullity or annulment of marriage">Due to nullity or annulment of marriage</option>
+                                    <option value="Abandonment by the spouse">Abandonment by the spouse</option>
+                                    <option value="Spouse of OFW">Spouse of OFW</option>
+                                    <option value="Relative of OFW">Relative of OFW</option>
+                                    <option value="Unmarried person">Unmarried person</option>
+                                    <option value="Legal guardian/Adoptive parent/Foster parent">Legal guardian/Adoptive parent/Foster parent</option>
+                                    <option value="Relative within the fourth (4th) civil degree of consanguinity or affinity">Relative within the fourth (4th) civil degree of consanguinity or affinity</option>
+                                    <option value="Pregnant woman">Pregnant woman</option>
+                                </x-form.select>
+                            </div>
                         </div>
 
                         {{-- Emergency Contact --}}
@@ -840,6 +871,11 @@
                                     </div>
                                 </div>
 
+                                <div>
+                                    <x-form.label class="block">Solo Parent Category</x-form.label>
+                                    <h3 id="sp_category" class="font-semibold"></h3>
+                                </div>
+
                                 <h1>INCASE OF EMERGENCY</h1>
                                 <div class="flex items-center justify-start gap-6">
                                     <div>
@@ -891,89 +927,7 @@
                                 @csrf
                                 <input type="hidden" id="solo_parent_requirement_id" name="solo_parent_requirement_id">
 
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">VALID ID</p>
-                                        <p id="valid_id_expires_at" class="text-xs"></p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="valid_id"
-                                            id="valid_id"
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="Complete">Complete</option>
-                                            <option value="Incomplete" hidden>Incomplete</option>
-                                            <option value="Renewal" hidden>Renewal</option>
-                                            <option value="Denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
-                                </div>
-
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">Birth Certificate</p>
-                                        <p id="birth_certificate_expires_at" class="text-xs"></p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="birth_certificate"
-                                            id="birth_certificate"
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="Complete">Complete</option>
-                                            <option value="Incomplete" hidden>Incomplete</option>
-                                            <option value="Renewal" hidden>Renewal</option>
-                                            <option value="Denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
-                                </div>
-
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">Solo Parent ID Application Form</p>
-                                        <p id="solo_parent_id_application_form_expires_at" class="text-xs"></p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="solo_parent_id_application_form"
-                                            id="solo_parent_id_application_form"
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="Complete">Complete</option>
-                                            <option value="Incomplete" hidden>Incomplete</option>
-                                            <option value="Renewal" hidden>Renewal</option>
-                                            <option value="Denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
-                                </div>
-
-                                <div class="w-full p-4 border flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm">Affidavit of Solo Parent</p>
-                                        <p id="affidavit_of_solo_parent_expires_at" class="text-xs"></p>
-                                    </div>
-                                    
-                                    <div>
-                                        <x-form.select 
-                                            name="affidavit_of_solo_parent"
-                                            id="affidavit_of_solo_parent"
-                                            size="sm"
-                                        >
-                                            <option value="" selected disabled>Select</option>
-                                            <option value="Complete">Complete</option>
-                                            <option value="Incomplete" hidden>Incomplete</option>
-                                            <option value="Renewal" hidden>Renewal</option>
-                                            <option value="Denied">Denied</option>
-                                        </x-form.select>
-                                    </div>
-                                </div>
+                                <div id="requirementsContainer" class="space-y-2"></div>
 
                                 <div class="pt-2 flex justify-end">
                                     <x-button id="EditBtn" type="submit" variant="primary">Update</x-button>
@@ -1438,6 +1392,7 @@
                                 data-household_id="${row.household_id}"
                                 data-indigenous_person="${row.indigenous_person}"
                                 data-name_of_affliation="${row.name_of_affliation}"
+                                data-solo_parent_category="${row.solo_parent_category}"
                                 data-emerg_first_name="${row.emerg_first_name}"
                                 data-emerg_last_name="${row.emerg_last_name}"
                                 data-emerg_address="${row.emerg_address}"
@@ -1453,6 +1408,7 @@
                                 data-solo_parent_id_application_form_expires_at="${row.solo_parent_id_application_form_expires_at}"
                                 data-affidavit_of_solo_parent="${row.affidavit_of_solo_parent}"
                                 data-affidavit_of_solo_parent_expires_at="${row.affidavit_of_solo_parent_expires_at}"
+                                data-requirements='${encodeURIComponent(JSON.stringify(row.requirements))}'
                                 x-on:click="$dispatch('open-modal', 'view')"
                             >
                                 <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -1606,6 +1562,7 @@
         $('#solo_parent_household_id').text(btn.data('household_id'));
         $('#solo_parent_indigenous_person').text(btn.data('indigenous_person'));
         $('#solo_parent_name_of_affliation').text(btn.data('name_of_affliation'));
+        $('#sp_category').text(btn.data('solo_parent_category'));
         $('#solo_parent_emerg_first_name').text(btn.data('emerg_first_name'));
         $('#solo_parent_emerg_last_name').text(btn.data('emerg_last_name'));
         $('#solo_parent_emerg_address').text(btn.data('emerg_address'));
@@ -1634,6 +1591,108 @@
         $('#id_card_birthday').text(new Date(btn.data('date_of_birth')).toLocaleString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
         $('#id_card_age').text(btn.data('age'));
         $('#id_card_qr_code').attr('src', btn.data('qr_code'));
+
+        // requirements
+        $('#solo_parent_requirement_id').val(btn.data('id'));
+
+        const requirements = JSON.parse(decodeURIComponent(btn.attr('data-requirements')));
+        let html = '';
+
+        // Define the labels of requirements
+        const fields = [
+            { key: 'birth_certificates_of_the_child_or_children', label: 'Birth Certificate/s of the child or children' },
+            { key: 'birth_certificates_of_dependents', label: 'Birth Certificate/s of dependents' },
+            { key: 'medical_record_of_pregnancy', label: 'Medical record of her pregnancy' },
+            { key: 'complaint_affidavit', label: 'Complaint affidavit' },
+            { key: 'marriage_certificate', label: 'Marriage Certificate' },
+            { key: 'marriage_cert_or_affidavit_of_cohabitation', label: 'Marriage Certificate or affidavit of cohabitation' },
+            { key: 'marriage_certificate_nullity', label: 'Marriage Certificate, annotated with the fact of declaration <br> of nullity of marriage or annulment of marriage' },
+            { key: 'marriage_certificate_affidavit', label: 'Marriage Certificate or affidavit of the applicant solo parent' },
+            { key: 'marriage_certificate_ofw', label: 'Marriage Certificate, if the applicant is the spouse of the <br> OFW, or birth certificate or the other competent proof of <br> the relationship between the applicant and the OFW, if the <br> applicant is a family member of the OFW' },
+            { key: 'certificate_of_no_marriage', label: 'Certificate of No Marriage (CENOMAR)' },
+            { key: 'proof_of_guardianship', label: 'Proof of guardianship, such as the decision granting legal <br> guardianship issued by a court, proof of adoption, such as <br> decree of adoption issued by a court, or order of Adoption <br> issued by the DSWD or the National Authority on Child Care <br> (NACC): proof of foster care such as the Foster Parent <br> License issued by the DSWD or the NACC' },
+            { key: 'death_cert_cert_incapacity', label: 'Death Certificate, certificate of incapacity, or judicial declaration <br> of absence or presumptive death of the parents or legal guardian; <br> police or barangay records evidencing the fact of disappearance <br> or absence of the parent or legal guardian for at least six (6) <br> months' },
+            { key: 'medical_record_on_the_incident_of_rape', label: 'Medical record on the incident of rape' },
+            { key: 'death_certificate_of_the_spouse', label: 'Death Certificate of the spouse' },
+            { key: 'certificate_of_detention', label: 'Certificate of detention or a certification that the spouse <br> is serving sentence for at least three (3) months issued by <br> the law-enforcement agency having actual custody of the <br> detained souse or commitment order by the court pursuant <br> to a conviction of the spouse' },
+            { key: 'med_record_med_abstract_or_cert_of_confinement', label: 'Medical Record, medical abstract, or a Certificate of <br> confinement in the National Center for Mental Health or any <br> medical hospital or facility as a result of the spouse`s physical <br> or mental incapacity, which record, medical abstract or <br> certificate of confinement of the incapacitated spouse should <br> have been issued not more than three (3) months before the <br> submission, or a valid Person With Disability ID issued pursuant <br> to Republic Act No. 10754 and Republic Act No. 7277, or the <br> Magna Carta fir Disabled Persons' },
+            { key: 'judicial_decree_of_legal_separation', label: 'Judicial decree of legal separation of the spouses or, in the <br> case of de facto separation, an affidavit of two (2) disinterested <br> persons attesting to the fact of separation of the spouses' },
+            { key: 'judicial_decree_of_nullity', label: 'Judicial decree of nullity or annulment of marriage or <br> judicial recognition of foreign divorce' },
+            { key: 'abandonment_of_the_spouse', label: 'Affidavit of two (2) disinterested persons attesting to the <br> fact of abandonment of the spouse' },
+            { key: 'ph_overseas_employment', label: 'Philippine Overseas Employment Administration Standard <br> Employment Contact (POEA-SEC) or its equivalent document' },
+            { key: 'solo_parent_has_sole_parental_care_of_a_child', label: 'Sworn affidavit declaring that the solo parent has the sole <br> parental care and support the child or children at the time <br> of the execution of affidavit: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, only the sworn <br> affidavit shall be submitted every year' },
+            { key: 'a2_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, only the sworn <br> affidavit shall be submitted every year' },
+            { key: 'a3_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement numbers <br> (3) and (4) under this paragraph shall be submitted every year' },
+            { key: 'a4_solo_parent_not_cohabiting', label: 'Sworn affidavit that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement numbers <br> (3) and (4) under this paragraph shall be submitted every year' },
+            { key: 'a5_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement numbers <br> (3) and (4) under this paragraph shall be submitted every year' },
+            { key: 'a6_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, only the sworn <br> affidavit shall be submitted every year' },
+            { key: 'record_of_the_fact_of_abandonment', label: 'Police or barangay record of the fact of abandonment' },
+            { key: 'photocopy_of_ofw_passport', label: 'Photocopy of te OFW`s passport with stamps showing <br> continuous twelve (12) months of overseas work, or a <br> certification from the Bureau of Immigration' },
+            { key: 'a7_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, only the sworn <br> affidavit shall be submitted every year' },
+            { key: 'proof_of_income', label: 'Proof of income of the OFW`s spouse or family member' },
+            { key: 'b1_2_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement <br> numbers (3), (4), (5), and (6) under this paragraph shall be <br> submitted every year' },
+            { key: 'c_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement <br> numbers (2), (3), and (4) under this paragraph shall be <br> submitted every year' },
+            { key: 'd_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement <br> numbers (3) and (4) under this paragraph shall be <br> submitted every year' },
+            { key: 'proof_of_relationship', label: 'Proof of relationship of the relative to the parent or legal <br> guardian, such as birth certificate, marriage certificate, family <br> records, or other similar or analogous proof of relationship' },
+            { key: 'e_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent has sole parental <br> care and support of the child or children: Provided, that for <br> purposes of issuance of subsequent SPIC and booklet, <br> requirement numbers (3) and (4) under this paragraph shall be <br> submitted every year' },
+            { key: 'solo_parent_is_a_resident_of_the_barangay_and_child', label: 'Affidavit of a barangay official attesting that the solo parent <br> is a resident of the barangay and the child or children is/are <br> under the parental care and support of the solo parent' },
+            { key: 'solo_parent_is_a_resident_of_barangay', label: 'Affidavit of a barangay official attesting that the solo parent <br> is a resident of the barangay' },
+            { key: 'f_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent who is providing support to the <br> pregnant woman' },
+            { key: 'solo_parent_orientation_seminar_cert_of_attendance', label: 'Solo Parents Orientation Seminar Certificate of Attendance' },
+            { key: 'solo_parent_is_a_resident', label: 'Affidavit of a barangay official attesting that the solo parent <br> is a resident' }
+        ];
+
+        const containerStyles = {
+            'Complete': 'bg-green-100 border-2 border-green-500',
+            'Incomplete': 'bg-yellow-100 border-2 border-yellow-500',
+            'Renewal': 'bg-orange-100 border-2 border-orange-500',
+            'Denied': 'bg-red-100 border-2 border-red-500'
+        };
+
+        const statusStyles = {
+            'Complete': 'bg-white px-2 py-1 border-2 border-green-500 rounded',
+            'Incomplete': 'bg-white px-2 py-1 border-2 border-yellow-500 rounded',
+            'Renewal': 'bg-white px-2 py-1 border-2 border-orange-500 rounded',
+            'Denied': 'bg-white px-2 py-1 border-2 border-red-500 rounded'
+        };
+
+        const textStyles = {
+            'Complete': 'text-green-700',
+            'Incomplete': 'text-yellow-700',
+            'Renewal': 'text-orange-700',
+            'Denied': 'text-red-700'
+        };
+
+        fields.forEach(field => {
+            if (requirements[field.key]) {
+                const status = requirements[field.key];
+                const ContainerColor = containerStyles[status];
+                const textColor = textStyles[status];
+                const statusColor = statusStyles[status];
+
+                html += `
+                    <div class="w-full p-4 ${ContainerColor} flex items-center justify-between">
+                        <div>
+                            <p class="text-sm ${textColor}">${field.label}</p>
+                            <p id="${field.key}_expires_at" class="text-xs ${textColor}">${requirements[field.key + '_expires_at']}</p>
+                        </div>
+
+                        <div>
+                            <x-form.select name="${field.key}" id="${field.key}" size="sm" class="${textColor} font-semibold ${statusColor}">
+                                <option value="" selected disabled>Select</option>
+                                <option value="Complete" ${requirements[field.key] === 'Complete' ? 'selected' : ''}>Complete</option>
+                                <option value="Incomplete" ${requirements[field.key] === 'Incomplete' ? 'selected' : ''} hidden>Incomplete</option>
+                                <option value="Renewal" ${requirements[field.key] === 'Renewal' ? 'selected' : ''} hidden>Renewal</option>
+                                <option value="Denied" ${requirements[field.key] === 'Denied' ? 'selected' : ''}>Denied</option>
+                            </x-form.select>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        // Inject into the div with id "requirementsContainer"
+        $('#requirementsContainer').html(html);
 
         $('#btnPrintID')
         .data('id', btn.data('id'))
@@ -1742,24 +1801,26 @@
 {{-- Update Requirements Script --}}
 <script>
     $(document).ready(function () {
-        // Store the original form values before editing
-        let originalValues = getFormValues();
+        const $form = $('#Requirements');
+        let originalValues = {};
 
-        // Function to get the current form values as an object
+        // Function to read all select/inputs inside the form dynamically
         function getFormValues() {
-            return {
-                valid_id: $('#valid_id').val(),
-                birth_certificate: $('#birth_certificate').val(),
-                solo_parent_id_application_form: $('#solo_parent_id_application_form').val(),
-                affidavit_of_solo_parent: $('#affidavit_of_solo_parent').val(),
-            };
+            const values = {};
+            $form.find('select').each(function () {
+                values[this.name] = $(this).val();
+            });
+            return values;
         }
 
-        // Disable the Update button on page load
+        // Initialize originalValues after dynamic fields are injected
+        originalValues = getFormValues();
+
+        // Disable the Update button initially
         $('#EditBtn').prop('disabled', true);
 
-        // Check the old value if it has changes
-        $('#valid_id, #birth_certificate, #solo_parent_id_application_form, #affidavit_of_solo_parent').on('input change', function () {
+        // Listen for changes on any select/input inside the form
+        $form.on('input change', 'select', function () {
             const currentValues = getFormValues();
             if (JSON.stringify(currentValues) !== JSON.stringify(originalValues)) {
                 $('#EditBtn').prop('disabled', false); // Enable the button update
@@ -1788,10 +1849,61 @@
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        $('#valid_id_expires_at').text(response.requirement.valid_id_expires_at);
-                        $('#birth_certificate_expires_at').text(response.requirement.birth_certificate_expires_at);
-                        $('#solo_parent_id_application_form_expires_at').text(response.requirement.solo_parent_id_application_form_expires_at);
-                        $('#affidavit_of_solo_parent_expires_at').text(response.requirement.affidavit_of_solo_parent_expires_at);
+
+                        const containerStyles = {
+                            'Complete': 'bg-green-100 border-2 border-green-500',
+                            'Incomplete': 'bg-yellow-100 border-2 border-yellow-500',
+                            'Renewal': 'bg-orange-100 border-2 border-orange-500',
+                            'Denied': 'bg-red-100 border-2 border-red-500'
+                        };
+
+                        const statusStyles = {
+                            'Complete': 'border-green-500',
+                            'Incomplete': 'border-yellow-500',
+                            'Renewal': 'border-orange-500',
+                            'Denied': 'border-red-500'
+                        };
+
+                        const textStyles = {
+                            'Complete': 'text-green-700',
+                            'Incomplete': 'text-yellow-700',
+                            'Renewal': 'text-orange-700',
+                            'Denied': 'text-red-700'
+                        };
+
+                        // Loop through each requirement
+                        function updateRequirement(key, value, expires) {
+                            const container = $('#' + key).closest('div.w-full.p-4');
+                            const select = $('#' + key);
+
+                            // Update container color
+                            container.attr('class', `w-full p-4 ${containerStyles[value]} flex items-center justify-between`);
+
+                            // Update label color
+                            container.find('p.text-sm').attr('class', `text-sm ${textStyles[value]}`);
+
+                            // Update select and style (keeps x-select design)
+                            select.removeClass(Object.values(statusStyles).join(' ') + ' ' + Object.values(textStyles).join(' '))
+                                .addClass(`${statusStyles[value]} ${textStyles[value]}`);
+
+                            // Update _expires_at text and color if exists
+                            if (expires && $('#' + key + '_expires_at').length) {
+                                $('#' + key + '_expires_at')
+                                    .text(expires)
+                                    .attr('class', `text-xs ${textStyles[value]}`);
+                            }
+                        }
+
+                        // Loop through all requirements
+                        response.requirements.forEach(req => {
+                            $.each(req, function(key, value) {
+                                if (key.endsWith('_expires_at')) return;
+                                if (!containerStyles[value]) return;
+                                const expires = req[key + '_expires_at'];
+                                updateRequirement(key, value, expires);
+                            });
+                        });
+
                         $('#EditBtn').prop('disabled', true); // Disabled the button update
                         $('#solo_parent_records').DataTable().ajax.reload(null, false); // reload the Beneficiary table
                     } else {

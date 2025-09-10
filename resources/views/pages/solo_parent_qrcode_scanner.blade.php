@@ -226,6 +226,13 @@
                                     </div>
                                 </div>
 
+                                <div class="flex flex-col items-center text-center pb-2">
+                                    <div id="solo_parent_category" class="w-full border-gray-400 mb-1">Loading...</div>
+                                    <strong class="w-full border-t border-gray-400">
+                                        Solo Parent Category
+                                    </strong>
+                                </div>
+
                                 <span><h3 class="font-bold text-lg py-4">INCASE OF EMERGENCY</h3></span>
 
                                 <div class="flex flex-col items-center text-center pb-2">
@@ -315,6 +322,7 @@
                         $('#household_id').text(data.household_id);
                         $('#indigenous_person').text(data.indigenous_person);
                         $('#name_of_affliation').text(data.name_of_affliation);
+                        $('#solo_parent_category').text(data.solo_parent_category);
                         $('#emerg_full_name').text([data.emerg_first_name, data.emerg_middle_name, data.emerg_last_name].filter(Boolean).join(' '));
                         $('#emerg_address').text(data.emerg_address);
                         $('#relationship_to_solo_parent').text(data.relationship_to_solo_parent);
@@ -324,12 +332,47 @@
                         const requirements = res.data.requirements;
                         let html = '';
 
-                        // Define the labels of requirements
                         const fields = [
-                            { key: 'valid_id', label: 'Valid ID', expiredANDupdatedKey: 'valid_id' },
-                            { key: 'birth_certificate', label: 'Birth Certificate', expiredANDupdatedKey: 'birth_certificate' },
-                            { key: 'solo_parent_id_application_form', label: 'Solo Parent ID Application Form', expiredANDupdatedKey: 'solo_parent_id_application_form' },
-                            { key: 'affidavit_of_solo_parent', label: 'Affidavit of Solo Parent', expiredANDupdatedKey: 'affidavit_of_solo_parent' },
+                            { key: 'birth_certificates_of_the_child_or_children', label: 'Birth Certificate/s of the child or children' },
+                            { key: 'birth_certificates_of_dependents', label: 'Birth Certificate/s of dependents' },
+                            { key: 'medical_record_of_pregnancy', label: 'Medical record of her pregnancy' },
+                            { key: 'complaint_affidavit', label: 'Complaint affidavit' },
+                            { key: 'marriage_certificate', label: 'Marriage Certificate' },
+                            { key: 'marriage_cert_or_affidavit_of_cohabitation', label: 'Marriage Certificate or affidavit of cohabitation' },
+                            { key: 'marriage_certificate_nullity', label: 'Marriage Certificate, annotated with the fact of declaration <br> of nullity of marriage or annulment of marriage' },
+                            { key: 'marriage_certificate_affidavit', label: 'Marriage Certificate or affidavit of the applicant solo parent' },
+                            { key: 'marriage_certificate_ofw', label: 'Marriage Certificate, if the applicant is the spouse of the <br> OFW, or birth certificate or the other competent proof of <br> the relationship between the applicant and the OFW, if the <br> applicant is a family member of the OFW' },
+                            { key: 'certificate_of_no_marriage', label: 'Certificate of No Marriage (CENOMAR)' },
+                            { key: 'proof_of_guardianship', label: 'Proof of guardianship, such as the decision granting legal <br> guardianship issued by a court, proof of adoption, such as <br> decree of adoption issued by a court, or order of Adoption <br> issued by the DSWD or the National Authority on Child Care <br> (NACC): proof of foster care such as the Foster Parent <br> License issued by the DSWD or the NACC' },
+                            { key: 'death_cert_cert_incapacity', label: 'Death Certificate, certificate of incapacity, or judicial declaration <br> of absence or presumptive death of the parents or legal guardian; <br> police or barangay records evidencing the fact of disappearance <br> or absence of the parent or legal guardian for at least six (6) <br> months' },
+                            { key: 'medical_record_on_the_incident_of_rape', label: 'Medical record on the incident of rape' },
+                            { key: 'death_certificate_of_the_spouse', label: 'Death Certificate of the spouse' },
+                            { key: 'certificate_of_detention', label: 'Certificate of detention or a certification that the spouse <br> is serving sentence for at least three (3) months issued by <br> the law-enforcement agency having actual custody of the <br> detained souse or commitment order by the court pursuant <br> to a conviction of the spouse' },
+                            { key: 'med_record_med_abstract_or_cert_of_confinement', label: 'Medical Record, medical abstract, or a Certificate of <br> confinement in the National Center for Mental Health or any <br> medical hospital or facility as a result of the spouse`s physical <br> or mental incapacity, which record, medical abstract or <br> certificate of confinement of the incapacitated spouse should <br> have been issued not more than three (3) months before the <br> submission, or a valid Person With Disability ID issued pursuant <br> to Republic Act No. 10754 and Republic Act No. 7277, or the <br> Magna Carta fir Disabled Persons' },
+                            { key: 'judicial_decree_of_legal_separation', label: 'Judicial decree of legal separation of the spouses or, in the <br> case of de facto separation, an affidavit of two (2) disinterested <br> persons attesting to the fact of separation of the spouses' },
+                            { key: 'judicial_decree_of_nullity', label: 'Judicial decree of nullity or annulment of marriage or <br> judicial recognition of foreign divorce' },
+                            { key: 'abandonment_of_the_spouse', label: 'Affidavit of two (2) disinterested persons attesting to the <br> fact of abandonment of the spouse' },
+                            { key: 'ph_overseas_employment', label: 'Philippine Overseas Employment Administration Standard <br> Employment Contact (POEA-SEC) or its equivalent document' },
+                            { key: 'solo_parent_has_sole_parental_care_of_a_child', label: 'Sworn affidavit declaring that the solo parent has the sole <br> parental care and support the child or children at the time <br> of the execution of affidavit: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, only the sworn <br> affidavit shall be submitted every year' },
+                            { key: 'a2_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, only the sworn <br> affidavit shall be submitted every year' },
+                            { key: 'a3_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement numbers <br> (3) and (4) under this paragraph shall be submitted every year' },
+                            { key: 'a4_solo_parent_not_cohabiting', label: 'Sworn affidavit that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement numbers <br> (3) and (4) under this paragraph shall be submitted every year' },
+                            { key: 'a5_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement numbers <br> (3) and (4) under this paragraph shall be submitted every year' },
+                            { key: 'a6_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, only the sworn <br> affidavit shall be submitted every year' },
+                            { key: 'record_of_the_fact_of_abandonment', label: 'Police or barangay record of the fact of abandonment' },
+                            { key: 'photocopy_of_ofw_passport', label: 'Photocopy of te OFW`s passport with stamps showing <br> continuous twelve (12) months of overseas work, or a <br> certification from the Bureau of Immigration' },
+                            { key: 'a7_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, only the sworn <br> affidavit shall be submitted every year' },
+                            { key: 'proof_of_income', label: 'Proof of income of the OFW`s spouse or family member' },
+                            { key: 'b1_2_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement <br> numbers (3), (4), (5), and (6) under this paragraph shall be <br> submitted every year' },
+                            { key: 'c_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement <br> numbers (2), (3), and (4) under this paragraph shall be <br> submitted every year' },
+                            { key: 'd_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent, and has sole parental care and <br> support of the child or children: Provided, that for purposes of <br> issuance of subsequent SPIC and booklet, requirement <br> numbers (3) and (4) under this paragraph shall be <br> submitted every year' },
+                            { key: 'proof_of_relationship', label: 'Proof of relationship of the relative to the parent or legal <br> guardian, such as birth certificate, marriage certificate, family <br> records, or other similar or analogous proof of relationship' },
+                            { key: 'e_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent has sole parental <br> care and support of the child or children: Provided, that for <br> purposes of issuance of subsequent SPIC and booklet, <br> requirement numbers (3) and (4) under this paragraph shall be <br> submitted every year' },
+                            { key: 'solo_parent_is_a_resident_of_the_barangay_and_child', label: 'Affidavit of a barangay official attesting that the solo parent <br> is a resident of the barangay and the child or children is/are <br> under the parental care and support of the solo parent' },
+                            { key: 'solo_parent_is_a_resident_of_barangay', label: 'Affidavit of a barangay official attesting that the solo parent <br> is a resident of the barangay' },
+                            { key: 'f_solo_parent_not_cohabiting', label: 'Sworn affidavit declaring that the solo parent is not cohabiting <br> with a partner or co-parent who is providing support to the <br> pregnant woman' },
+                            { key: 'solo_parent_orientation_seminar_cert_of_attendance', label: 'Solo Parents Orientation Seminar Certificate of Attendance' },
+                            { key: 'solo_parent_is_a_resident', label: 'Affidavit of a barangay official attesting that the solo parent <br> is a resident' }
                         ];
 
                         const containerStyles = {
@@ -364,7 +407,7 @@
                                     <div class="w-full p-4 ${ContainerColor} flex items-center justify-between">
                                         <div>
                                             <p class="${textColor} font-semibold">${field.label}</p>
-                                            <p class="${textColor} text-sm">${requirements[field.expiredANDupdatedKey]}</p>
+                                            <p class="${textColor} text-sm">${requirements[field.key]}</p>
                                         </div>
                                         <div>
                                             <p class="${textColor} font-semibold ${statusColor}">${requirements[field.key]}</p>
