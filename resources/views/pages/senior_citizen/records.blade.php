@@ -930,7 +930,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         $('#senior_citizen_records').DataTable({
             ajax: {
-                url: '/senior_citizen/recordssenior_citizen/data',
+                url: '/senior_citizen/records/data',
                 dataSrc: 'data'
             },
             ordering: false,
@@ -1048,7 +1048,7 @@
             const formData = new FormData(this); // get the form input data
 
             $.ajax({
-                url: `/senior_citizen/recordssenior_citizen/store`,
+                url: `/senior_citizen/records/store`,
                 method: 'POST',
                 data: formData,
                 contentType: false,
@@ -1180,7 +1180,7 @@
 
         const id = `${type}-${String(recordID).padStart(3, '0')}`;
 
-        window.open(`/senior_citizen/records${beneficiary}/print_id_card?id=${id}`, '_blank');
+        window.open(`/${beneficiary}/print_id_card?id=${id}`, '_blank');
     });
 </script>
 
@@ -1191,7 +1191,7 @@
         $('#family_member').DataTable({
             destroy: true, //remove this//
             ajax: {
-                url: `/senior_citizen/recordssenior_citizen/${id}/family-member`,
+                url: `/senior_citizen/records/${id}/family-member`,
                 dataSrc: 'data'
             },
             ordering: false,
@@ -1226,7 +1226,7 @@
             const formData = new FormData(this); // get the form input data
 
             $.ajax({
-                url: `/senior_citizen/recordssenior_citizen/store/family-member`,
+                url: `/senior_citizen/records/store/family-member`,
                 method: 'POST',
                 data: formData,
                 processData: false,

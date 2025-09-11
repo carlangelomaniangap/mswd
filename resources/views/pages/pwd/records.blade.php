@@ -1866,7 +1866,7 @@
 
         const id = `${type}-${String(recordID).padStart(3, '0')}`;
 
-        window.open(`/admin/${beneficiary}/print_id_card?id=${id}`, '_blank');
+        window.open(`/${beneficiary}/print_id_card?id=${id}`, '_blank');
     });
 </script>
 
