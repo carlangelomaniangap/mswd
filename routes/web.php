@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\AdminSeniorRequirementsController;
 use App\Http\Controllers\Admin\AdminSoloParentController;
 use App\Http\Controllers\Admin\AdminSoloParentFamilyMemberController;
 use App\Http\Controllers\Admin\AdminSoloParentRequirementsController;
+use App\Http\Controllers\Admin\AdminReportsController;
 use App\Http\Controllers\Admin\AdminManageAccountController;
 use App\Http\Controllers\Admin\AdminPrintIDCardController;
 
@@ -113,6 +114,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::post('/solo_parent/store/family-member', [AdminSoloParentFamilyMemberController::class,'store'])->name('family_member_store');
         Route::get('/solo_parent/{id}/family-member', [AdminSoloParentFamilyMemberController::class, 'getData']);
         Route::post('/solo_parent/{id}/update/requirements', [AdminSoloParentRequirementsController::class, 'update']);
+
+        Route::get('/reports', [AdminReportsController::class, 'index'])->name('reports');
+        Route::get('/reports/{report}', [AdminReportsController::class, 'print'])->name('reports.print');
 
         Route::get('/manage_account', [AdminManageAccountController::class, 'index'])->name('manage_account');
         Route::get('/manage_account/data', [AdminManageAccountController::class, 'fetchData']);
