@@ -12,28 +12,46 @@
         @media print {
             @page {
                 margin: 0;
-                size: auto;
-                padding: 1in;
+                size: a4;
             }
 
-            #btnPrint {
-                visibility: hidden;
+            body {
+                margin: 0;
+                padding: 0;
             }
         }
     </style>
 </head>
-<body>
-    <section class="py-6 bg-gray-100">
-        <div id="container" class="p-4 max-w-3xl mx-auto bg-white print:bg-transparent">
+<body class="bg-gray-200 flex flex-col items-center">
+    <section class="bg-white mx-auto w-[794px] h-[1123px] my-4 print:my-0 flex flex-col">
+        <header class="py-2">
+            <div class="flex items-center justify-center mx-2">
+                <div class="flex items-center justify-center w-36">
+                    <img src="{{ asset('images/abucay.png') }}" alt="Logo" class="h-24 w-24">
+                </div>
+                <div class="flex-1 font-serif text-center mx-2">
+                    <p  class="text-sm">Republic of the Philippines</p>
+                    <p class="text-md font-semibold">Office of the Municipal Social Welfare and Development</p>
+                    <p class="text-sm">Ground flr. Municipal Hall Bldg. Calaylayan,Abucay, Bataan</p>
+                    <p class="text-xs">Email: mswdoabucay@gmail.com</p>
+                    <p class="text-xs">Facebook Page: MSWDO Abucay</p>
+                </div>
+                <div class="flex items-center justify-center w-36">
+                    <img src="{{ asset('images/mswd_abucay.png') }}" alt="Logo" class="h-24 w-36">
+                </div>
+            </div>
+            <div class="mt-4 h-1.5 mx-4 bg-gray-300 border border-black rounded"></div>
+        </header>
+
+        <div class="flex-1 px-24 print:px-24">
             @if($type === 'PWD')
                 <div class="flex items-center justify-between">
                     <h1 class="font-bold text-xl pb-8">PWD ID Card</h1>
-                    <x-button id="btnPrint" onclick="window.print()">Print</x-button>
                 </div>
                 <div class="flex flex-col items-center gap-6">
                     {{-- Front ID --}}
                     <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">FRONT</h3>
+                        <h3 class="font-bold text-black dark:text-white">FRONT</h3>
                         <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex space-x-2">
                                 <img src="{{ $data['photo'] }}" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
@@ -71,7 +89,7 @@
 
                     {{-- Back ID --}}
                     <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">BACK</h3>
+                        <h3 class="font-bold text-black dark:text-white">BACK</h3>
                         <div class="w-[358px] h-[228px] grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex items-center justify-center">
                                 <img src="{{ $data['qr_code'] }}" alt="QR Code" class="w-36 h-36 object-cover">
@@ -91,12 +109,11 @@
             @elseif($type === 'AICS')
                 <div class="flex items-center justify-between">
                     <h1 class="font-bold text-xl pb-8">AICS ID Card</h1>
-                    <x-button id="btnPrint" onclick="window.print()">Print</x-button>
                 </div>
                 <div class="flex flex-col items-center gap-6">
                     {{-- Front ID --}}
                     <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">FRONT</h3>
+                        <h3 class="font-bold text-black dark:text-white">FRONT</h3>
                         <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex space-x-2">
                                 <img src="{{ $data['photo'] }}" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
@@ -134,7 +151,7 @@
 
                     {{-- Back ID --}}
                     <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">BACK</h3>
+                        <h3 class="font-bold text-black dark:text-white">BACK</h3>
                         <div class="w-[358px] h-[228px] grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex items-center justify-center">
                                 <img src="{{ $data['qr_code'] }}" alt="QR Code" class="w-36 h-36 object-cover">
@@ -154,12 +171,11 @@
             @elseif($type === 'SC')
                 <div class="flex items-center justify-between">
                     <h1 class="font-bold text-xl pb-8">Senior ID Card</h1>
-                    <x-button id="btnPrint" onclick="window.print()">Print</x-button>
                 </div>
                 <div class="flex flex-col items-center gap-6">
                     {{-- Front ID --}}
                     <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">FRONT</h3>
+                        <h3 class="font-bold text-black dark:text-white">FRONT</h3>
                         <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex space-x-2">
                                 <img src="{{ $data['photo'] }}" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
@@ -197,7 +213,7 @@
 
                     {{-- Back ID --}}
                     <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">BACK</h3>
+                        <h3 class="font-bold text-black dark:text-white">BACK</h3>
                         <div class="w-[358px] h-[228px] grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex items-center justify-center">
                                 <img src="{{ $data['qr_code'] }}" alt="QR Code" class="w-36 h-36 object-cover">
@@ -217,12 +233,11 @@
             @elseif($type === 'SP')
                 <div class="flex items-center justify-between">
                     <h1 class="font-bold text-xl pb-8">Solo Parent ID Card</h1>
-                    <x-button id="btnPrint" onclick="window.print()">Print</x-button>
                 </div>
                 <div class="flex flex-col items-center gap-6">
                     {{-- Front ID --}}
                     <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">FRONT</h3>
+                        <h3 class="font-bold text-black dark:text-white">FRONT</h3>
                         <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex space-x-2">
                                 <img src="{{ $data['photo'] }}" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
@@ -260,7 +275,7 @@
 
                     {{-- Back ID --}}
                     <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">BACK</h3>
+                        <h3 class="font-bold text-black dark:text-white">BACK</h3>
                         <div class="w-[358px] h-[228px] grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
                             <div class="flex items-center justify-center">
                                 <img src="{{ $data['qr_code'] }}" alt="QR Code" class="w-36 h-36 object-cover">
@@ -279,6 +294,26 @@
                 </div>
             @endif
         </div>
+
+        <footer>
+            <div class="h-1.5 mx-4 bg-gray-300 border border-black rounded"></div>
+            <div class="flex items-center justify-center gap-8 p-2">
+                <em class="text-center text-[11px]">
+                    <p class="pb-1">Our Vision</p>
+                    <p>By 2030 the Office of the Municipal Social Welfare and Development Office</p>
+                    <p>envisioned the disadvantaged and vulnerable sector of the society will be</p>
+                    <p>alleviated from the poverty and hunger.</p>
+                </em>
+                <em class="text-center text-[11px]">
+                    <p class="pb-1">Our Mission</p>
+                    <p>To provide an efficient social protection program and services to the</p>
+                    <p>To provide an efficient social protection program and services to the</p>
+                    <p>situation, children, group and communities.</p>
+                </em>
+            </div>
+        </footer>
+
+        <x-button class="print:hidden fixed top-4 right-4" onclick="window.print()">Print</x-button>
     </section>
 </body>
 </html>
