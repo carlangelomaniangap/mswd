@@ -43,6 +43,7 @@ class AicsRecordsController extends Controller
             'occupation' => 'required|string|max:255',
             'cellphone_number' => 'required|string|regex:/^09\d{9}$/',
             'nature_of_problem' => 'required|in:Medical (Magulang Ang Magprocess),Medical (Tagapag Alaga Ang Magprocess),Medical (Anak Ang Magprocess),Medical (Pasyente Ang Magprocess),Medical (Asawa/Live in Partner Ang Magprocess),Medical (Kapatid Ang Magprocess),Burial',
+            'referred_to' => 'required|in:MSWD,Mayor,SB',
             'problem_description' => 'required|string|max:255',
         ]);
 
@@ -101,6 +102,7 @@ class AicsRecordsController extends Controller
             'occupation' => $validated['occupation'],
             'cellphone_number' => $validated['cellphone_number'],
             'nature_of_problem' => $validated['nature_of_problem'],
+            'referred_to' => $validated['referred_to'],
             'problem_description' => $validated['problem_description'],
             'qr_code' => $qr_code,
             'status'=> 'In Progress',
@@ -757,6 +759,7 @@ class AicsRecordsController extends Controller
                 'educational_attainment' => $record->educational_attainment,
                 'occupation' => $record->occupation,
                 'nature_of_problem' => $record->nature_of_problem,
+                'referred_to' => $record->referred_to,
                 'problem_description' => $record->problem_description,
                 'qr_code' => $qr_code,
 

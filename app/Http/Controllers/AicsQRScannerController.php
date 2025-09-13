@@ -357,6 +357,7 @@ class AicsQRScannerController extends Controller
             'occupation' => $record->occupation,
             'cellphone_number' => $record->cellphone_number,
             'nature_of_problem' => $record->nature_of_problem,
+            'referred_to' => $record->referred_to,
             'problem_description' => $record->problem_description,
             'status' => $status,
             'requirements' => $requirements,

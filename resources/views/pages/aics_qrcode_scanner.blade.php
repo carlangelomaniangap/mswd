@@ -147,11 +147,20 @@
                                     </strong>
                                 </div>
 
-                                <div class="flex flex-col items-center text-center pb-2">
-                                    <div id="nature_of_problem" class="w-full border-gray-400 mb-1">Loading...</div>
-                                    <strong class="w-full border-t border-gray-400">
-                                        Nature of Problem
-                                    </strong>
+                                <div class="w-full flex flex-row items-center text-center gap-4 pb-2">
+                                    <div class="w-3/4 flex flex-col items-center text-center">
+                                        <div id="nature_of_problem" class="w-full border-gray-400 mb-1">Loading...</div>
+                                        <strong class="w-full border-t border-gray-400">
+                                            Nature of Problem
+                                        </strong>
+                                    </div>
+
+                                    <div class="w-1/4 flex flex-col items-center text-center">
+                                        <div id="referred_to" class="w-full border-gray-400 mb-1">Loading...</div>
+                                        <strong class="w-full border-t border-gray-400">
+                                            Referred to
+                                        </strong>
+                                    </div>
                                 </div>
 
                                 <div class="flex flex-col items-center text-center pb-2 w-full">
@@ -216,6 +225,7 @@
                         $('#occupation').text(data.occupation);
                         $('#cellphone_number').text(data.cellphone_number);
                         $('#nature_of_problem').text(data.nature_of_problem);
+                        $('#referred_to').text(data.referred_to);
                         $('#problem_description').text(data.problem_description);
                         $('#created_at').text(data.created_at);
                         $('#status').html(data.status);

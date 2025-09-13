@@ -25,6 +25,7 @@ class AicsRecord extends Model
         'occupation',
         'cellphone_number',
         'nature_of_problem',
+        'referred_to',
         'problem_description',
         'qr_code',
         'status',

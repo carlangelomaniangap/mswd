@@ -384,29 +384,52 @@
                             <h3 class="text-blue-600 dark:text-blue-400">PROBLEM ASSESSMENT</h3>
 
                             <div class="space-y-4">
-                                <div>
-                                    <x-form.label
-                                        for="nature_of_problem"
-                                        class="block"
-                                    >
-                                        Nature of Problem
-                                        <sup class="text-red-500">*</sup>
-                                    </x-form.label>
-                                    <x-form.select 
-                                        name="nature_of_problem" 
-                                        id="nature_of_problem" 
-                                        class="w-full"
-                                        required
-                                    >
-                                        <option value="" selected disabled>Select</option>
-                                        <option value="Medical (Magulang Ang Magprocess)">Medical (Magulang Ang Magprocess)</option>
-                                        <option value="Medical (Tagapag Alaga Ang Magprocess)">Medical (Tagapag Alaga Ang Magprocess)</option>
-                                        <option value="Medical (Anak Ang Magprocess)">Medical (Anak Ang Magprocess)</option>
-                                        <option value="Medical (Pasyente Ang Magprocess)">Medical (Pasyente Ang Magprocess)</option>
-                                        <option value="Medical (Asawa/Live in Partner Ang Magprocess)">Medical (Asawa/Live in Partner Ang Magprocess)</option>
-                                        <option value="Medical (Kapatid Ang Magprocess)">Medical (Kapatid Ang Magprocess)</option>
-                                        <option value="Burial">Burial</option>
-                                    </x-form.select>
+                                <div class="flex w-full gap-2">
+                                    <div class="w-3/4">
+                                        <x-form.label
+                                            for="nature_of_problem"
+                                            class="block"
+                                        >
+                                            Nature of Problem
+                                            <sup class="text-red-500">*</sup>
+                                        </x-form.label>
+                                        <x-form.select
+                                            name="nature_of_problem" 
+                                            id="nature_of_problem" 
+                                            class="w-full"
+                                            required
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="Medical (Magulang Ang Magprocess)">Medical (Magulang Ang Magprocess)</option>
+                                            <option value="Medical (Tagapag Alaga Ang Magprocess)">Medical (Tagapag Alaga Ang Magprocess)</option>
+                                            <option value="Medical (Anak Ang Magprocess)">Medical (Anak Ang Magprocess)</option>
+                                            <option value="Medical (Pasyente Ang Magprocess)">Medical (Pasyente Ang Magprocess)</option>
+                                            <option value="Medical (Asawa/Live in Partner Ang Magprocess)">Medical (Asawa/Live in Partner Ang Magprocess)</option>
+                                            <option value="Medical (Kapatid Ang Magprocess)">Medical (Kapatid Ang Magprocess)</option>
+                                            <option value="Burial">Burial</option>
+                                        </x-form.select>
+                                    </div>
+
+                                    <div class="w-1/4">
+                                        <x-form.label
+                                            for="referred_to"
+                                            class="block"
+                                        >
+                                            Referred to
+                                            <sup class="text-red-500">*</sup>
+                                        </x-form.label>
+                                        <x-form.select
+                                            name="referred_to" 
+                                            id="referred_to" 
+                                            class="w-full"
+                                            required
+                                        >
+                                            <option value="" selected disabled>Select</option>
+                                            <option value="MSWD">MSWD</option>
+                                            <option value="Mayor">Mayor</option>
+                                            <option value="SB">SB</option>
+                                        </x-form.select>
+                                    </div>
                                 </div>
 
                                 <div>
@@ -549,9 +572,16 @@
                                 </div>
 
                                 <h1>PROBLEM ASSESSMENT</h1>
-                                <div>
-                                    <x-form.label class="block">Nature of Problem</x-form.label>
-                                    <span id="aics_nature_of_problem" class="font-semibold"></span>
+                                <div class="flex items-center justify-start gap-6">
+                                    <div>
+                                        <x-form.label class="block">Nature of Problem</x-form.label>
+                                        <span id="aics_nature_of_problem" class="font-semibold"></span>
+                                    </div>
+
+                                    <div>
+                                        <x-form.label class="block">Referred to</x-form.label>
+                                        <span id="aics_referred_to" class="font-semibold"></span>
+                                    </div>
                                 </div>
                                 <div>
                                     <x-form.label class="block">Problem Description</x-form.label>
@@ -1103,6 +1133,7 @@
                                 data-occupation="${row.occupation}"
                                 data-cellphone_number="${row.cellphone_number}"
                                 data-nature_of_problem="${row.nature_of_problem}"
+                                data-referred_to="${row.referred_to}"
                                 data-problem_description="${row.problem_description}"
                                 data-created_at="${row.created_at}"
                                 data-type="${row.nature_of_problem}"
@@ -1222,6 +1253,7 @@
         $('#aics_occupation').text(btn.data('occupation'));
         $('#aics_cellphone_number').text(btn.data('cellphone_number'));
         $('#aics_nature_of_problem').text(btn.data('nature_of_problem'));
+        $('#aics_referred_to').text(btn.data('referred_to'));
         $('#aics_problem_description').text(btn.data('problem_description'));
         $('#aics_created_at').text(btn.data('created_at'));
         $('#aics_qr_code').attr('src', btn.data('qr_code'));
