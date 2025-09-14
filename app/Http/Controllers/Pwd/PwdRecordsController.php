@@ -392,6 +392,7 @@ class PwdRecordsController extends Controller
         $existing = PwdRecord::where('first_name', $validated['first_name'])
             ->where('last_name', $validated['last_name'])
             ->where('date_of_birth', $validated['date_of_birth'])
+            ->where('id', '!=', $id)
             ->first();
 
         // If a beneficiary is found, return an error response
@@ -512,14 +513,21 @@ class PwdRecordsController extends Controller
 
         $data = [
             'photo' => $photo,
-            'name' => $record->last_name . ', ' . $record->first_name,
+            'name' => $record->first_name . ' ' . $record->last_name,
             'pwd_id' => 'PWD-' . str_pad($record->id, 3, '0', STR_PAD_LEFT),
-            'address' => $record->barangay . ', ' . $record->city_municipality . ', ' . $record->province,
+            'address' => $record->barangay . ' ' . $record->city_municipality . ' ' . $record->province,
             'sex' => $record->sex,
             'cellphone_number' => $record->cellphone_number,
             'date_of_birth' => date('F j, Y', strtotime($record->date_of_birth)),
+            'blood_type' => $record->blood_type,
             'type_of_disability' => $record->type_of_disability,
+            'emerg_name' => $record->emerg_first_name . ' ' . $record->emerg_last_name,
+            'emerg_address' => $record->emerg_address,
+            'relationship_to_pwd' => $record->relationship_to_pwd,
+            'emerg_contact_number' => $record->emerg_contact_number,
             'qr_code' => $qr_code,
+            'created_at' => date('F j, Y', strtotime($record->created_at)),
+            'user_name' => $record->user_name,
         ];
 
         return view('pages.pwd.print_id_card', [

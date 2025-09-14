@@ -598,8 +598,11 @@
                                 </div>
 
                                 <div class="flex items-center justify-center">
-                                    <x-button x-on:click="$dispatch('open-modal', 'print-as-id')">
-                                        Print as ID
+                                    <x-button id="btnPrintID" size="sm">
+                                        <svg class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+                                        </svg>
+                                        <p>Generate ID Card</p>
                                     </x-button>
                                 </div>
                             </div>
@@ -676,82 +679,6 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </x-modal>
-
-        {{-- Print as ID modal --}}
-        <x-modal name="print-as-id" height="fit" maxWidth="3xl">
-            <div class="p-4 flex justify-between items-center bg-blue-600">
-                <h2 class="text-md font-medium text-white dark:text-gray-100">PWD ID Card</h2>
-                <button type="button" class="text-white hover:bg-blue-500 p-2 rounded-md" x-on:click="$dispatch('close-modal', 'print-as-id')">
-                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-                    </svg>
-                </button>
-            </div>
-
-            <div class="p-4">
-                <div class="flex justify-center gap-6">
-                    {{-- Front ID --}}
-                    <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">FRONT</h3>
-                        <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border p-4">
-                            <div class="flex space-x-2">
-                                <img id="id_card_photo" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
-                                <h3 id="id_card_name" class="text-lg font-bold"></h3>
-                                <img src="{{asset('images/mswd_logo.png')}}" alt="Logo" class="w-12 h-12 object-cover">
-                            </div>
-
-                            <div class="text-xs mt-2">
-                                <strong class="font-semibold">AICS ID:</strong>
-                                <span id="id_card_aics_id"></span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">ADDRESS:</strong>
-                                <span id="id_card_address"></span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">SEX:</strong>
-                                <span id="id_card_sex"></span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">CONTACT NO:</strong>
-                                <span id="id_card_contact_number"></span></div>
-
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">BIRTHDAY:</strong>
-                                <span id="id_card_birthday"></span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">NATURE OF PROBLEM:</strong>
-                                <span id="id_card_nature_of_problem"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Back ID --}}
-                    <div class="space-y-2">
-                        <h3 class="font-bold text-xs text-gray-700 dark:text-white">BACK</h3>
-                        <div class="w-[358px] h-[228px] grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
-                            <div class="flex items-center justify-center">
-                                <img id="id_card_qr_code" alt="QR Code" class="w-36 h-36 object-cover">
-                            </div>
-                            <div class="flex flex-col items-center justify-center">
-                                <p class="text-[10px] text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa fuga eligendi perferendis possimus dolor voluptates modi error minima, nam vel sed commodi sint debitis.</p>
-
-                                <div class="mt-6">
-                                    <div class="border-b border-black w-32"></div>
-                                        <p class="text-center text-xs mt-1">Signature</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-center mt-6">
-                        <x-button id="btnPrintID">Print</x-button>
                     </div>
                 </div>
             </div>
@@ -1288,16 +1215,6 @@
                 );
             });
         });
-
-        $('#id_card_photo').attr('src', btn.data('photo'));
-        $('#id_card_name').text(`${btn.data('first_name')} ${btn.data('last_name')}`);
-        $('#id_card_aics_id').text(`AICS-${String(btn.data('id')).padStart(3, '0')}`);
-        $('#id_card_address').text(`${btn.data('barangay')}, ${btn.data('city_municipality')}, ${btn.data('province')}`);
-        $('#id_card_sex').text(btn.data('sex'));
-        $('#id_card_contact_number').text(btn.data('cellphone_number'));
-        $('#id_card_birthday').text(new Date(btn.data('date_of_birth')).toLocaleString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' }));
-        $('#id_card_nature_of_problem').text(btn.data('nature_of_problem'));
-        $('#id_card_qr_code').attr('src', btn.data('qr_code'));
 
         // requirements
         $('#aics_requirement_id').val(btn.data('id'));

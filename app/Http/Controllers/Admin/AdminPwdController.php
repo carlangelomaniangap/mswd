@@ -392,6 +392,7 @@ class AdminPwdController extends Controller
         $existing = PwdRecord::where('first_name', $validated['first_name'])
             ->where('last_name', $validated['last_name'])
             ->where('date_of_birth', $validated['date_of_birth'])
+            ->where('id', '!=', $id)
             ->first();
 
         // If a beneficiary is found, return an error response

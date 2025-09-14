@@ -53,37 +53,63 @@
                     {{-- Front ID --}}
                     <div class="space-y-2">
                         <h3 class="font-bold text-black dark:text-white">FRONT</h3>
-                        <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border p-4">
-                            <div class="flex space-x-2">
-                                <img src="{{ $data['photo'] }}" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
-                                <h3 class="text-lg font-bold">{{ $data['name'] }}</h3>
-                                <img src="{{asset('images/mswd_logo.png')}}" alt="Logo" class="w-12 h-12 object-cover">
+                        <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border">
+                            <div class="flex items-center justify-between px-4">
+                                <div>
+                                    <div class="flex items-center justify-center">
+                                        <img src="{{asset('images/mswd_logo.png')}}" alt="Logo" class="w-7 h-7 object-cover">
+                                        <p class="text-3xl text-[#0600b8] font-extrabold">DSWD</p>
+                                    </div>
+                                    <p class="text-[5px] text-[#0600b8] text-center">Department of Social Welfare and Development</p>
+                                </div>
+                                <div class="text-center text-xs">
+                                    <p>Republic of the Philippines</p>
+                                    <p>Municipality of Bataan</p>
+                                </div>
+                                <img src="{{asset('images/abucay.png')}}" alt="Logo" class="w-10 h-10 object-contain">
                             </div>
+                            <p class="text-[9px] text-center pt-0.5">Municipal SOcial Welfare and Development Office (MSWDO)</p>
+                            <p class="bg-blue-900 text-[10px] text-center font-semibold text-white mx-4">SOLO PARENT IDENTIFICATION CARD</p>
 
-                            <div class="text-xs mt-2">
-                                <strong class="font-semibold">Solo Parent ID:</strong>
-                                <span>{{ $data['sp_id'] }}</span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">ADDRESS:</strong>
-                                <span>{{ $data['address'] }}</span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">SEX:</strong>
-                                <span>{{ $data['sex'] }}</span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">CONTACT NO:</strong>
-                                <span>{{ $data['cellphone_number'] }}</span>
-                            </div>
-
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">BIRTHDAY:</strong>
-                                <span>{{ $data['date_of_birth'] }}</span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">AGE:</strong>
-                                <span>{{ $data['age'] }}</span>
+                            <div class="flex flex-row">
+                                <div class="flex flex-col items-center pl-2 py-1">
+                                    <img src="{{ $data['photo'] }}" alt="ID Card Photo" class="w-20 h-20 object-cover bg-gray-300">
+                                    <div class="mt-1">
+                                        <div class="h-12 border-2 border-black"></div>
+                                        <p class="text-[10px] text-center font-semibold">Right Thumb Print</p>
+                                    </div>
+                                </div>
+                                <div class="flex-1 flex flex-col px-2">
+                                    <div class="flex justify-end gap-1">
+                                        <strong class="text-sm font-semibold">Solo Parent ID:</strong>
+                                        <span class="text-sm border-b border-black font-semibold">{{ $data['sp_id'] }}</span>
+                                    </div>
+                                    <div class="flex flex-col w-full">
+                                        <div class="text-sm text-center w-full border-b border-black font-bold">
+                                            {{ $data['name'] }}
+                                        </div>
+                                        <p class="text-xs text-center">Name</p>
+                                    </div>
+                                    <div class="flex gap-1 w-full">
+                                        <p class="text-[9px]">Date and Place of Birth:</p>
+                                        <span class="text-[9px] border-b border-black font-semibold flex-1">{{ $data['date_of_birth'] }} / {{ $data['place_of_birth'] }}</span>
+                                    </div>
+                                    <div class="flex gap-1 w-full">
+                                        <p class="text-[9px]">Current Address:</p>
+                                        <span class="text-[9px] border-b border-black font-semibold flex-1">{{ $data['address'] }}</span>
+                                    </div>
+                                    <div class="flex gap-1 w-full">
+                                        <p class="text-[9px]">Solo Parent Category:</p>
+                                        <span class="text-[9px] border-b border-black font-semibold flex-1">{{ $data['solo_parent_category'] }}</span>
+                                    </div>
+                                    <div class="flex items-center justify-center pt-4">
+                                        <p class="text-[9px] text-center border-t border-black font-semibold w-24">Signature</p>
+                                    </div>
+                                    <div class="flex gap-1 w-full">
+                                        <p class="text-[9px]">This card is Non-Transferable and valid until:</p>
+                                        <span class="text-[9px] border-b border-black font-semibold flex-1"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -91,17 +117,52 @@
                     {{-- Back ID --}}
                     <div class="space-y-2">
                         <h3 class="font-bold text-black dark:text-white">BACK</h3>
-                        <div class="w-[358px] h-[228px] grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
-                            <div class="flex items-center justify-center">
-                                <img src="{{ $data['qr_code'] }}" alt="QR Code" class="w-36 h-36 object-cover">
+                        <div class="w-[358px] h-[228px] flex flex-col bg-white text-black rounded-lg shadow-md border p-2">
+                            <div>
+                                <p class="text-sm font-semibold pb-2">In case of emergency, you may contact the following:</p>
                             </div>
-                            <div class="flex flex-col items-center justify-center">
-                                <p class="text-[10px] text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa fuga eligendi perferendis possimus dolor voluptates modi error minima, nam vel sed commodi sint debitis.</p>
-
-                                <div class="mt-6">
-                                    <div class="border-b border-black w-32"></div>
-                                        <p class="text-center text-xs mt-1">Signature</p>
+                            <div class="flex-1 flex items-start gap-2">
+                                <div class="flex items-center justify-center">
+                                    <img src="{{ $data['qr_code'] }}" alt="QR Code" class="w-32 h-32">
+                                </div>
+                                <div>
+                                    <div class="flex items-center">
+                                        <p class="text-xs mr-2">Name:</p>
+                                        <div class="text-sm flex-1 border-b border-black font-bold">
+                                            {{ $data['emerg_name'] }}
+                                        </div>
                                     </div>
+
+                                    <div class="flex items-center">
+                                        <p class="text-xs mr-2">Relationship:</p>
+                                        <div class="text-sm flex-1 border-b border-black font-bold">
+                                            {{ $data['relationship_to_solo_parent'] }}
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <p class="text-xs mr-2">Address:</p>
+                                        <div class="text-sm flex-1 border-b border-black font-bold">
+                                            {{ $data['emerg_address'] }}
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <p class="text-xs mr-2">Contact Number:</p>
+                                        <div class="text-sm flex-1 border-b border-black font-bold">
+                                            {{ $data['emerg_contact_number'] }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center gap-12">
+                                <div>
+                                    <p class="text-center text-sm font-semibold">HON. ERIK J. MARTEL</p>
+                                    <p class="text-center text-xs">City/Municipal Mayor</p>
+                                </div>
+                                <div>
+                                    <p class="text-center text-sm font-semibold">ROSALIE B. CABRERA</p>
+                                    <p class="text-center text-xs">ACTING - MSWDO</p>
                                 </div>
                             </div>
                         </div>

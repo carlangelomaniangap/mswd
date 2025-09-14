@@ -80,16 +80,39 @@ class AdminPrintIDCardController extends Controller
             }
         }
 
+        $categoryCode = [
+            'Birth of a child as a consequence of rape' => 'A1',
+            'Widow/widower' => 'A2',
+            'Spouse of person deprived of liberty' => 'A3',
+            'Spouse of person with physical or mental incapacity' => 'A4',
+            'Due to legal separation or de facto separation' => 'A5',
+            'Due to nullity or annulment of marriage' => 'A6',
+            'Abandonment by the spouse' => 'A7',
+            'Spouse of OFW' => 'B1',
+            'Relative of OFW' => 'B2',
+            'Unmarried person' => 'C',
+            'Legal guardian/Adoptive parent/Foster parent' => 'D',
+            'Relative within the fourth (4th) civil degree of consanguinity or affinity' => 'E',
+            'Pregnant woman' => 'F',
+        ];
+
         $data = [
             'photo' => $photo,
-            'name' => $record->last_name . ', ' . $record->first_name,
+            'name' => $record->first_name . ' ' . $record->last_name,
             'pwd_id' => 'PWD-' . str_pad($record->id, 3, '0', STR_PAD_LEFT),
-            'address' => $record->barangay . ', ' . $record->city_municipality . ', ' . $record->province,
+            'address' => $record->barangay . ' ' . $record->city_municipality . ' ' . $record->province,
             'sex' => $record->sex,
             'cellphone_number' => $record->cellphone_number,
             'date_of_birth' => date('F j, Y', strtotime($record->date_of_birth)),
+            'blood_type' => $record->blood_type,
             'type_of_disability' => $record->type_of_disability,
+            'emerg_name' => $record->emerg_first_name . ' ' . $record->emerg_last_name,
+            'emerg_address' => $record->emerg_address,
+            'relationship_to_pwd' => $record->relationship_to_pwd,
+            'emerg_contact_number' => $record->emerg_contact_number,
             'qr_code' => $qr_code,
+            'created_at' => date('F j, Y'),
+            'user_name' => $record->user_name,
 
             'aics_id' => 'AICS-' . str_pad($record->id, 3, '0', STR_PAD_LEFT),
             'nature_of_problem' => $record->nature_of_problem,
@@ -98,6 +121,9 @@ class AdminPrintIDCardController extends Controller
             'age' => $record->age,
 
             'sp_id' => 'SP-' . str_pad($record->id, 3, '0', STR_PAD_LEFT),
+            'place_of_birth' => $record->place_of_birth,
+            'solo_parent_category' => $categoryCode[$record->solo_parent_category] ?? '',
+            'relationship_to_solo_parent' => $record->relationship_to_solo_parent,
         ];
 
         return view('pages.admin.print_id_card', [

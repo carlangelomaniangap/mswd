@@ -53,37 +53,57 @@
                     {{-- Front ID --}}
                     <div class="space-y-2">
                         <h3 class="font-bold text-black dark:text-white">FRONT</h3>
-                        <div class="w-[358px] h-[228px] bg-white text-black rounded-lg shadow-md border p-4">
-                            <div class="flex space-x-2">
-                                <img src="{{ $data['photo'] }}" alt="ID Card Photo" class="w-12 h-12 object-cover bg-gray-300">
-                                <h3 class="text-lg font-bold">{{ $data['name'] }}</h3>
-                                <img src="{{asset('images/mswd_logo.png')}}" alt="Logo" class="w-12 h-12 object-cover">
+                        <div class="w-[358px] h-[228px] flex flex-col bg-white text-black rounded-lg shadow-md border">
+                            <div class="flex items-center justify-between px-4 bg-blue-800 rounded-t-lg">
+                                <img src="{{asset('images/senior_citizen.png')}}" alt="Logo" class="w-11 h-11 object-contain">
+                                <div class="text-center text-xs text-white">
+                                    <p>Republic of the Philippines</p>
+                                    <p>Office of the Senior Citizens Affairs (OSCA)</p>
+                                    <p>Abucay, Bataan</p>
+                                </div>
+                                <img src="{{asset('images/abucay.png')}}" alt="Logo" class="w-11 h-11 object-contain">
                             </div>
-
-                            <div class="text-xs mt-2">
-                                <strong class="font-semibold">Senior ID:</strong>
-                                <span>{{ $data['sc_id'] }}</span>
+                            <div class="flex-1 flex flex-row">
+                                <div class="p-2">
+                                    <img src="{{ $data['photo'] }}" alt="ID Card Photo" class="w-24 h-24 object-cover bg-gray-300">
+                                    <div class="text-xs text-center mt-2">
+                                        <p class="font-bold">{{ $data['sc_id'] }}</p>
+                                        <p class="font-semibold border-t border-black">Senior ID</p>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col pt-2">
+                                    <div class="flex items-center gap-2">
+                                        <p class="text-xs">Name:</p>
+                                        <p class="text-sm font-bold">{{ $data['name'] }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <p class="text-xs">Address:</p>
+                                        <p class="text-sm font-bold">{{ $data['address'] }}</p>
+                                    </div>
+                                    <div class="flex items-center justify-start gap-4">
+                                        <div class="flex items-center gap-2">
+                                            <p class="text-xs">Date of Birth:</p>
+                                            <p class="text-sm font-semibold">{{ $data['date_of_birth'] }}</p>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <p class="text-xs">Sex:</p>
+                                            <p class="text-sm font-semibold">{{ $data['sex'] }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <p class="text-xs">Date Issued:</p>
+                                        <p class="text-sm font-semibold">{{ $data['created_at'] }}</p>
+                                    </div>
+                                    <div class="flex-1 flex items-end justify-between gap-4 my-1">
+                                        <div class="text-xs text-center">
+                                            <p class="font-semibold border-t border-black">Signature/Thumbmark</p>
+                                        </div>
+                                        <img src="{{ $data['qr_code'] }}" alt="QR Code" class="w-16 h-16">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">ADDRESS:</strong>
-                                <span>{{ $data['address'] }}</span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">SEX:</strong>
-                                <span>{{ $data['sex'] }}</span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">CONTACT NO:</strong>
-                                <span>{{ $data['cellphone_number'] }}</span>
-                            </div>
-
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">BIRTHDAY:</strong>
-                                <span>{{ $data['date_of_birth'] }}</span>
-                            </div>
-                            <div class="text-xs mt-1">
-                                <strong class="font-semibold">AGE:</strong>
-                                <span>{{ $data['age'] }}</span>
+                            <div class="text-center text-xs text-white bg-blue-800 rounded-b-lg">
+                                <p>This card is non-transferable</p>
                             </div>
                         </div>
                     </div>
@@ -91,17 +111,32 @@
                     {{-- Back ID --}}
                     <div class="space-y-2">
                         <h3 class="font-bold text-black dark:text-white">BACK</h3>
-                        <div class="w-[358px] h-[228px] grid grid-cols-2 gap-4 bg-white text-black rounded-lg shadow-md border p-4">
-                            <div class="flex items-center justify-center">
-                                <img src="{{ $data['qr_code'] }}" alt="QR Code" class="w-36 h-36 object-cover">
+                        <div class="w-[358px] h-[228px] flex flex-col bg-white text-black rounded-lg shadow-md border p-2">
+                            <div>
+                                <p class="text-sm font-semibold">Benefits and Privileges under RA 9994</p>
                             </div>
-                            <div class="flex flex-col items-center justify-center">
-                                <p class="text-[10px] text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa fuga eligendi perferendis possimus dolor voluptates modi error minima, nam vel sed commodi sint debitis.</p>
-
-                                <div class="mt-6">
-                                    <div class="border-b border-black w-32"></div>
-                                        <p class="text-center text-xs mt-1">Signature</p>
-                                    </div>
+                            <div class="flex-1 flex items-start justify-between">
+                                <div class="text-[8px]">
+                                    <p>Free Medical/Dental, diagnostic & laboratory services in all government facilities.</p>
+                                    <p>20% discount for medicine</p>
+                                    <p>20% discount in hotels, restaurant, recreation centers</p>
+                                    <p>20% discount in theaters, cinema houses & concert halls</p>
+                                    <p>20% discount in medical/dental services, diagnostics & laboratory fees in private facilities</p>
+                                    <p>50% discount in basic necessities & prime commodities</p>
+                                    <p>12% VAT - exemption on the purchase goods & services which are entitled to the 20% discount</p>
+                                    <p>5% discount for the monthly utilization of water & electricity, provided that the water and electricity meter bases are under the name of the senior citizens</p>
+                                    <p class="pt-2">Persons and Corporation violating RA9994 shall be penalized.</p>
+                                    <p>Only for the executive use of Senior Citizen, abuse of the privileges is punished by law.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center gap-12">
+                                <div>
+                                    <p class="text-center text-sm font-semibold">JUNE O. CARAIG</p>
+                                    <p class="text-center text-xs">OSCA HEAD</p>
+                                </div>
+                                <div>
+                                    <p class="text-center text-sm font-semibold">HON. ERIK J. MARTEL</p>
+                                    <p class="text-center text-xs">City/Municipal Mayor</p>
                                 </div>
                             </div>
                         </div>
