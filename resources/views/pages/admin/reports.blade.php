@@ -9,7 +9,7 @@
         </div>
     </x-slot>
 
-    <div class="bg-white p-4 space-y-8">
+    <div class="bg-white dark:bg-dark-eval-1 p-4 space-y-8">
         <div class="space-y-4">
             <h3 class="font-semibold text-lg">Beneficiary Report</h3>
             <div class="filter-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">

@@ -69,14 +69,14 @@
         </div>
 
         <div class="grid grid-cols-2 grid-rows-1 gap-4">
-            <div class="bg-white p-4 space-y-4">
+            <div class="bg-white dark:bg-dark-eval-1 p-4 space-y-4">
                 <h3 class="font-semibold">Brangay Statistics</h3>
                 <div class="flex items-center justify-center">
                     <canvas id="barangaystats" height="300" width="300"></canvas>
                 </div>
             </div>
 
-            <div class="bg-white p-4 space-y-4">
+            <div class="bg-white dark:bg-dark-eval-1 p-4 space-y-4">
                 <h3 class="font-semibold">Status Statistics</h3>
                 <div class="flex items-center justify-center">
                     <canvas id="statusstats" height="300" width="300"></canvas>
