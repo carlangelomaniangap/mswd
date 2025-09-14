@@ -37,10 +37,10 @@
                 <div class="hidden md:flex md:flex-col justify-center items-center">
                     <div class="flex items-center justify-center">
                         <img src="{{ asset('images/mswd_logo.png') }}" alt="Logo" class="w-38 h-36">
-                        <h1 class="text-8xl text-blue-800 font-black">MSWD</h1>
+                        <h1 class="text-8xl text-[#0600b8] font-black">MSWD</h1>
                     </div>
-                    <em class="text-red-600">MUNICIPAL SOCIAL WELFARE DEVELOPMENT OFFICE</em>
-                    <h2 class="text-8xl text-yellow-400">ABUCAY</h2>
+                    <em class="text-[#f70000]">MUNICIPAL SOCIAL WELFARE DEVELOPMENT OFFICE</em>
+                    <h2 class="text-8xl text-[#ffd000]">ABUCAY</h2>
                 </div>
 
                 <!-- Right side - Content -->

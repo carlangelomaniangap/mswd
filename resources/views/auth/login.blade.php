@@ -84,13 +84,13 @@
                     </label>
                 </div>
 
-                <div class="text-center">
+                {{-- <div class="text-center">
                     @if (Route::has('password.request'))
                         <a class="text-sm text-blue-500 hover:underline" href="{{ route('password.request') }}">
                             {{ __('Forgot your password?') }}
                         </a>
                     @endif
-                </div>
+                </div> --}}
 
                 <div>
                     <x-button class="justify-center w-full gap-2">
